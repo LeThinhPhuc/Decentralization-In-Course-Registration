@@ -1,4 +1,5 @@
 ﻿using BMCSDL.DTOs;
+using BMCSDL.ReturnModels;
 using BMCSDL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.WebSockets;
@@ -30,13 +31,25 @@ namespace BMCSDL.Controllers
         [HttpPost("[action]")]
         public async Task<ActionResult> Login(LoginDTO account)
         {
-            var returnData = await accountService.LoginAsync(account);
+            UserDTO returnData = await accountService.LoginAsync(account);
             if( returnData != null )
             {
                 return Ok(returnData);
             }
 
             return Unauthorized();
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult> Register([FromBody]UserRegisterDTO user)
+        {
+            var dataToReturn = await accountService.RegisterAsync(user);
+            if(dataToReturn == null )
+            {
+                return BadRequest();
+            }
+
+            return Ok(user);
         }
     }
 }

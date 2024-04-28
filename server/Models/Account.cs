@@ -8,8 +8,7 @@
         public byte[] PasswordHash {  get; set; }
         public byte[] PasswordSalt { get; set;}
 
-        public string RoleId { get; set; }  
-        public Role Role { get; set; }
+        public ICollection<RoleAccount> RoleAccount { get; set; }
 
         public Person Person { get; set; }
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BMCSDL.DTOs;
+using Microsoft.EntityFrameworkCore;
 namespace BMCSDL.Models
 {
     public class CourseRegistraionManagementContext : DbContext
@@ -13,12 +14,29 @@ namespace BMCSDL.Models
             //base.OnModelCreating(modelBuilder);
 
             //Write Fluent API configurations here
+
+            modelBuilder.Entity<RoleAccount>(entity =>
+            {
+                entity.HasKey(k => new { k.RoleId, k.AccountId });
+            });
+
+            modelBuilder.Entity<RoleAccount>(entity =>
+            {
+                entity.HasOne(e => e.Role)
+                      .WithMany(r => r.RoleAccount)
+                      .HasForeignKey(r => r.RoleId);
+            });
+
+            modelBuilder.Entity<RoleAccount>(entity =>
+            {
+                entity.HasOne(e => e.Account)
+                      .WithMany(a => a.RoleAccount)
+                      .HasForeignKey(e => e.AccountId);
+            });
+
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.HasKey(r => r.RoleId);
-                entity.HasOne(r => r.Account)
-                      .WithOne(a => a.Role)
-                      .HasForeignKey<Account>(a => a.RoleId);
 
             });
 
@@ -26,9 +44,6 @@ namespace BMCSDL.Models
             {
                 entity.HasIndex(a => a.UserName).IsUnique();
                 entity.HasKey(a => a.AccountId);
-                entity.HasOne(a => a.Role) //specify that Account includes one Role reference navigation property
-                      .WithOne(r => r.Account) //configures the other end of the relationship
-                      .HasForeignKey<Account>(a => a.RoleId);
             });
 
             modelBuilder.Entity<TruongPhoKhoa>(entity =>
@@ -242,5 +257,7 @@ namespace BMCSDL.Models
         public DbSet<ClassTime> ClassTime { get; set; }
 
         public DbSet<TeacherSubject> TeacherSubject { get; set; }
+
+        public DbSet<RoleAccount> RoleAccount { get; set; }
     }
 }

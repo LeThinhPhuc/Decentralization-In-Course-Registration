@@ -5,6 +5,6 @@
         public string RoleId {  get; set; } 
         public string RoleName { get; set; }
 
-        public Account Account { get; set; }    
+        public ICollection<RoleAccount> RoleAccount { get; set; }    
     }
 }

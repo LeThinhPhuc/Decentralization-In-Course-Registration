@@ -25,10 +25,14 @@ namespace BMCSDL.Services.Implements
 
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Role,account.RoleId),
                 new Claim(ClaimTypes.Name,account.Person.FullName),
                 new Claim(ClaimTypes.NameIdentifier,account.Person.AccountId)
             };
+
+            foreach(var claim in account.RoleAccount) 
+            { 
+                claims.Add(new Claim(ClaimTypes.Role,claim.RoleId));
+            }
 
             var token = new JwtSecurityToken(
                     issuer: config["JWTSettings:issuer"],

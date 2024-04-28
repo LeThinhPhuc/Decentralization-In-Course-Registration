@@ -10,6 +10,7 @@ namespace BMCSDL.Helpers
         {
             CreateMap<Account,AccountDTO>();
             CreateMap<Role, RoleDTO>();
+            CreateMap<RoleAccount,RoleAccountDTO>();
         }
     }
 }

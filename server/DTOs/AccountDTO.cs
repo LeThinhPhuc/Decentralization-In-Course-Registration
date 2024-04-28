@@ -12,6 +12,7 @@ namespace BMCSDL.DTOs
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
 
-        public RoleDTO Role { get; set; }
+        public ICollection<RoleAccountDTO> RoleAccount { get; set; }   
+
     }
 }

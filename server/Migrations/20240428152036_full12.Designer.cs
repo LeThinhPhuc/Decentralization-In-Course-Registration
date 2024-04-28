@@ -4,6 +4,7 @@ using BMCSDL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BMCSDL.Migrations
 {
     [DbContext(typeof(CourseRegistraionManagementContext))]
-    partial class CourseRegistraionManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20240428152036_full12")]
+    partial class full12
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,12 +37,14 @@ namespace BMCSDL.Migrations
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("AccountId");
+
+                    b.HasIndex("RoleId");
 
                     b.HasIndex("UserName")
                         .IsUnique()
@@ -176,23 +181,6 @@ namespace BMCSDL.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("Role");
-                });
-
-            modelBuilder.Entity("BMCSDL.Models.RoleAccount", b =>
-                {
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnOrder(0);
-
-                    b.Property<string>("AccountId")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnOrder(1);
-
-                    b.HasKey("RoleId", "AccountId");
-
-                    b.HasIndex("AccountId");
-
-                    b.ToTable("RoleAccount");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Student", b =>
@@ -367,6 +355,15 @@ namespace BMCSDL.Migrations
                     b.ToTable("TruongPhoKhoa");
                 });
 
+            modelBuilder.Entity("BMCSDL.Models.Account", b =>
+                {
+                    b.HasOne("BMCSDL.Models.Role", "Role")
+                        .WithMany("Account")
+                        .HasForeignKey("RoleId");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("BMCSDL.Models.ClassTime", b =>
                 {
                     b.HasOne("BMCSDL.Models.Classroom", "Classroom")
@@ -420,25 +417,6 @@ namespace BMCSDL.Migrations
                         .IsRequired();
 
                     b.Navigation("Subject");
-                });
-
-            modelBuilder.Entity("BMCSDL.Models.RoleAccount", b =>
-                {
-                    b.HasOne("BMCSDL.Models.Account", "Account")
-                        .WithMany("RoleAccount")
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BMCSDL.Models.Role", "Role")
-                        .WithMany("RoleAccount")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Student", b =>
@@ -554,8 +532,6 @@ namespace BMCSDL.Migrations
             modelBuilder.Entity("BMCSDL.Models.Account", b =>
                 {
                     b.Navigation("Person");
-
-                    b.Navigation("RoleAccount");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Classroom", b =>
@@ -592,7 +568,7 @@ namespace BMCSDL.Migrations
 
             modelBuilder.Entity("BMCSDL.Models.Role", b =>
                 {
-                    b.Navigation("RoleAccount");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Student", b =>

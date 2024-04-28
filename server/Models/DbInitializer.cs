@@ -1,4 +1,5 @@
-﻿using System.Net.WebSockets;
+﻿using BMCSDL.Migrations;
+using System.Net.WebSockets;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -140,20 +141,41 @@ namespace BMCSDL.Models
                 context.SaveChanges();
             }
 
+
+            var accountId1 = Guid.NewGuid().ToString();
+            var personId1 = Guid.NewGuid().ToString();
+            var salt1 = GenerateSalt();
+
+            var accountId2 = Guid.NewGuid().ToString();
+            var personId2 = Guid.NewGuid().ToString();
+            var salt2 = GenerateSalt();
+
+            var accountId3 = Guid.NewGuid().ToString();
+            var personId3 = Guid.NewGuid().ToString();
+            var salt3 = GenerateSalt();
+
+            var accountId4 = Guid.NewGuid().ToString();
+            var personId4 = Guid.NewGuid().ToString();
+            var salt4 = GenerateSalt();
+
+            var accountId5 = Guid.NewGuid().ToString();
+            var personId5 = Guid.NewGuid().ToString();
+            var salt5 = GenerateSalt();
+
             if (!context.Account.Any())
             {
                 var accounts = new List<Account>();
 
-                var accountId1 = Guid.NewGuid().ToString();
-                var personId1 = Guid.NewGuid().ToString();
-                var salt1 = GenerateSalt();
                 var account1 = new Account()
                 {
                     AccountId = accountId1,
                     UserName = "Test1",
                     PasswordHash = CaculatePassword("12345", salt1),
                     PasswordSalt = salt1,
-                    RoleId = sinhvien,
+                    RoleAccount = new List<RoleAccount>()
+                    { 
+                        new RoleAccount() { RoleId =sinhvien,AccountId = accountId1}
+                    },
                     Person = new Person
                     {
                         PersonId = personId1,
@@ -168,20 +190,22 @@ namespace BMCSDL.Models
                         {
                             StudentId = personId1,
                             PersonId = personId1,
-                        }
+                        },
+                        
                     }
                 };
 
-                var accountId2 = Guid.NewGuid().ToString();
-                var personId2 = Guid.NewGuid().ToString();
-                var salt2 = GenerateSalt();
+                
                 var account2 = new Account()
                 {
                     AccountId = accountId2,
                     UserName = "Test2",
                     PasswordHash = CaculatePassword("12345", salt2),
                     PasswordSalt = salt2,
-                    RoleId = truongphokhoa,
+                    RoleAccount = new List<RoleAccount>()
+                    {
+                        new RoleAccount() { RoleId =truongphokhoa,AccountId = accountId2}
+                    },
                     Person = new Person
                     {
                         PersonId = personId2,
@@ -201,16 +225,17 @@ namespace BMCSDL.Models
                 };
 
 
-                var accountId3 = Guid.NewGuid().ToString();
-                var personId3 = Guid.NewGuid().ToString();
-                var salt3 = GenerateSalt();
+                
                 var account3 = new Account()
                 {
                     AccountId = accountId3,
                     UserName = "Test3",
                     PasswordHash = CaculatePassword("12345", salt3),
                     PasswordSalt = salt3,
-                    RoleId = truongbomon,
+                    RoleAccount = new List<RoleAccount>()
+                    {
+                        new RoleAccount() { RoleId =truongbomon,AccountId = accountId3}
+                    },
                     Person = new Person
                     {
                         PersonId = personId3,
@@ -230,16 +255,17 @@ namespace BMCSDL.Models
                 };
 
 
-                var accountId4 = Guid.NewGuid().ToString();
-                var personId4 = Guid.NewGuid().ToString();
-                var salt4 = GenerateSalt();
+                
                 var account4 = new Account()
                 {
                     AccountId = accountId4,
                     UserName = "Test4",
                     PasswordHash = CaculatePassword("12345", salt4),
                     PasswordSalt = salt4,
-                    RoleId = giaovu,
+                    RoleAccount = new List<RoleAccount>()
+                    {
+                        new RoleAccount() { RoleId =giaovu,AccountId = accountId4}
+                    },
                     Person = new Person
                     {
                         PersonId = accountId4,
@@ -259,16 +285,17 @@ namespace BMCSDL.Models
                 };
 
 
-                var accountId5 = Guid.NewGuid().ToString();
-                var personId5 = Guid.NewGuid().ToString();
-                var salt5 = GenerateSalt();
+                
                 var account5 = new Account()
                 {
                     AccountId = accountId5,
                     UserName = "Test5",
                     PasswordHash = CaculatePassword("12345", salt5),
                     PasswordSalt = salt5,
-                    RoleId = giaovien,
+                    RoleAccount = new List<RoleAccount>()
+                    {
+                        new RoleAccount() { RoleId =giaovien,AccountId = accountId5}
+                    },
                     Person = new Person
                     {
                         PersonId = personId5,
@@ -306,8 +333,22 @@ namespace BMCSDL.Models
                 context.SaveChanges();
             }
 
+            //if (!context.RoleAccount.Any())
+            //{
+            //    List<RoleAccount> RoleAccount = new List<RoleAccount>()
+            //    {
+            //        new RoleAccount() { RoleId = sinhvien,AccountId = accountId1},
+            //        new RoleAccount() { RoleId = truongphokhoa,AccountId = accountId2},
+            //        new RoleAccount() { RoleId = truongbomon,AccountId = accountId3},
+            //        new RoleAccount() { RoleId = giaovu,AccountId = accountId4},
+            //        new RoleAccount() { RoleId = giaovien,AccountId = accountId5}
+            //    };
 
-            
+            //    context.RoleAccount.AddRange(RoleAccount);
+            //    context.SaveChanges();
+            //}
+
+
 
             var classroom1 = Guid.NewGuid().ToString();//B101
             var classroom2 = Guid.NewGuid().ToString();//B102
