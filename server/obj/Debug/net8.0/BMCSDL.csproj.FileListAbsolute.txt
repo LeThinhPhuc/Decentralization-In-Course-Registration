@@ -273,3 +273,4 @@ C:\Users\tuand\Desktop\Project BMCSDL\Decentralization-In-Course-Registration\se
 C:\Users\tuand\Desktop\Project BMCSDL\Decentralization-In-Course-Registration\server\obj\Debug\net8.0\BMCSDL.pdb
 C:\Users\tuand\Desktop\Project BMCSDL\Decentralization-In-Course-Registration\server\obj\Debug\net8.0\BMCSDL.genruntimeconfig.cache
 C:\Users\tuand\Desktop\Project BMCSDL\Decentralization-In-Course-Registration\server\obj\Debug\net8.0\ref\BMCSDL.dll
+C:\Users\tuand\Desktop\Project BMCSDL\Decentralization-In-Course-Registration\server\bin\Debug\net8.0\AutoMapper.dll

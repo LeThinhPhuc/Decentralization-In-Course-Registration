@@ -19,10 +19,12 @@ namespace BMCSDL.Models
                 entity.HasOne(r => r.Account)
                       .WithOne(a => a.Role)
                       .HasForeignKey<Account>(a => a.RoleId);
+
             });
 
             modelBuilder.Entity<Account>(entity =>
             {
+                entity.HasIndex(a => a.UserName).IsUnique();
                 entity.HasKey(a => a.AccountId);
                 entity.HasOne(a => a.Role) //specify that Account includes one Role reference navigation property
                       .WithOne(r => r.Account) //configures the other end of the relationship
@@ -200,6 +202,24 @@ namespace BMCSDL.Models
                       .HasForeignKey(s => s.TimeId);    
             });
 
+            modelBuilder.Entity<TeacherSubject>(entity =>
+            {
+                entity.HasKey(k => new { k.SubjectId, k.TeacherId });
+            });
+
+            modelBuilder.Entity<TeacherSubject>(entity =>
+            {
+                entity.HasOne(e => e.Teacher)
+                      .WithMany(t => t.TeacherSubject)
+                      .HasForeignKey( k => k.TeacherId);
+            });
+
+            modelBuilder.Entity<TeacherSubject>(entity =>
+            {
+                entity.HasOne(e => e.Subject)
+                      .WithMany(s => s.TeacherSubject)
+                      .HasForeignKey(k => k.SubjectId);
+            });
         }
 
         public DbSet<Role> Role { get; set; }
@@ -220,5 +240,7 @@ namespace BMCSDL.Models
 
         public DbSet<Time> Time { get; set; }
         public DbSet<ClassTime> ClassTime { get; set; }
+
+        public DbSet<TeacherSubject> TeacherSubject { get; set; }
     }
 }

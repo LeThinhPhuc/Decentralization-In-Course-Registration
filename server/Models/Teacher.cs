@@ -6,5 +6,6 @@
         public string PersonId { get; set; }    
         public Person Person { get; set; }
 
+        public ICollection<TeacherSubject> TeacherSubject {  get; set; }    
     }
 }

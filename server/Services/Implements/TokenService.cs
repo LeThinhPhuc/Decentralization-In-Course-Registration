@@ -12,12 +12,11 @@ namespace BMCSDL.Services.Implements
     public class TokenService : ITokenService
     {
         private readonly IConfiguration config;
-        private readonly IHttpContextAccessor httpContextAccessor;
+        //private readonly IHttpContextAccessor httpContextAccessor;
 
-        public TokenService(IConfiguration config,IHttpContextAccessor httpContextAccessor)
+        public TokenService(IConfiguration config)
         {
             this.config = config;
-            this.httpContextAccessor = httpContextAccessor;
         }
         public JwtSecurityToken GenerateJSONWebToken(Account account)
         {
@@ -43,15 +42,15 @@ namespace BMCSDL.Services.Implements
             //return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public void SetJWTCookie(string jwtToken)
-        {
-            var cookieOptions = new CookieOptions
-            {
-                HttpOnly = true,
-                Expires = DateTime.UtcNow.AddHours(3),
-            };
-            httpContextAccessor.HttpContext.Response.Cookies.Append("jwtCookie", jwtToken, cookieOptions);
-        }
+        //public void SetJWTCookie(string jwtToken)
+        //{
+        //    var cookieOptions = new CookieOptions
+        //    {
+        //        HttpOnly = true,
+        //        Expires = DateTime.UtcNow.AddHours(3),
+        //    };
+        //    httpContextAccessor.HttpContext.Response.Cookies.Append("jwtCookie", jwtToken, cookieOptions);
+        //}
 
     }
 }

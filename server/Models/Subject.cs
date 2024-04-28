@@ -15,5 +15,8 @@
         public RegisteredSubject RegisteredSubject { get; set; }    
 
         public ICollection<SubjectClass> SubjectClass { get; set; }
+
+        public ICollection<TeacherSubject> TeacherSubject { get; set; }
+
     }
 }

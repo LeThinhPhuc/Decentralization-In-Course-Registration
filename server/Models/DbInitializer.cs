@@ -67,180 +67,25 @@ namespace BMCSDL.Models
 
             }
 
+            var sinhvien = Guid.NewGuid().ToString();
+            var truongphokhoa = Guid.NewGuid().ToString();
+            var truongbomon = Guid.NewGuid().ToString();
+            var giaovu = Guid.NewGuid().ToString();
+            var giaovien = Guid.NewGuid().ToString();
 
             if (!context.Role.Any())
             {
                 var roles = new List<Role>()
                 {
-                    new Role() { RoleId = "sinhvien", RoleName="Sinh Viên"},
-                    new Role() { RoleId = "truongphokhoa", RoleName="Trưởng Phó Khoa"},
-                    new Role() { RoleId = "truongbomon", RoleName="Trưởng Bộ Môn"},
-                    new Role() { RoleId = "giaovu", RoleName="Giáo Vụ"},
-                    new Role() { RoleId = "giaovien", RoleName="Giáo Viên"}
+                    new Role() { RoleId = sinhvien, RoleName="Sinh Viên"},
+                    new Role() { RoleId = truongphokhoa, RoleName="Trưởng Phó Khoa"},
+                    new Role() { RoleId = truongbomon, RoleName="Trưởng Bộ Môn"},
+                    new Role() { RoleId = giaovu, RoleName="Giáo Vụ"},
+                    new Role() { RoleId = giaovien, RoleName="Giáo Viên"}
                 };
                 context.Role.AddRange(roles);
                 context.SaveChanges();
             }
-
-
-            if (!context.Account.Any())
-            {
-                var accounts = new List<Account>();
-
-                var accountId1 = Guid.NewGuid().ToString();
-                var personId1 = Guid.NewGuid().ToString();
-                var salt1 = GenerateSalt();
-                var account1 = new Account()
-                {
-                    AccountId = accountId1,
-                    UserName = "Test1",
-                    PasswordHash = CaculatePassword("12345", salt1),
-                    PasswordSalt = salt1,
-                    RoleId = "sinhvien",
-                    Person = new Person
-                    {
-                        PersonId = personId1,
-                        FullName = "Lê Phúc Thịnh",
-                        Gender = "Nam",
-                        PhoneNumber = "1234567890",
-                        DateOfBirth = DateTime.Now,
-                        Address = "Tây Ning",
-                        FacultyId = ma1,
-                        AccountId = accountId1,
-                        Student = new Student()
-                        {
-                            StudentId = personId1,
-                            PersonId = personId1,
-                        }
-                    }
-                };
-
-                var accountId2 = Guid.NewGuid().ToString();
-                var personId2 = Guid.NewGuid().ToString();
-                var salt2 = GenerateSalt();
-                var account2 = new Account()
-                {
-                    AccountId = accountId2,
-                    UserName = "Test2",
-                    PasswordHash = CaculatePassword("12345", salt2),
-                    PasswordSalt = salt2,
-                    RoleId = "truongphokhoa",
-                    Person = new Person
-                    {
-                        PersonId = personId2,
-                        FullName = "Nguyễn Hoàng Nam",
-                        Gender = "Nam",
-                        PhoneNumber = "1234567890",
-                        DateOfBirth = DateTime.Now,
-                        Address = "Tây Ning",
-                        FacultyId = ma2,
-                        AccountId = accountId2,
-                        TruongPhoKhoa = new TruongPhoKhoa()
-                        {
-                            TruongPhoKhoaId = personId2,
-                            PersonId = accountId2,
-                        }
-                    }
-                };
-
-
-                var accountId3 = Guid.NewGuid().ToString();
-                var personId3 = Guid.NewGuid().ToString();
-                var salt3 = GenerateSalt();
-                var account3 = new Account()
-                {
-                    AccountId = accountId3,
-                    UserName = "Test3",
-                    PasswordHash = CaculatePassword("12345", salt3),
-                    PasswordSalt = salt3,
-                    RoleId = "truongbomon",
-                    Person = new Person
-                    {
-                        PersonId = personId3,
-                        FullName = "Nguyễn Duy Tân",
-                        Gender = "Nam",
-                        PhoneNumber = "1234567890",
-                        DateOfBirth = DateTime.Now,
-                        Address = "Tây Ning",
-                        FacultyId = ma3,
-                        AccountId = accountId3,
-                        TruongBoMon = new TruongBoMon()
-                        {
-                            TruongBoMonId = personId3,
-                            PersonId = personId3
-                        }
-                    }
-                };
-
-
-                var accountId4 = Guid.NewGuid().ToString();
-                var personId4 = Guid.NewGuid().ToString();
-                var salt4 = GenerateSalt();
-                var account4 = new Account()
-                {
-                    AccountId = accountId4,
-                    UserName = "Test4",
-                    PasswordHash = CaculatePassword("12345", salt4),
-                    PasswordSalt = salt4,
-                    RoleId = "giaovu",
-                    Person = new Person
-                    {
-                        PersonId = accountId4,
-                        FullName = "Phạm Thanh Chiều",
-                        Gender = "Nam",
-                        PhoneNumber = "1234567890",
-                        DateOfBirth = DateTime.Now,
-                        Address = "Tây Ning",
-                        FacultyId = ma4,
-                        AccountId = accountId4,
-                        GiaoVu = new GiaoVu()
-                        {
-                            GiaoVuId = personId4,
-                            PersonId = personId4
-                        }
-                    }
-                };
-
-
-                var accountId5 = Guid.NewGuid().ToString();
-                var personId5 = Guid.NewGuid().ToString();
-                var salt5 = GenerateSalt();
-                var account5 = new Account()
-                {
-                    AccountId = accountId5,
-                    UserName = "Test5",
-                    PasswordHash = CaculatePassword("12345", salt5),
-                    PasswordSalt = salt5,
-                    RoleId = "giaovien",
-                    Person = new Person
-                    {
-                        PersonId = personId5,
-                        FullName = "Chấn bé đù",
-                        Gender = "Nam",
-                        PhoneNumber = "1234567890",
-                        DateOfBirth = DateTime.Now,
-                        Address = "Tây Ning",
-                        FacultyId = ma4,
-                        AccountId = accountId5,
-                        Teacher = new Teacher()
-                        {
-                            TeacherId = personId5,
-                            PersonId = personId5
-                        }
-                    }
-                };
-
-                accounts.Add(account1);
-                accounts.Add(account2);
-                accounts.Add(account3);
-                accounts.Add(account4);
-                accounts.Add(account5);
-
-                context.Account.AddRange(accounts);
-
-                context.SaveChanges();
-            }
-
 
             var mon1 = Guid.NewGuid().ToString();//Lập trình cơ bản
             var mon2 = Guid.NewGuid().ToString();//Giải tích 3
@@ -294,6 +139,175 @@ namespace BMCSDL.Models
                 context.Subject.AddRange(subjects);
                 context.SaveChanges();
             }
+
+            if (!context.Account.Any())
+            {
+                var accounts = new List<Account>();
+
+                var accountId1 = Guid.NewGuid().ToString();
+                var personId1 = Guid.NewGuid().ToString();
+                var salt1 = GenerateSalt();
+                var account1 = new Account()
+                {
+                    AccountId = accountId1,
+                    UserName = "Test1",
+                    PasswordHash = CaculatePassword("12345", salt1),
+                    PasswordSalt = salt1,
+                    RoleId = sinhvien,
+                    Person = new Person
+                    {
+                        PersonId = personId1,
+                        FullName = "Lê Phúc Thịnh",
+                        Gender = "Nam",
+                        PhoneNumber = "1234567890",
+                        DateOfBirth = DateTime.Now,
+                        Address = "Tây Ning",
+                        FacultyId = ma1,
+                        AccountId = accountId1,
+                        Student = new Student()
+                        {
+                            StudentId = personId1,
+                            PersonId = personId1,
+                        }
+                    }
+                };
+
+                var accountId2 = Guid.NewGuid().ToString();
+                var personId2 = Guid.NewGuid().ToString();
+                var salt2 = GenerateSalt();
+                var account2 = new Account()
+                {
+                    AccountId = accountId2,
+                    UserName = "Test2",
+                    PasswordHash = CaculatePassword("12345", salt2),
+                    PasswordSalt = salt2,
+                    RoleId = truongphokhoa,
+                    Person = new Person
+                    {
+                        PersonId = personId2,
+                        FullName = "Nguyễn Hoàng Nam",
+                        Gender = "Nam",
+                        PhoneNumber = "1234567890",
+                        DateOfBirth = DateTime.Now,
+                        Address = "Tây Ning",
+                        FacultyId = ma2,
+                        AccountId = accountId2,
+                        TruongPhoKhoa = new TruongPhoKhoa()
+                        {
+                            TruongPhoKhoaId = personId2,
+                            PersonId = accountId2,
+                        }
+                    }
+                };
+
+
+                var accountId3 = Guid.NewGuid().ToString();
+                var personId3 = Guid.NewGuid().ToString();
+                var salt3 = GenerateSalt();
+                var account3 = new Account()
+                {
+                    AccountId = accountId3,
+                    UserName = "Test3",
+                    PasswordHash = CaculatePassword("12345", salt3),
+                    PasswordSalt = salt3,
+                    RoleId = truongbomon,
+                    Person = new Person
+                    {
+                        PersonId = personId3,
+                        FullName = "Nguyễn Duy Tân",
+                        Gender = "Nam",
+                        PhoneNumber = "1234567890",
+                        DateOfBirth = DateTime.Now,
+                        Address = "Tây Ning",
+                        FacultyId = ma3,
+                        AccountId = accountId3,
+                        TruongBoMon = new TruongBoMon()
+                        {
+                            TruongBoMonId = personId3,
+                            PersonId = personId3
+                        }
+                    }
+                };
+
+
+                var accountId4 = Guid.NewGuid().ToString();
+                var personId4 = Guid.NewGuid().ToString();
+                var salt4 = GenerateSalt();
+                var account4 = new Account()
+                {
+                    AccountId = accountId4,
+                    UserName = "Test4",
+                    PasswordHash = CaculatePassword("12345", salt4),
+                    PasswordSalt = salt4,
+                    RoleId = giaovu,
+                    Person = new Person
+                    {
+                        PersonId = accountId4,
+                        FullName = "Phạm Thanh Chiều",
+                        Gender = "Nam",
+                        PhoneNumber = "1234567890",
+                        DateOfBirth = DateTime.Now,
+                        Address = "Tây Ning",
+                        FacultyId = ma4,
+                        AccountId = accountId4,
+                        GiaoVu = new GiaoVu()
+                        {
+                            GiaoVuId = personId4,
+                            PersonId = personId4
+                        }
+                    }
+                };
+
+
+                var accountId5 = Guid.NewGuid().ToString();
+                var personId5 = Guid.NewGuid().ToString();
+                var salt5 = GenerateSalt();
+                var account5 = new Account()
+                {
+                    AccountId = accountId5,
+                    UserName = "Test5",
+                    PasswordHash = CaculatePassword("12345", salt5),
+                    PasswordSalt = salt5,
+                    RoleId = giaovien,
+                    Person = new Person
+                    {
+                        PersonId = personId5,
+                        FullName = "Chấn bé đù",
+                        Gender = "Nam",
+                        PhoneNumber = "1234567890",
+                        DateOfBirth = DateTime.Now,
+                        Address = "Tây Ning",
+                        FacultyId = ma4,
+                        AccountId = accountId5,
+                        Teacher = new Teacher()
+                        {
+                            TeacherId = personId5,
+                            PersonId = personId5,
+                            TeacherSubject = new List<TeacherSubject>()
+                            {
+                                new TeacherSubject()
+                                {
+                                    TeacherId = personId5,
+                                    SubjectId = mon1
+                                }
+                            }
+                        }
+                    }
+                };
+
+                accounts.Add(account1);
+                accounts.Add(account2);
+                accounts.Add(account3);
+                accounts.Add(account4);
+                accounts.Add(account5);
+
+                context.Account.AddRange(accounts);
+
+                context.SaveChanges();
+            }
+
+
+            
 
             var classroom1 = Guid.NewGuid().ToString();//B101
             var classroom2 = Guid.NewGuid().ToString();//B102

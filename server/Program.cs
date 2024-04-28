@@ -1,5 +1,7 @@
 
 using BMCSDL.Models;
+using BMCSDL.Services.Implements;
+using BMCSDL.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -16,10 +18,14 @@ namespace BMCSDL
             // Add services to the container.
 
             #region inject service here
-            builder.Services.AddScoped<HttpContextAccessor, HttpContextAccessor>();
-
+            builder.Services.AddScoped<CourseRegistraionManagementContext>();
+            builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<IAccountService,AccountService>();
             #endregion
 
+            #region Auto Mapper
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            #endregion
 
             #region addCors
             builder.Services.AddCors();
@@ -61,6 +67,8 @@ namespace BMCSDL
             });
             #endregion
 
+
+            
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
