@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BMCSDL.Migrations
 {
     [DbContext(typeof(CourseRegistraionManagementContext))]
-    [Migration("20240427095947_full1")]
-    partial class full1
+    [Migration("20240428040827_full3")]
+    partial class full3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,6 +49,22 @@ namespace BMCSDL.Migrations
                         .HasFilter("[RoleId] IS NOT NULL");
 
                     b.ToTable("Account");
+                });
+
+            modelBuilder.Entity("BMCSDL.Models.Classroom", b =>
+                {
+                    b.Property<string>("ClassRoomId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ClassroomName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("ClassRoomId");
+
+                    b.ToTable("Classroom");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Faculty", b =>
@@ -192,8 +208,8 @@ namespace BMCSDL.Migrations
                     b.Property<string>("SubjectId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Credits")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Credits")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("EndDay")
                         .HasColumnType("datetime2");
@@ -210,6 +226,29 @@ namespace BMCSDL.Migrations
                     b.HasKey("SubjectId");
 
                     b.ToTable("Subject");
+                });
+
+            modelBuilder.Entity("BMCSDL.Models.SubjectClass", b =>
+                {
+                    b.Property<string>("SubjectId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("ClassroomId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnOrder(1);
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("SubjectId", "ClassroomId");
+
+                    b.HasIndex("ClassroomId");
+
+                    b.ToTable("SubjectClass");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Teacher", b =>
@@ -347,6 +386,25 @@ namespace BMCSDL.Migrations
                     b.Navigation("Faculty");
                 });
 
+            modelBuilder.Entity("BMCSDL.Models.SubjectClass", b =>
+                {
+                    b.HasOne("BMCSDL.Models.Classroom", "Classroom")
+                        .WithMany("SubjectClass")
+                        .HasForeignKey("ClassroomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BMCSDL.Models.Subject", "Subject")
+                        .WithMany("SubjectClass")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Classroom");
+
+                    b.Navigation("Subject");
+                });
+
             modelBuilder.Entity("BMCSDL.Models.Teacher", b =>
                 {
                     b.HasOne("BMCSDL.Models.Person", "Person")
@@ -377,6 +435,11 @@ namespace BMCSDL.Migrations
             modelBuilder.Entity("BMCSDL.Models.Account", b =>
                 {
                     b.Navigation("Person");
+                });
+
+            modelBuilder.Entity("BMCSDL.Models.Classroom", b =>
+                {
+                    b.Navigation("SubjectClass");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Faculty", b =>
@@ -417,6 +480,8 @@ namespace BMCSDL.Migrations
             modelBuilder.Entity("BMCSDL.Models.Subject", b =>
                 {
                     b.Navigation("RegisteredSubject");
+
+                    b.Navigation("SubjectClass");
                 });
 #pragma warning restore 612, 618
         }

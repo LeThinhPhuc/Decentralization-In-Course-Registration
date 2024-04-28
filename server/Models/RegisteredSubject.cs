@@ -7,6 +7,6 @@
         public string SubjectId { get; set; }   
         public Subject Subject { get; set; }    
 
-        public ICollection<StudentRegisteredSubject> Subjects { get; set;}
+        public ICollection<StudentRegisteredSubject> StudentRegisteredSubject { get; set;}
     }
 }

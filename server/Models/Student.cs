@@ -6,7 +6,7 @@
         public string PersonId { get; set; }    
         public Person Person { get; set; }
 
-        public ICollection<StudentRegisteredSubject> RegisteredSubjects { get; set; }
+        public ICollection<StudentRegisteredSubject> StudentRegisteredSubject { get; set; }
 
     }
 }

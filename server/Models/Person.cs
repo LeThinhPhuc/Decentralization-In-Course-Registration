@@ -12,7 +12,7 @@
         public Account Account { get; set; }
         public Faculty Faculty { get; set; }
 
-        public Student Stuent { get; set; }
+        public Student Student { get; set; }
         public TruongPhoKhoa TruongPhoKhoa { get; set; }
         public TruongBoMon TruongBoMon { get; set; }
         public GiaoVu GiaoVu { get; set; }

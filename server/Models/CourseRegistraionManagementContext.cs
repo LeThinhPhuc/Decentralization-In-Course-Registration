@@ -65,7 +65,7 @@ namespace BMCSDL.Models
             {
                 entity.HasKey(s => s.StudentId);
                 entity.HasOne(e => e.Person)
-                      .WithOne(e => e.Stuent)
+                      .WithOne(e => e.Student)
                       .HasForeignKey<Student>(t => t.PersonId);
             });
 
@@ -89,21 +89,31 @@ namespace BMCSDL.Models
                       .WithOne(p => p.Faculty)
                       .HasForeignKey(e => e.FacultyId)
                       .OnDelete(DeleteBehavior.Cascade);
-
-                entity.HasMany(f => f.Subject)
-                      .WithOne(s => s.Faculty)
-                      .HasForeignKey(s => s.FacultyId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                
             });
+
+
+            //modelBuilder.Entity<Faculty>(entity =>
+            //{
+            //    entity.HasKey(f => f.FacultyId);
+            //    entity.HasMany(f => f.Subject)
+            //          .WithOne(s => s.Faculty)
+            //          .HasForeignKey(s => s.FacultyId)
+            //          .OnDelete(DeleteBehavior.Cascade);
+            //});
+
+            //modelBuilder.Entity<Subject>(entity =>
+            //{
+            //    entity.HasKey(s => s.SubjectId);
+            //    entity.HasOne(s => s.Faculty)
+            //          .WithMany(f => f.Subject)
+            //          .HasForeignKey(s => s.FacultyId)
+            //          .OnDelete(DeleteBehavior.Cascade);
+            //});
 
             modelBuilder.Entity<Subject>(entity =>
             {
                 entity.HasKey(s => s.SubjectId);
-                entity.HasOne(s => s.Faculty)
-                      .WithMany(f => f.Subject)
-                      .HasForeignKey(s => s.SubjectId)
-                      .OnDelete(DeleteBehavior.Cascade);
-
                 entity.HasOne(s => s.RegisteredSubject)
                       .WithOne(r => r.Subject)
                       .HasPrincipalKey<RegisteredSubject>(r => r.SubjectId)
@@ -130,19 +140,65 @@ namespace BMCSDL.Models
             modelBuilder.Entity<StudentRegisteredSubject>(entity =>
             {
                 entity.HasOne(s => s.Student)
-                      .WithMany(student => student.RegisteredSubjects)
+                      .WithMany(student => student.StudentRegisteredSubject)
                       .HasForeignKey(s => s.StudentId);
             });
 
             modelBuilder.Entity<StudentRegisteredSubject>(entity =>
             {
                 entity.HasOne(s => s.RegisteredSubject)
-                      .WithMany(r => r.Subjects)
+                      .WithMany(r => r.StudentRegisteredSubject)
                       .HasForeignKey(e => e.RegisteredSubjectId);
             });
 
+            modelBuilder.Entity<SubjectClass>(e =>
+            {
+                e.HasKey(k => new { k.SubjectId, k.ClassroomId ,k.TimeId});
+            });
 
 
+            modelBuilder.Entity<SubjectClass>(entity =>
+            {
+                entity.HasOne(e => e.Subject)
+                      .WithMany(e => e.SubjectClass)
+                      .HasForeignKey(e =>e.SubjectId);  
+            });
+
+            modelBuilder.Entity<SubjectClass>(entity =>
+            {
+                entity.HasOne(e => e.Classroom)
+                      .WithMany(c => c.SubjectClass)
+                      .HasForeignKey(e => e.ClassroomId);
+            });
+
+
+            modelBuilder.Entity<ClassTime>(entity =>
+            {
+                entity.HasKey(k => new {k.ClassroomId,k.TimeId});
+            });
+
+            modelBuilder.Entity<ClassTime>(entity =>
+            {
+                entity.HasOne(e => e.Classroom)
+                      .WithMany(c => c.ClassTime)
+                      .HasForeignKey(e => e.ClassroomId);
+            });
+
+            modelBuilder.Entity<ClassTime>(entity =>
+            {
+                entity.HasOne(e => e.Time)
+                      .WithMany(t => t.ClassTime)
+                      .HasForeignKey(e => e.TimeId);
+            });
+
+            modelBuilder.Entity<Time>(entity =>
+            {
+                entity.HasKey(e => e.TimeId);
+
+                entity.HasMany(e => e.SubjectClass)
+                      .WithOne(s => s.Time)
+                      .HasForeignKey(s => s.TimeId);    
+            });
 
         }
 
@@ -157,7 +213,12 @@ namespace BMCSDL.Models
         public DbSet<GiaoVu> GiaoVu { get; set; }
         public DbSet<Student> Student { get; set; }
         public DbSet<RegisteredSubject> RegisteredSubject { get; set; }
-
         public DbSet<StudentRegisteredSubject> StudentRegisteredSubject { get; set; }
+        
+        public DbSet<Classroom> Classroom { get; set; } 
+        public DbSet<SubjectClass> SubjectClass { get; set; }
+
+        public DbSet<Time> Time { get; set; }
+        public DbSet<ClassTime> ClassTime { get; set; }
     }
 }
