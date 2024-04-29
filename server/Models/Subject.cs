@@ -12,7 +12,6 @@
         public string FacultyId { get; set; }   
         public Faculty Faculty { get; set; }  
 
-        public RegisteredSubject RegisteredSubject { get; set; }
         public ICollection<StudentRegisteredSubject> StudentRegisteredSubject { get; set; }
 
         public ICollection<SubjectClass> SubjectClass { get; set; }

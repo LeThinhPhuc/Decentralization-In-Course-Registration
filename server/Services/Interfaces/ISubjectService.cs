@@ -9,6 +9,8 @@ namespace BMCSDL.Services.Interfaces
         public Task<SubjectDTO> AddNewSubjectAsync(SubjectDTO subjectDTO);  
 
         public Task<SubjectDTO> DeleteSubjectAsync(string subjectId);
+
+
     }
 }
     

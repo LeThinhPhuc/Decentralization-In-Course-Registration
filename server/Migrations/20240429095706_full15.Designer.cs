@@ -4,6 +4,7 @@ using BMCSDL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BMCSDL.Migrations
 {
     [DbContext(typeof(CourseRegistraionManagementContext))]
-    partial class CourseRegistraionManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20240429095706_full15")]
+    partial class full15
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,6 +149,22 @@ namespace BMCSDL.Migrations
                     b.ToTable("Person");
                 });
 
+            modelBuilder.Entity("BMCSDL.Models.RegisteredSubject", b =>
+                {
+                    b.Property<string>("RegisteredSubjecId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SubjectId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("RegisteredSubjecId");
+
+                    b.HasAlternateKey("SubjectId");
+
+                    b.ToTable("RegisteredSubject");
+                });
+
             modelBuilder.Entity("BMCSDL.Models.Role", b =>
                 {
                     b.Property<string>("RoleId")
@@ -199,17 +218,19 @@ namespace BMCSDL.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasColumnOrder(0);
 
-                    b.Property<string>("SubjectId")
+                    b.Property<string>("RegisteredSubjectId")
                         .HasColumnType("nvarchar(450)")
                         .HasColumnOrder(1);
 
                     b.Property<float>("Mark")
                         .HasColumnType("real");
 
-                    b.Property<DateTime>("RegisterDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("SubjectId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("StudentId", "SubjectId");
+                    b.HasKey("StudentId", "RegisteredSubjectId");
+
+                    b.HasIndex("RegisteredSubjectId");
 
                     b.HasIndex("SubjectId");
 
@@ -412,6 +433,17 @@ namespace BMCSDL.Migrations
                     b.Navigation("Faculty");
                 });
 
+            modelBuilder.Entity("BMCSDL.Models.RegisteredSubject", b =>
+                {
+                    b.HasOne("BMCSDL.Models.Subject", "Subject")
+                        .WithOne("RegisteredSubject")
+                        .HasForeignKey("BMCSDL.Models.RegisteredSubject", "SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subject");
+                });
+
             modelBuilder.Entity("BMCSDL.Models.RoleAccount", b =>
                 {
                     b.HasOne("BMCSDL.Models.Account", "Account")
@@ -442,21 +474,25 @@ namespace BMCSDL.Migrations
 
             modelBuilder.Entity("BMCSDL.Models.StudentRegisteredSubject", b =>
                 {
+                    b.HasOne("BMCSDL.Models.RegisteredSubject", "RegisteredSubject")
+                        .WithMany("StudentRegisteredSubject")
+                        .HasForeignKey("RegisteredSubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BMCSDL.Models.Student", "Student")
                         .WithMany("StudentRegisteredSubject")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BMCSDL.Models.Subject", "Subject")
+                    b.HasOne("BMCSDL.Models.Subject", null)
                         .WithMany("StudentRegisteredSubject")
-                        .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SubjectId");
+
+                    b.Navigation("RegisteredSubject");
 
                     b.Navigation("Student");
-
-                    b.Navigation("Subject");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Subject", b =>
@@ -594,6 +630,11 @@ namespace BMCSDL.Migrations
                     b.Navigation("TruongPhoKhoa");
                 });
 
+            modelBuilder.Entity("BMCSDL.Models.RegisteredSubject", b =>
+                {
+                    b.Navigation("StudentRegisteredSubject");
+                });
+
             modelBuilder.Entity("BMCSDL.Models.Role", b =>
                 {
                     b.Navigation("RoleAccount");
@@ -606,6 +647,8 @@ namespace BMCSDL.Migrations
 
             modelBuilder.Entity("BMCSDL.Models.Subject", b =>
                 {
+                    b.Navigation("RegisteredSubject");
+
                     b.Navigation("StudentRegisteredSubject");
 
                     b.Navigation("SubjectClass");

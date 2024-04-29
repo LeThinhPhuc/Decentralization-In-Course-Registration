@@ -16,7 +16,10 @@ namespace BMCSDL.Helpers
             CreateMap<TeacherSubject, TeacherSubjectDTO>(); 
             CreateMap<Teacher, TeacherDTO>().ForMember(dest => dest.TeacherName,
                 opt => opt.MapFrom(src => src.Person.FullName));   
+            CreateMap<StudentRegisteredSubject, StudentRegisteredSubjectDTO>();
 
+            CreateMap<Student, StudentDTO>();   
+            CreateMap<Person,PersonDTO>();  
         }
     }
 }

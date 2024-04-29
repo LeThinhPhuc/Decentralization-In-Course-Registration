@@ -7,5 +7,7 @@
         public Person Person { get; set; }
 
         public ICollection<TeacherSubject> TeacherSubject {  get; set; }    
+
+        public ICollection<TeacherTime> TeacherTime { get; set;}
     }
 }

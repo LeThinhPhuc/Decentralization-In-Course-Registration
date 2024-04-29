@@ -7,12 +7,15 @@ namespace BMCSDL.Models
     {
         [Key, Column(Order = 0)]
         public string StudentId { get; set; }
+
         [Key, Column(Order = 1)]
-        public string RegisteredSubjectId { get; set; }
+        public string SubjectId { get; set; }
 
         public Student Student { get; set; }    
-        public RegisteredSubject RegisteredSubject { get; set; }    
+        public Subject Subject { get; set; }    
 
         public float Mark { get; set; }    
+
+        public DateTime RegisterDate { get; set; }  
     }
 }

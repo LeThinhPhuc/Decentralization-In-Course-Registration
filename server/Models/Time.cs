@@ -10,6 +10,8 @@
 
         public ICollection<ClassTime> ClassTime { get; set; }   
 
-        public ICollection<SubjectClass> SubjectClass { get; set; } 
+        public ICollection<SubjectClass> SubjectClass { get; set; }
+        public ICollection<TeacherTime> TeacherTime { get; set; }
+
     }
 }
