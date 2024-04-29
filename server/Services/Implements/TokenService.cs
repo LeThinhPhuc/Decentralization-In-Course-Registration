@@ -25,6 +25,7 @@ namespace BMCSDL.Services.Implements
 
             var claims = new List<Claim>()
             {
+                new Claim(ClaimTypes.NameIdentifier,account.UserName),
                 new Claim(ClaimTypes.Name,account.Person.FullName),
                 new Claim(ClaimTypes.NameIdentifier,account.Person.AccountId)
             };

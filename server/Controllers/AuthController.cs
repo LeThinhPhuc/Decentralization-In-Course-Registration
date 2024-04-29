@@ -1,7 +1,9 @@
 ﻿using BMCSDL.DTOs;
+using BMCSDL.Models;
 using BMCSDL.ReturnModels;
 using BMCSDL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net.WebSockets;
 
 namespace BMCSDL.Controllers
@@ -9,10 +11,12 @@ namespace BMCSDL.Controllers
     public class AuthController : BaseApiController
     {
         private IAccountService accountService;
+        private readonly IConfiguration config;
 
-        public AuthController(IAccountService accountService)
+        public AuthController(IAccountService accountService,IConfiguration config)
         {
             this.accountService = accountService;
+            this.config = config;
         }
 
         [HttpGet("[action]")]
@@ -29,7 +33,7 @@ namespace BMCSDL.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult> Login(LoginDTO account)
+        public async Task<ActionResult> Login([FromBody] LoginDTO account)
         {
             UserDTO returnData = await accountService.LoginAsync(account);
             if( returnData != null )
@@ -51,5 +55,13 @@ namespace BMCSDL.Controllers
 
             return Ok(user);
         }
+
+        //[HttpPost("[action]")]
+        //public async Task<ActionResult> LoginSQLSV([FromBody] LoginDTO account)
+        //{
+            
+
+        //    return Ok();
+        //}
     }
 }

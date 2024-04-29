@@ -6,6 +6,8 @@ namespace BMCSDL.DTOs
 {
     public class RoleAccountDTO
     {
+        public string RoleId { get; set; }
+        public string AccountId { get; set; }
         public RoleDTO Role { get; set; }
     }
 }

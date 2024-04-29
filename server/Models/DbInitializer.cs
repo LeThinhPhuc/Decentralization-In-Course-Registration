@@ -68,11 +68,18 @@ namespace BMCSDL.Models
 
             }
 
-            var sinhvien = Guid.NewGuid().ToString();
-            var truongphokhoa = Guid.NewGuid().ToString();
-            var truongbomon = Guid.NewGuid().ToString();
-            var giaovu = Guid.NewGuid().ToString();
-            var giaovien = Guid.NewGuid().ToString();
+            //var sinhvien = Guid.NewGuid().ToString();
+            //var truongphokhoa = Guid.NewGuid().ToString();
+            //var truongbomon = Guid.NewGuid().ToString();
+            //var giaovu = Guid.NewGuid().ToString();
+            //var giaovien = Guid.NewGuid().ToString();
+
+            var sinhvien = "sinhvien";
+            var truongphokhoa = "truongphokhoa";
+            var truongbomon = "truongbomon";
+            var giaovu = "giaovu";
+            var giaovien = "giaovien";
+
 
             if (!context.Role.Any())
             {
@@ -174,7 +181,7 @@ namespace BMCSDL.Models
                     PasswordSalt = salt1,
                     RoleAccount = new List<RoleAccount>()
                     { 
-                        new RoleAccount() { RoleId =sinhvien,AccountId = accountId1}
+                        new RoleAccount() { RoleId = sinhvien ,AccountId = accountId1}
                     },
                     Person = new Person
                     {

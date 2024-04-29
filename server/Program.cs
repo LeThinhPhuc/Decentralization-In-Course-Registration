@@ -21,6 +21,8 @@ namespace BMCSDL
             builder.Services.AddScoped<CourseRegistraionManagementContext>();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IAccountService,AccountService>();
+            builder.Services.AddScoped<IRoleService, RoleService>();
+            builder.Services.AddScoped<ISubjectService,SubjectService>();
             #endregion
 
             #region Auto Mapper
