@@ -6,9 +6,13 @@ namespace BMCSDL.Services.Interfaces
 {
     public interface ITeacherService
     {
-        Task<IEnumerable<TeacherAndTimeDTO>> GetAllTeachersAsync();
+        Task<IEnumerable<object>> GetAllTeachersAsync();
 
-        Task<SubjectClassDTO> AddTeacherTimeAsync(TeacherNewTimeDTO teacherTimeDTO);
-        Task<SubjectClassDTO> RemoveTeacherTimeAsync(TeacherNewTimeDTO teacherTimeDTO);
+        Task<object> GetTeacherTeachingSchelduleAsync(string teacherId);
+
+        Task<object> GetTeacherByIdAsync(string teacherId);
+
+        Task<object> AddTeacherTimeAsync(TeacherNewTimeDTO teacherTimeDTO);
+        Task<object> RemoveTeacherTimeAsync(TeacherNewTimeDTO teacherTimeDTO);
     }
 }

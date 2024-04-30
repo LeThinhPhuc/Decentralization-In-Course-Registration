@@ -23,6 +23,31 @@ namespace BMCSDL.Controllers
             return Ok(teachers);
         }
 
+        [HttpGet("[action]")]
+
+        public async Task<ActionResult> TeacherTeachingSchedule([FromQuery] string teacherId)
+        {
+            var teacherSchedule = await teacherService.GetTeacherTeachingSchelduleAsync(teacherId);
+            if(teacherSchedule  == null)
+            {
+                return NoContent();
+            }
+            return Ok(teacherSchedule);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult> GetTeacherById([FromQuery]string teacherId)
+        {
+            var teacher =  await teacherService.GetTeacherByIdAsync(teacherId);    
+
+            if(teacher == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(teacher); 
+        }
+
         [HttpPost("[action]")]
         public async Task<ActionResult> AddTeacherTime([FromBody] TeacherNewTimeDTO teacherTimeDTO)
         {
@@ -47,7 +72,7 @@ namespace BMCSDL.Controllers
 
             if(deletedTime == null)
             {
-                return BadRequest();
+                return NoContent();
             }
             return Ok(new
             {
