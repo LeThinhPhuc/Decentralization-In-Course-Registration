@@ -14,23 +14,55 @@ namespace BMCSDL.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<ActionResult> GetAllSubjects()
+        public async Task<ActionResult> GetAllSubjectsWithSchedule()
         {
-            var subjects = await subjectService.GetllAllSubjectsAsync();
+            var subjects = await subjectService.GetllAllSubjectsWithScheduleAsync();
 
-            if(subjects.Count() == 0 || subjects == null)
+            if(subjects == null || subjects.Count() == 0 )
             {
-                return BadRequest();
+                return NoContent();
             }
             return Ok(subjects);    
         }
 
+        [HttpGet("[action]")]
+        public async Task<ActionResult> GetAllOpenedSubjects()
+        {
+            var subjects = await subjectService.GetllAllOpenedSubjectsAsync();
+            if (subjects == null || subjects.Count() == 0 )
+            {
+                return NoContent();
+            }
+            return Ok(subjects);
+        }
+
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult> GetAllSubjects()
+        {
+            var subjects =  await subjectService.GetAllSubjectsAsync();
+            if(subjects == null || subjects.Count() == 0)
+            {
+                return NoContent();
+            }
+            return Ok(subjects);
+        }
+
         [HttpPost("[action]")]
-        public async Task<ActionResult> AddNewSubject([FromBody] SubjectDTO subjectDTO)
+        public async Task<ActionResult> AddNewSubject([FromBody] NewSubjectInfo subjectDTO)
         {
             var subject = await subjectService.AddNewSubjectAsync(subjectDTO);  
-
-            return Ok(subject); 
+            if(subject == null)
+            {
+                return BadRequest();
+            }
+           
+            return Ok(new
+            {
+                StatusCode = 200,
+                StatusMessage = "Add new Subject sucessfully",
+                Subject = subjectDTO
+            }); 
         }
 
         [HttpDelete("[action]")]
@@ -39,7 +71,11 @@ namespace BMCSDL.Controllers
             var deletedSubject = await subjectService.DeleteSubjectAsync(subjectId);
             if(deletedSubject != null)
             {
-                return Ok(deletedSubject);
+                return Ok(new
+                {
+                    StatusMessage = "Delete Subject Successfully",
+                    deletedSubject
+                });
             }
 
             return BadRequest();

@@ -3,6 +3,7 @@ using BMCSDL.DTOs;
 using BMCSDL.Models;
 using BMCSDL.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Net.WebSockets;
 
 namespace BMCSDL.Services.Implements
 {
@@ -16,7 +17,37 @@ namespace BMCSDL.Services.Implements
             this.context = context;
             this.mapper = mapper;
         }
-        public async Task<IEnumerable<SubjectDTO3>> GetllAllSubjectsAsync()
+
+        public async Task<IEnumerable<object>> GetAllSubjectsAsync()
+        {
+            var subjects = await context.Subject.Include(s => s.Faculty).ToListAsync();
+
+            if(!subjects.Any())
+            {
+                return null;
+            }
+
+            var dataToReturn = subjects.Select(s => new
+            {
+                SubjectId = s.SubjectId,
+                SubjectName = s.SubjectName,
+                Credits = s.Credits,
+                StartDay = s.StartDay,
+                EndDay = s.EndDay,
+                Open = s.isOpen,
+                Faculty = new
+                {
+                    FacultyId = s.Faculty.FacultyId,
+                    FacultyName = s.Faculty.FacultyName
+                }
+            });
+
+
+            return new List<object>(dataToReturn);  
+        }
+
+
+        public async Task<IEnumerable<SubjectDTO3>> GetllAllSubjectsWithScheduleAsync()
         {
 
             var subjects = await context.Subject
@@ -68,10 +99,50 @@ namespace BMCSDL.Services.Implements
             return subjectDTO2;
         }
 
-        public async Task<SubjectDTO> AddNewSubjectAsync(SubjectDTO subjectDTO)
+        public async Task<IEnumerable<object>> GetllAllOpenedSubjectsAsync()
         {
+            var subjects = await context.Subject.Include(s => s.Faculty).Where(s => s.isOpen == true).ToListAsync();
+
+            if (!subjects.Any())
+            {
+                return null;
+            }
+
+            var dataToReturn = subjects.Select(s => new
+            {
+                SubjectId = s.SubjectId,
+                SubjectName = s.SubjectName,
+                Credits = s.Credits,
+                StartDay = s.StartDay,
+                EndDay = s.EndDay,
+                Open = s.isOpen,
+                Faculty = new
+                {
+                    FacultyId = s.Faculty.FacultyId,
+                    FacultyName = s.Faculty.FacultyName
+                }
+            });
+
+
+            return new List<object>(dataToReturn);
+        }
+
+        public async Task<object> AddNewSubjectAsync(NewSubjectInfo subjectDTO)
+        {
+            var isExistedSubject = await context.Subject.FirstOrDefaultAsync(s => s.SubjectName == subjectDTO.SubjectName); 
+
+            if (isExistedSubject != null)
+            {
+                return null;
+            }
+
+            var isExistedFaculty = await context.Faculty.FirstOrDefaultAsync(s => s.FacultyId == subjectDTO.FacultyId);
+            if(isExistedFaculty == null)
+            {
+                return null;
+            }
+
             var newSubjectId = Guid.NewGuid().ToString();
-            subjectDTO.SubjectId = newSubjectId;    
             var subject = new Subject()
             {
                 SubjectId = newSubjectId,
@@ -79,7 +150,7 @@ namespace BMCSDL.Services.Implements
                 Credits = subjectDTO.Credits,   
                 StartDay = subjectDTO.StartDay,
                 EndDay = subjectDTO.EndDay,
-                FacultyId = subjectDTO.Faculty.FacultyId
+                FacultyId = subjectDTO.FacultyId
             };
 
             await context.Subject.AddAsync(subject);
@@ -102,5 +173,6 @@ namespace BMCSDL.Services.Implements
             return null;
         }
 
+        
     }
 }

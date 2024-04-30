@@ -12,6 +12,8 @@
         public string FacultyId { get; set; }   
         public Faculty Faculty { get; set; }  
 
+        public bool isOpen { get; set; }
+
         public ICollection<StudentRegisteredSubject> StudentRegisteredSubject { get; set; }
 
         public ICollection<SubjectClass> SubjectClass { get; set; }

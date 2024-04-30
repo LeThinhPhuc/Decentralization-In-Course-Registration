@@ -8,7 +8,7 @@ namespace BMCSDL.Controllers
 {
     public class StudentController : BaseApiController
     {
-        private  IStudentService studentService;
+        private IStudentService studentService;
 
         public StudentController(IStudentService studentService)
         {
@@ -41,11 +41,17 @@ namespace BMCSDL.Controllers
         public async Task<ActionResult> RegisterSubject([FromBody] RegistrationSubjectFormDTO regisForm)
         {
             var newRegistration = await studentService.RegisterSubjectAsync(regisForm);
-            if(newRegistration == null)
+            if (newRegistration == null)
             {
-                return BadRequest();
+                return BadRequest(new
+                {
+                    Message = "Có thể môn đã đăng ký hoặc hết slot"
+                });
             }
-            return Ok(new {
+            
+
+            return Ok(new
+            {
                 StatusCode = "200",
                 Status = "Register Successfully",
                 Subject = newRegistration
@@ -68,6 +74,6 @@ namespace BMCSDL.Controllers
             });
         }
 
-        
+
     }
 }

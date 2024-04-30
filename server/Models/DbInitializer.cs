@@ -110,6 +110,7 @@ namespace BMCSDL.Models
                         Credits = 3,
                         StartDay = DateTime.Now,
                         EndDay = DateTime.Now.AddMonths(3) ,
+                        isOpen = true,
                         FacultyId = ma1
                     },
 
@@ -120,6 +121,7 @@ namespace BMCSDL.Models
                         Credits = 3,
                         StartDay = DateTime.Now,
                         EndDay= DateTime.Now.AddMonths(3),
+                        isOpen = true,
                         FacultyId = ma2
                     },
 
@@ -130,6 +132,8 @@ namespace BMCSDL.Models
                         Credits = 3,
                         StartDay = DateTime.Now,
                         EndDay= DateTime.Now.AddMonths(3),
+                        isOpen = true,
+
                         FacultyId = ma3
                     },
 
@@ -140,6 +144,8 @@ namespace BMCSDL.Models
                         Credits = 3,
                         StartDay = DateTime.Now,
                         EndDay = DateTime.Now.AddMonths(3),
+                        isOpen = true,
+
                         FacultyId = ma4
                     }
                 };
@@ -373,34 +379,34 @@ namespace BMCSDL.Models
                     {
                         ClassRoomId = classroom1,
                         ClassroomName = "B101",
-                        Quantity = 40,
+                        MaxQuantity = 1,
                     },
 
                     new Classroom()
                     {
                         ClassRoomId = classroom2,
                         ClassroomName = "B102",
-                        Quantity = 40,
+                        MaxQuantity = 40,
                     },
 
                     new Classroom()
                     {
                         ClassRoomId = classroom3,
                         ClassroomName = "I102",
-                        Quantity = 40,
+                        MaxQuantity = 40,
                     },
                     new Classroom()
                     {
                         ClassRoomId = classroom4,
                         ClassroomName = "A302",
-                        Quantity = 40,
+                        MaxQuantity = 40,
                     },
 
                     new Classroom()
                     {
                         ClassRoomId = classroom5,
                         ClassroomName = "C201",
-                        Quantity = 40,
+                        MaxQuantity = 40,
                     },
                 };
 

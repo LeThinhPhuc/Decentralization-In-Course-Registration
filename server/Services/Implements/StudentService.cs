@@ -22,8 +22,20 @@ namespace BMCSDL.Services.Implements
             this.context = context;
             this.mapper = mapper;
         }
-        public async Task<SubjectDTO> RegisterSubjectAsync(RegistrationSubjectFormDTO regisForm)
+        public async Task<object> RegisterSubjectAsync(RegistrationSubjectFormDTO regisForm)
         {
+            //kiểm tra môn học có được mở không
+            var isOpen = await context.Subject
+                .FirstOrDefaultAsync(s => s.SubjectId == regisForm.SubjectId
+                && s.isOpen == true);
+
+            //nếu bằng null thì môn học không được mở hoặc không có môn học
+            if(isOpen == null)
+            {
+                return null;
+            }
+
+
 
             //check xem sinh viên có đăng kí môn học chưa, nếu có rồi thì không cho đăng kí nữa
             var isRegisteredSubject = await context.StudentRegisteredSubject
@@ -35,38 +47,62 @@ namespace BMCSDL.Services.Implements
                 return null;
             }
 
+            
 
             //cái này không cần cũng được
-            var isRegisteredSubject2 = await context.StudentRegisteredSubject
-                .FirstOrDefaultAsync(e => e.StudentId == regisForm.StudentId 
-                && e.SubjectId == regisForm.SubjectId
-                && e.ClassroomId == regisForm.ClassroomId
-                && e.TeacherId == regisForm.TeacherId
-                && e.TimeId == regisForm.TimeId);
+            //var isRegisteredSubject2 = await context.StudentRegisteredSubject
+            //    .FirstOrDefaultAsync(e => e.StudentId == regisForm.StudentId 
+            //    && e.SubjectId == regisForm.SubjectId
+            //    && e.ClassroomId == regisForm.ClassroomId
+            //    && e.TeacherId == regisForm.TeacherId
+            //    && e.TimeId == regisForm.TimeId);
 
-            if (isRegisteredSubject2 != null)
+            //if (isRegisteredSubject2 != null)
+            //{
+            //    return null;
+            //}
+
+            await using var transaction = await context.Database.BeginTransactionAsync();
+            try
             {
+                //kiểm tra còn slot không
+                var room = await context.Classroom
+                    .FirstOrDefaultAsync(c => c.ClassRoomId == regisForm.ClassroomId);
+
+                if(room != null && room.CurrentQuantity < room.MaxQuantity)
+                {
+                    room.CurrentQuantity++;
+                    context.Classroom.Update(room);
+                    var newRegistrationSubject = new StudentRegisteredSubject()
+                    {
+                        StudentId = regisForm.StudentId,
+                        SubjectId = regisForm.SubjectId,
+                        ClassroomId = regisForm.ClassroomId,
+                        TeacherId = regisForm.TeacherId,
+                        TimeId = regisForm.TimeId,
+                        Mark = 0,
+                        RegisterDate = DateTime.Now,
+                    };
+
+                    context.StudentRegisteredSubject.Add(newRegistrationSubject);
+                    context.SaveChanges();
+                    var subject = await context.Subject.FirstOrDefaultAsync(s => s.SubjectId == regisForm.SubjectId);
+                    await transaction.CommitAsync();
+                    return mapper.Map<SubjectDTO>(subject);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            catch
+            {
+                await transaction.RollbackAsync();
                 return null;
             }
 
-            var newRegistrationSubject = new StudentRegisteredSubject()
-            {
-                StudentId = regisForm.StudentId,
-                SubjectId = regisForm.SubjectId,
-                ClassroomId = regisForm.ClassroomId,
-                TeacherId = regisForm.TeacherId,
-                TimeId = regisForm.TimeId,
-                Mark = 0,
-                RegisterDate = DateTime.Now,
-            };
-
-            context.StudentRegisteredSubject.Add(newRegistrationSubject);
-            context.SaveChanges();
-            var subject = await context.Subject.FirstOrDefaultAsync(s => s.SubjectId == regisForm.SubjectId);
-
-            return mapper.Map<SubjectDTO>(subject);
-
-
+            
         }
 
         public async Task<SubjectDTO> RemoveRegisteredSubjectAsync(RegistrationSubjectFormDTO regisForm)

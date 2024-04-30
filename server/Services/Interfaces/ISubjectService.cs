@@ -4,9 +4,12 @@ namespace BMCSDL.Services.Interfaces
 {
     public interface ISubjectService
     {
-        public Task<IEnumerable<SubjectDTO3>> GetllAllSubjectsAsync();
+        public Task<IEnumerable<SubjectDTO3>> GetllAllSubjectsWithScheduleAsync();
 
-        public Task<SubjectDTO> AddNewSubjectAsync(SubjectDTO subjectDTO);  
+        public Task<IEnumerable<object>> GetAllSubjectsAsync();
+        public Task<IEnumerable<object>> GetllAllOpenedSubjectsAsync();
+
+        public Task<object> AddNewSubjectAsync(NewSubjectInfo subjectDTO);  
 
         public Task<SubjectDTO> DeleteSubjectAsync(string subjectId);
 

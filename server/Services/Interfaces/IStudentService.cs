@@ -4,7 +4,7 @@ namespace BMCSDL.Services.Interfaces
 {
     public interface IStudentService
     {
-        Task<SubjectDTO> RegisterSubjectAsync(RegistrationSubjectFormDTO regisForm);
+        Task<object> RegisterSubjectAsync(RegistrationSubjectFormDTO regisForm);
         Task<SubjectDTO> RemoveRegisteredSubjectAsync(RegistrationSubjectFormDTO regisForm);
 
         Task<object> GetRegisteredSubjectsAsync(string studentId);
