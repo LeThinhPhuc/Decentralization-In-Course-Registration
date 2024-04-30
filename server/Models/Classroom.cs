@@ -9,5 +9,8 @@
         public ICollection<SubjectClass> SubjectClass { get; set; }
 
         public ICollection<ClassTime> ClassTime { get; set; }
+
+        public ICollection<StudentRegisteredSubject> StudentRegisteredSubject { get; set; }
+
     }
 }

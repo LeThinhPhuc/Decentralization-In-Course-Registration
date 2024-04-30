@@ -91,6 +91,24 @@ namespace BMCSDL.Services.Implements
        
         public async Task<UserRegisterDTO> RegisterAsync(UserRegisterDTO userRegisterDTO)
         {
+            //nếu bất kì 1 role nào không có thì return null
+            foreach(var role in userRegisterDTO.RoleId)
+            {
+                var isExistedRole = await context.Role.FirstOrDefaultAsync(r => r.RoleId == role);
+                if(isExistedRole == null)
+                {
+                    return null;
+                }
+            }
+
+            //kiểm tra faculty có tồn tại không
+            var isExistedFaculty = await context.Faculty.FirstOrDefaultAsync(f => f.FacultyId == userRegisterDTO.PersonInfo.FacultyId);
+
+            if (isExistedFaculty == null)
+            {
+                return null;
+            }
+
             var isExistedAccount = await context.Account
                 .FirstOrDefaultAsync(a => a.UserName == userRegisterDTO.UserName);
             
@@ -101,6 +119,7 @@ namespace BMCSDL.Services.Implements
             
             string accountId = Guid.NewGuid().ToString();
             var salt = GenerateSalt();
+            string personId = Guid.NewGuid().ToString();
             Account newAccount = new Account()
             {
                 AccountId = accountId,
@@ -114,7 +133,7 @@ namespace BMCSDL.Services.Implements
                 }).ToList(),
                 Person = new Person()
                 {
-                    PersonId = Guid.NewGuid().ToString(),
+                    PersonId = personId,
                     FullName = userRegisterDTO.PersonInfo.FullName,
                     Gender = userRegisterDTO.PersonInfo.Gender,
                     PhoneNumber = userRegisterDTO.PersonInfo.PhoneNumber,
@@ -124,6 +143,59 @@ namespace BMCSDL.Services.Implements
                     FacultyId = userRegisterDTO.PersonInfo.FacultyId
                 }
             };
+
+            foreach(var role in userRegisterDTO.RoleId)
+            {
+                if(role == "giaovien")
+                {
+                    var giaovien = new Teacher()
+                    {
+                        TeacherId = personId,
+                        PersonId = personId,
+                    };
+                    context.Teacher.Add(giaovien);
+                }
+
+                else if(role == "giaovu")
+                {
+                    var giaovu = new GiaoVu()
+                    {
+                        GiaoVuId = personId,
+                        PersonId = personId,
+                    };
+                    context.GiaoVu.Add(giaovu);
+                }
+
+                else if(role == "sinhvien")
+                {
+                    var sinhvien = new Student()
+                    {
+                        StudentId = personId,
+                        PersonId = personId
+                    };
+                    context.Student.Add(sinhvien);
+                }
+
+                else if(role == "truongbomon")
+                {
+                    var truongbomon = new TruongBoMon()
+                    {
+                        TruongBoMonId = personId,
+                        PersonId = personId,
+                    };
+                    context.TruongBoMon.Add(truongbomon);
+                }
+
+                else if(role == "truongphokhoa")
+                {
+                    var truongphokhoa = new TruongPhoKhoa()
+                    {
+                        TruongPhoKhoaId = personId,
+                        PersonId = personId,
+                    };
+                    context.TruongPhoKhoa.Add(truongphokhoa);   
+                }
+            }
 
             await context.Account.AddAsync(newAccount);
             await context.SaveChangesAsync();

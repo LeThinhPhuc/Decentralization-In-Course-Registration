@@ -1,8 +1,6 @@
-﻿using BMCSDL.Models;
-
-namespace BMCSDL.DTOs
+﻿namespace BMCSDL.DTOs
 {
-    public class SubjectDTO
+    public class SubjectDTO3
     {
         public string SubjectId { get; set; }
         public string SubjectName { get; set; }
@@ -12,8 +10,6 @@ namespace BMCSDL.DTOs
         public DateTime EndDay { get; set; }
         public FacultyDTO Faculty { get; set; }
 
-
-        public ICollection<TeacherSubjectDTO> TeacherSubject {  get; set; }    
-
+        public ICollection<SubjectClassDTO2> SubjectClass { get; set; }    
     }
 }

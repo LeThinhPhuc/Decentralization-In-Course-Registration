@@ -31,14 +31,10 @@ namespace BMCSDL.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<ActionResult> GetRegisterdSubjectsByStudentId([FromQuery] string studentId)
+        public async Task<ActionResult> GetRegisteredSubjectsByStudentId([FromQuery] string studentId)
         {
             var registeredSubjects = await studentService.GetRegisteredSubjectsAsync(studentId);
-            return Ok(new
-            {
-                studentId = studentId,
-                registeredSubjects = registeredSubjects
-            });
+            return Ok(registeredSubjects);
         }
 
         [HttpPost("[action]")]
@@ -50,7 +46,8 @@ namespace BMCSDL.Controllers
                 return BadRequest();
             }
             return Ok(new {
-                Status = "Add Successfully",
+                StatusCode = "200",
+                Status = "Register Successfully",
                 Subject = newRegistration
             });
 

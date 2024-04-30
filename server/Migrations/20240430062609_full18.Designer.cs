@@ -4,6 +4,7 @@ using BMCSDL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BMCSDL.Migrations
 {
     [DbContext(typeof(CourseRegistraionManagementContext))]
-    partial class CourseRegistraionManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20240430062609_full18")]
+    partial class full18
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -203,33 +206,15 @@ namespace BMCSDL.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasColumnOrder(1);
 
-                    b.Property<string>("ClassroomId")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("TeacherId")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnOrder(4);
-
-                    b.Property<string>("TimeId")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnOrder(3);
-
                     b.Property<float>("Mark")
                         .HasColumnType("real");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("StudentId", "SubjectId", "ClassroomId", "TeacherId", "TimeId");
-
-                    b.HasIndex("ClassroomId");
+                    b.HasKey("StudentId", "SubjectId");
 
                     b.HasIndex("SubjectId");
-
-                    b.HasIndex("TeacherId");
-
-                    b.HasIndex("TimeId");
 
                     b.ToTable("StudentRegisteredSubject");
                 });
@@ -452,12 +437,6 @@ namespace BMCSDL.Migrations
 
             modelBuilder.Entity("BMCSDL.Models.StudentRegisteredSubject", b =>
                 {
-                    b.HasOne("BMCSDL.Models.Classroom", "Classroom")
-                        .WithMany("StudentRegisteredSubject")
-                        .HasForeignKey("ClassroomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BMCSDL.Models.Student", "Student")
                         .WithMany("StudentRegisteredSubject")
                         .HasForeignKey("StudentId")
@@ -470,27 +449,9 @@ namespace BMCSDL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BMCSDL.Models.Teacher", "Teacher")
-                        .WithMany("StudentRegisteredSubject")
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BMCSDL.Models.Time", "Time")
-                        .WithMany("StudentRegisteredSubject")
-                        .HasForeignKey("TimeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Classroom");
-
                     b.Navigation("Student");
 
                     b.Navigation("Subject");
-
-                    b.Navigation("Teacher");
-
-                    b.Navigation("Time");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Subject", b =>
@@ -594,8 +555,6 @@ namespace BMCSDL.Migrations
                 {
                     b.Navigation("ClassTime");
 
-                    b.Navigation("StudentRegisteredSubject");
-
                     b.Navigation("SubjectClass");
                 });
 
@@ -640,8 +599,6 @@ namespace BMCSDL.Migrations
 
             modelBuilder.Entity("BMCSDL.Models.Teacher", b =>
                 {
-                    b.Navigation("StudentRegisteredSubject");
-
                     b.Navigation("SubjectClass");
 
                     b.Navigation("TeacherSubject");
@@ -650,8 +607,6 @@ namespace BMCSDL.Migrations
             modelBuilder.Entity("BMCSDL.Models.Time", b =>
                 {
                     b.Navigation("ClassTime");
-
-                    b.Navigation("StudentRegisteredSubject");
 
                     b.Navigation("SubjectClass");
                 });

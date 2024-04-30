@@ -180,7 +180,7 @@ namespace BMCSDL.Models
                     PasswordHash = CaculatePassword("12345", salt1),
                     PasswordSalt = salt1,
                     RoleAccount = new List<RoleAccount>()
-                    { 
+                    {
                         new RoleAccount() { RoleId = sinhvien ,AccountId = accountId1}
                     },
                     Person = new Person
@@ -198,11 +198,11 @@ namespace BMCSDL.Models
                             StudentId = personId1,
                             PersonId = personId1,
                         },
-                        
+
                     }
                 };
 
-                
+
                 var account2 = new Account()
                 {
                     AccountId = accountId2,
@@ -232,7 +232,7 @@ namespace BMCSDL.Models
                 };
 
 
-                
+
                 var account3 = new Account()
                 {
                     AccountId = accountId3,
@@ -262,7 +262,7 @@ namespace BMCSDL.Models
                 };
 
 
-                
+
                 var account4 = new Account()
                 {
                     AccountId = accountId4,
@@ -292,7 +292,7 @@ namespace BMCSDL.Models
                 };
 
 
-                
+
                 var account5 = new Account()
                 {
                     AccountId = accountId5,
@@ -423,6 +423,7 @@ namespace BMCSDL.Models
                     {
                         TimeId = time1,
                         TimeName = "Sáng 1",
+                        DayOfWeek = DayOfWeek.Monday,
                         StartTime = new TimeSpan(7,0,0),
                         EndTime = new TimeSpan(9,0,0),
                     },
@@ -430,6 +431,7 @@ namespace BMCSDL.Models
                     {
                         TimeId = time2,
                         TimeName = "Sáng 2",
+                        DayOfWeek = DayOfWeek.Monday,
                         StartTime = new TimeSpan(9,15,0),
                         EndTime = new TimeSpan(11,15,0),
                     },
@@ -438,6 +440,7 @@ namespace BMCSDL.Models
                     {
                         TimeId = time3,
                         TimeName = "Chiều 1",
+                        DayOfWeek = DayOfWeek.Monday,
                         StartTime = new TimeSpan(13,0,0),
                         EndTime = new TimeSpan(15,0,0),
                     },
@@ -446,6 +449,7 @@ namespace BMCSDL.Models
                     {
                         TimeId = time4,
                         TimeName = "Chiều 2",
+                        DayOfWeek = DayOfWeek.Monday,
                         StartTime = new TimeSpan(15,15,0),
                         EndTime = new TimeSpan(17,15,0),
                     },
@@ -453,6 +457,7 @@ namespace BMCSDL.Models
                     {
                         TimeId = time5,
                         TimeName = "Tối 1",
+                        DayOfWeek = DayOfWeek.Monday,
                         StartTime = new TimeSpan(19,0,0),
                         EndTime = new TimeSpan(21,0,0),
                     },
@@ -488,15 +493,15 @@ namespace BMCSDL.Models
             {
                 List<SubjectClass> subjectClasses = new List<SubjectClass>()
                 {
-                    new SubjectClass() {SubjectId = mon1,ClassroomId = classroom3,TimeId = time1},
+                    new SubjectClass() {SubjectId = mon1,ClassroomId = classroom3,TimeId = time1,TeacherId = personId5},
 
-                    new SubjectClass() {SubjectId = mon2,ClassroomId = classroom2,TimeId = time2},
+                    new SubjectClass() {SubjectId = mon2,ClassroomId = classroom2,TimeId = time2,TeacherId = personId5},
 
-                    new SubjectClass() {SubjectId = mon3,ClassroomId = classroom1,TimeId = time3},
+                    new SubjectClass() {SubjectId = mon3,ClassroomId = classroom1,TimeId = time3, TeacherId = personId5},
 
-                    new SubjectClass() {SubjectId = mon3,ClassroomId = classroom5,TimeId = time1},
+                    new SubjectClass() {SubjectId = mon4,ClassroomId = classroom5,TimeId = time4, TeacherId = personId5},
 
-                    new SubjectClass() {SubjectId = mon4,ClassroomId = classroom4,TimeId = time1},
+                    new SubjectClass() {SubjectId = mon4,ClassroomId = classroom4,TimeId = time5, TeacherId = personId5},
                 };
 
                 context.SubjectClass.AddRange(subjectClasses);

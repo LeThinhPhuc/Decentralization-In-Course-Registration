@@ -4,6 +4,7 @@ using BMCSDL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BMCSDL.Migrations
 {
     [DbContext(typeof(CourseRegistraionManagementContext))]
-    partial class CourseRegistraionManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20240430115402_full19")]
+    partial class full19
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -204,16 +207,9 @@ namespace BMCSDL.Migrations
                         .HasColumnOrder(1);
 
                     b.Property<string>("ClassroomId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)")
                         .HasColumnOrder(2);
-
-                    b.Property<string>("TeacherId")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnOrder(4);
-
-                    b.Property<string>("TimeId")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnOrder(3);
 
                     b.Property<float>("Mark")
                         .HasColumnType("real");
@@ -221,7 +217,17 @@ namespace BMCSDL.Migrations
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("StudentId", "SubjectId", "ClassroomId", "TeacherId", "TimeId");
+                    b.Property<string>("TeacherId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnOrder(4);
+
+                    b.Property<string>("TimeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnOrder(3);
+
+                    b.HasKey("StudentId", "SubjectId");
 
                     b.HasIndex("ClassroomId");
 

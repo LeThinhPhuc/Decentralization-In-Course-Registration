@@ -12,13 +12,15 @@ namespace BMCSDL.Models
         public string ClassroomId { get; set; }
 
         [Key, Column(Order = 2)]
-
         public string TimeId { get; set; }
+
+        [Key, Column(Order = 3)]
+        public string TeacherId { get; set; }   
 
         public Subject Subject { get; set; }
         public Classroom Classroom { get; set; }
-
         public Time Time { get; set; }  
+        public Teacher Teacher { get; set;}
 
     }
 }

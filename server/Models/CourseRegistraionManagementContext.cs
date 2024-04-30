@@ -135,7 +135,7 @@ namespace BMCSDL.Models
 
             modelBuilder.Entity<StudentRegisteredSubject>(entity =>
             {
-                entity.HasKey(k => new { k.StudentId, k.SubjectId });
+                entity.HasKey(k => new { k.StudentId, k.SubjectId ,k.ClassroomId,k.TeacherId,k.TimeId});
             });
 
             modelBuilder.Entity<StudentRegisteredSubject>(entity =>
@@ -185,7 +185,7 @@ namespace BMCSDL.Models
 
             modelBuilder.Entity<SubjectClass>(e =>
             {
-                e.HasKey(k => new { k.SubjectId, k.ClassroomId ,k.TimeId});
+                e.HasKey(k => new { k.SubjectId, k.ClassroomId, k.TimeId, k.TeacherId });
             });
 
 
@@ -203,6 +203,12 @@ namespace BMCSDL.Models
                       .HasForeignKey(e => e.ClassroomId);
             });
 
+            modelBuilder.Entity<SubjectClass>(entity =>
+            {
+                entity.HasOne(e => e.Teacher)
+                      .WithMany(t => t.SubjectClass)
+                      .HasForeignKey(e => e.TeacherId);
+            });
 
             modelBuilder.Entity<ClassTime>(entity =>
             {
@@ -251,24 +257,27 @@ namespace BMCSDL.Models
                       .HasForeignKey(k => k.SubjectId);
             });
 
-            modelBuilder.Entity<TeacherTime>(entity =>
-            {
-                entity.HasKey(k => new { k.TeacherId, k.TimeId });
-            });
 
-            modelBuilder.Entity<TeacherTime>(entity =>
-            {
-                entity.HasOne(e => e.Teacher)
-                      .WithMany(t => t.TeacherTime)
-                      .HasForeignKey(tt => tt.TeacherId);
-            });
+            
 
-            modelBuilder.Entity<TeacherTime>(entity =>
-            {
-                entity.HasOne(e => e.Time)
-                      .WithMany(t => t.TeacherTime)
-                      .HasForeignKey(tt => tt.TimeId);
-            });
+            //modelBuilder.Entity<TeacherTime>(entity =>
+            //{
+            //    entity.HasKey(k => new { k.TeacherId, k.TimeId });
+            //});
+
+            //modelBuilder.Entity<TeacherTime>(entity =>
+            //{
+            //    entity.HasOne(e => e.Teacher)
+            //          .WithMany(t => t.TeacherTime)
+            //          .HasForeignKey(tt => tt.TeacherId);
+            //});
+
+            //modelBuilder.Entity<TeacherTime>(entity =>
+            //{
+            //    entity.HasOne(e => e.Time)
+            //          .WithMany(t => t.TeacherTime)
+            //          .HasForeignKey(tt => tt.TimeId);
+            //});
         }
 
         public DbSet<Role> Role { get; set; }
@@ -289,6 +298,5 @@ namespace BMCSDL.Models
         public DbSet<TeacherSubject> TeacherSubject { get; set; }
         public DbSet<RoleAccount> RoleAccount { get; set; }
         
-        public DbSet<TeacherTime> TeacherTime { get; set; }
     }
 }

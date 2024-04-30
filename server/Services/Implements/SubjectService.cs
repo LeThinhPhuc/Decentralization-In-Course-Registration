@@ -16,17 +16,56 @@ namespace BMCSDL.Services.Implements
             this.context = context;
             this.mapper = mapper;
         }
-        public async Task<IEnumerable<SubjectDTO>> GetllAllSubjectsAsync()
+        public async Task<IEnumerable<SubjectDTO3>> GetllAllSubjectsAsync()
         {
-            var subject = await context.Subject
+
+            var subjects = await context.Subject
                 .Include(s => s.Faculty)
-                .Include(s => s.TeacherSubject)
+                .Include(s => s.SubjectClass)
+                .ThenInclude(s => s.Classroom)
+                .Include(s => s.SubjectClass)
                 .ThenInclude(s => s.Teacher)
-                .ThenInclude(s => s.Person).ToListAsync();
+                .ThenInclude(t => t.Person)
+                .Include(s => s.SubjectClass)
+                .ThenInclude(s => s.Time)
+                .ToListAsync();
 
-            var subjectsDTO = this.mapper.Map<IEnumerable<SubjectDTO>>(subject);
+            var subjectDTO2 = subjects.Select(s => new SubjectDTO3()
+            {
+                SubjectId = s.SubjectId,
+                SubjectName = s.SubjectName,
+                Credits = s.Credits,
+                StartDay = s.StartDay,
+                EndDay = s.EndDay,
+                Faculty = new FacultyDTO()
+                {
+                    FacultyId = s.Faculty.FacultyId,
+                    FacultyName = s.Faculty.FacultyName
+                },
+                SubjectClass = s.SubjectClass.Select(s => new SubjectClassDTO2()
+                {
+                    Classroom = new ClassroomDTO()
+                    {
+                        ClassRoomId = s.Classroom.ClassRoomId,
+                        ClassroomName = s.Classroom.ClassroomName,
+                    },
+                    Time = new TimeDTO()
+                    {
+                        TimeId = s.Time.TimeId,
+                        TimeName = s.Time.TimeName, 
+                        DayOfWeek = s.Time.DayOfWeek,
+                        StartTime = s.Time.StartTime,
+                        EndTime = s.Time.EndTime,
+                    },
+                    Teacher = new TeacherDTO2()
+                    {
+                        TeacherId = s.Teacher.TeacherId,
+                        TeacherName = s.Teacher.Person.FullName
+                    }
+                }).ToList()
+            }); ;
 
-            return subjectsDTO; 
+            return subjectDTO2;
         }
 
         public async Task<SubjectDTO> AddNewSubjectAsync(SubjectDTO subjectDTO)

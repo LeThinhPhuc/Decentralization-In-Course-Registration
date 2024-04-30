@@ -14,7 +14,7 @@ namespace BMCSDL.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<ActionResult<IEnumerable<SubjectDTO>>> GetAllSubjects()
+        public async Task<ActionResult> GetAllSubjects()
         {
             var subjects = await subjectService.GetllAllSubjectsAsync();
 

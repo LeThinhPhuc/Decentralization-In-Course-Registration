@@ -6,5 +6,7 @@ namespace BMCSDL.DTOs
     {
         public string StudentId { get; set; }
         public PersonDTO Person { get; set; }
+
+        public FacultyDTO Faculty { get; set; }
     }
 }

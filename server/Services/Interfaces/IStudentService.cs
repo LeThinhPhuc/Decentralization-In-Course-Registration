@@ -7,10 +7,10 @@ namespace BMCSDL.Services.Interfaces
         Task<SubjectDTO> RegisterSubjectAsync(RegistrationSubjectFormDTO regisForm);
         Task<SubjectDTO> RemoveRegisteredSubjectAsync(RegistrationSubjectFormDTO regisForm);
 
-        Task<IEnumerable<StudentRegisteredSubjectDTO>> GetRegisteredSubjectsAsync(string studentId);
+        Task<object> GetRegisteredSubjectsAsync(string studentId);
 
         Task<IEnumerable<StudentDTO>> GetAllStudents(); 
 
-        Task<StudentDTO> GetStudentByIdAsync(string studentId); 
+        Task<object> GetStudentByIdAsync(string studentId); 
     }
 }

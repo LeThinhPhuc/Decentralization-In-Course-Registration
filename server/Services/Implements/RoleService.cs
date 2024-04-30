@@ -18,11 +18,7 @@ namespace BMCSDL.Services.Implements
             var isExistedRole = await context.RoleAccount
                 .FirstOrDefaultAsync(ra => ra.RoleId == RoleAccountDTO.RoleId && 
                 ra.AccountId == RoleAccountDTO.AccountId);
-
-            if(isExistedRole != null)
-            {
-                return null;
-            }
+            
 
             RoleAccount newRoleAccount = new RoleAccount()
             {
