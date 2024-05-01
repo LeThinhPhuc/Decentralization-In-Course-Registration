@@ -4,6 +4,7 @@ using BMCSDL.Models;
 using BMCSDL.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Net.WebSockets;
+using System.Runtime.InteropServices;
 
 namespace BMCSDL.Services.Implements
 {
@@ -12,7 +13,7 @@ namespace BMCSDL.Services.Implements
         private readonly CourseRegistraionManagementContext context;
         private readonly IMapper mapper;
 
-        public SubjectService(CourseRegistraionManagementContext context,IMapper mapper)
+        public SubjectService(CourseRegistraionManagementContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
@@ -22,7 +23,7 @@ namespace BMCSDL.Services.Implements
         {
             var subjects = await context.Subject.Include(s => s.Faculty).ToListAsync();
 
-            if(!subjects.Any())
+            if (!subjects.Any())
             {
                 return null;
             }
@@ -43,7 +44,7 @@ namespace BMCSDL.Services.Implements
             });
 
 
-            return new List<object>(dataToReturn);  
+            return new List<object>(dataToReturn);
         }
 
 
@@ -83,7 +84,7 @@ namespace BMCSDL.Services.Implements
                     Time = new TimeDTO()
                     {
                         TimeId = s.Time.TimeId,
-                        TimeName = s.Time.TimeName, 
+                        TimeName = s.Time.TimeName,
                         DayOfWeek = s.Time.DayOfWeek,
                         StartTime = s.Time.StartTime,
                         EndTime = s.Time.EndTime,
@@ -129,7 +130,7 @@ namespace BMCSDL.Services.Implements
 
         public async Task<object> AddNewSubjectAsync(NewSubjectInfo subjectDTO)
         {
-            var isExistedSubject = await context.Subject.FirstOrDefaultAsync(s => s.SubjectName == subjectDTO.SubjectName); 
+            var isExistedSubject = await context.Subject.FirstOrDefaultAsync(s => s.SubjectName == subjectDTO.SubjectName);
 
             if (isExistedSubject != null)
             {
@@ -137,7 +138,7 @@ namespace BMCSDL.Services.Implements
             }
 
             var isExistedFaculty = await context.Faculty.FirstOrDefaultAsync(s => s.FacultyId == subjectDTO.FacultyId);
-            if(isExistedFaculty == null)
+            if (isExistedFaculty == null)
             {
                 return null;
             }
@@ -147,7 +148,7 @@ namespace BMCSDL.Services.Implements
             {
                 SubjectId = newSubjectId,
                 SubjectName = subjectDTO.SubjectName,
-                Credits = subjectDTO.Credits,   
+                Credits = subjectDTO.Credits,
                 StartDay = subjectDTO.StartDay,
                 EndDay = subjectDTO.EndDay,
                 FacultyId = subjectDTO.FacultyId
@@ -159,20 +160,168 @@ namespace BMCSDL.Services.Implements
             return subjectDTO;
         }
 
+        public async Task<object> UpdateSubjectAsync(UpdateSubjectInfo subjectDTO)
+        {
+            if (subjectDTO.FacultyId != null)
+            {
+                var isExistedFaculty = await context.Faculty
+                    .FirstOrDefaultAsync(s => s.FacultyId == subjectDTO.FacultyId);
+
+                if (isExistedFaculty == null)
+                {
+                    return null;
+                }
+            }
+
+            var isExistedSubject = await context.Subject
+                .FirstOrDefaultAsync(s => s.SubjectId == subjectDTO.SubjectId);
+
+            if (isExistedSubject == null)
+            {
+                return null;
+            }
+
+
+
+            if (!string.IsNullOrEmpty(subjectDTO.SubjectName))
+            {
+                isExistedSubject.SubjectName = subjectDTO.SubjectName;
+            }
+            if (subjectDTO.Credits != 0)//create != 0 thì cấp nhập
+            {
+                isExistedSubject.Credits = subjectDTO.Credits;
+            }
+            if (subjectDTO.StartDay != default(DateTime)) //StartDay khác DateTime mặc định thì cập nhật
+            {
+                isExistedSubject.StartDay = subjectDTO.StartDay;
+            }
+            if (subjectDTO.EndDay != default(DateTime))// EndDay khác DateTime mặc định thì cập nhật
+            {
+                isExistedSubject.EndDay = subjectDTO.EndDay;
+            }
+            if (subjectDTO.FacultyId != null)
+            {
+                isExistedSubject.FacultyId = subjectDTO.FacultyId;
+            }
+
+            context.Subject.Update(isExistedSubject);
+
+            await context.SaveChangesAsync();
+
+            return subjectDTO;
+
+        }
+
+
         public async Task<SubjectDTO> DeleteSubjectAsync(string subjectId)
         {
             var subject = await context.Subject.FirstOrDefaultAsync(
                 s => s.SubjectId == subjectId);
-            
-            if(subject != null)
+
+            if (subject != null)
             {
-                context.Subject.Remove(subject);    
+                context.Subject.Remove(subject);
                 context.SaveChanges();
-                return this.mapper.Map<SubjectDTO>(subject);    
+                return this.mapper.Map<SubjectDTO>(subject);
             }
             return null;
         }
 
-        
+        public async Task<object> GetListStudentsRegisterSubject(string SubjectId)
+        {
+            var subject = await context
+                .Subject.Where(s => s.SubjectId == SubjectId)
+                .Include(s => s.StudentRegisteredSubject)
+                .ThenInclude(s => s.Student)
+                .ThenInclude(s => s.Person)
+                .ThenInclude(p => p.Account)
+                .Include(s => s.StudentRegisteredSubject)
+                .ThenInclude(s => s.Classroom)
+                .Include(s => s.StudentRegisteredSubject)
+                .ThenInclude(s => s.Time)
+                .Include(s => s.StudentRegisteredSubject)
+                .ThenInclude(s => s.Teacher)
+                .ThenInclude(s => s.Person)
+                .FirstOrDefaultAsync();
+
+            if (subject == null)
+            {
+                return null;
+            }
+
+            var dataToReturn = new
+            {
+                SubjectId = SubjectId,
+                SubjectName = subject.SubjectName,
+                StudentRegisteredSubject = subject.StudentRegisteredSubject.Select(s => new
+                {
+                    StudentId = s.Student.StudentId,
+                    Username = s.Student.Person.Account.UserName,
+                    StudentName = s.Student.Person.FullName,
+                    PhoneNumber = s.Student.Person.PhoneNumber,
+                    Address = s.Student.Person.Address,
+                    Teacher = new
+                    {
+                        TeacherId = s.Teacher.TeacherId,
+                        TeacherName = s.Teacher.Person.FullName
+                    },
+                    Classroom = new
+                    {
+                        ClassroomId = s.Classroom.ClassRoomId,
+                        ClassroomName = s.Classroom.ClassroomName
+                    },
+                    Time = new
+                    {
+                        TimeId = s.Time.TimeId,
+                        DayOfWeek = s.Time.DayOfWeek,
+                        StartTime = s.Time.StartTime,
+                        EndTime = s.Time.EndTime,
+                    },
+
+                    Mark = s.Mark
+
+                })
+            };
+
+            return dataToReturn;
+
+
+
+        }
+
+        public async Task<object> UpdateMarkAsync(UpdateMarkForm updateMark)
+        {
+            var registeredSubjectOfStudent = await context.StudentRegisteredSubject
+                .Where(s =>
+                s.StudentId == updateMark.StudentId &&
+                s.SubjectId == updateMark.SubjectId &&
+                s.ClassroomId == updateMark.ClassroomId &&
+                s.TimeId == updateMark.TimeId)
+                .Include(s => s.Student)
+                .ThenInclude(s => s.Person)
+                .FirstOrDefaultAsync();
+
+            if ( registeredSubjectOfStudent == null )
+            {
+                return null;
+            }
+
+            registeredSubjectOfStudent.Mark = updateMark.Mark;
+            context.StudentRegisteredSubject.Update(registeredSubjectOfStudent);
+            context.SaveChanges();
+
+
+            var dataToReturn = new
+            {
+                StudentId = updateMark.StudentId,
+                StudentName = registeredSubjectOfStudent.Student.Person.FullName,
+                SubjectId = updateMark.SubjectId,
+                ClassroomId = updateMark.ClassroomId,
+                Timeid = updateMark.TimeId,
+                Mark = updateMark.Mark               
+            };
+
+            return dataToReturn;
+        }
     }
 }

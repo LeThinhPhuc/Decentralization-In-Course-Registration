@@ -110,23 +110,6 @@ namespace BMCSDL.Models
             });
 
 
-            //modelBuilder.Entity<Faculty>(entity =>
-            //{
-            //    entity.HasKey(f => f.FacultyId);
-            //    entity.HasMany(f => f.Subject)
-            //          .WithOne(s => s.Faculty)
-            //          .HasForeignKey(s => s.FacultyId)
-            //          .OnDelete(DeleteBehavior.Cascade);
-            //});
-
-            //modelBuilder.Entity<Subject>(entity =>
-            //{
-            //    entity.HasKey(s => s.SubjectId);
-            //    entity.HasOne(s => s.Faculty)
-            //          .WithMany(f => f.Subject)
-            //          .HasForeignKey(s => s.FacultyId)
-            //          .OnDelete(DeleteBehavior.Cascade);
-            //});
 
             modelBuilder.Entity<Subject>(entity =>
             {
@@ -153,35 +136,7 @@ namespace BMCSDL.Models
                       .HasForeignKey(k => k.SubjectId);
             });
 
-            //modelBuilder.Entity<RegisteredSubject>(entity =>
-            //{
-            //    entity.HasKey(r => r.RegisteredSubjecId);
-            //    entity.HasOne(r => r.Subject)
-            //          .WithOne(s => s.RegisteredSubject)
-            //          .HasForeignKey<RegisteredSubject>(r => r.SubjectId)
-            //          .OnDelete(DeleteBehavior.Cascade);
-
-            //});
-
-            //modelBuilder.Entity<StudentRegisteredSubject>(e =>
-            //{
-            //    e.HasKey(k => new { k.StudentId, k.RegisteredSubjectId });
-
-            //});
-
-            //modelBuilder.Entity<StudentRegisteredSubject>(entity =>
-            //{
-            //    entity.HasOne(s => s.Student)
-            //          .WithMany(student => student.StudentRegisteredSubject)
-            //          .HasForeignKey(s => s.StudentId);
-            //});
-
-            //modelBuilder.Entity<StudentRegisteredSubject>(entity =>
-            //{
-            //    entity.HasOne(s => s.RegisteredSubject)
-            //          .WithMany(r => r.StudentRegisteredSubject)
-            //          .HasForeignKey(e => e.RegisteredSubjectId);
-            //});
+           
 
             modelBuilder.Entity<SubjectClass>(e =>
             {
@@ -256,28 +211,8 @@ namespace BMCSDL.Models
                       .WithMany(s => s.TeacherSubject)
                       .HasForeignKey(k => k.SubjectId);
             });
-
-
             
 
-            //modelBuilder.Entity<TeacherTime>(entity =>
-            //{
-            //    entity.HasKey(k => new { k.TeacherId, k.TimeId });
-            //});
-
-            //modelBuilder.Entity<TeacherTime>(entity =>
-            //{
-            //    entity.HasOne(e => e.Teacher)
-            //          .WithMany(t => t.TeacherTime)
-            //          .HasForeignKey(tt => tt.TeacherId);
-            //});
-
-            //modelBuilder.Entity<TeacherTime>(entity =>
-            //{
-            //    entity.HasOne(e => e.Time)
-            //          .WithMany(t => t.TeacherTime)
-            //          .HasForeignKey(tt => tt.TimeId);
-            //});
         }
 
         public DbSet<Role> Role { get; set; }

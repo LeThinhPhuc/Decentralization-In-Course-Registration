@@ -26,8 +26,34 @@ namespace BMCSDL.Controllers
         [HttpGet("[action]")]
         public async Task<ActionResult> GetStudentByStudentId([FromQuery] string studentId)
         {
-            var students = await this.studentService.GetStudentByIdAsync(studentId);
-            return Ok(students);
+            var student = await this.studentService.GetStudentByIdAsync(studentId);
+
+            if(student == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Có thể không tìm thấy student Id"
+                });
+            }
+
+            return Ok(student);
+        }
+
+        [HttpPut("[action]")]
+        public async Task<ActionResult> UpdateSudentInformation([FromBody] UpdateStudentInfo studentInfo)
+        {
+            var isExistedStudent = await studentService.UpdateStudentByAsync(studentInfo);
+            if(isExistedStudent == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Có thể StudentId hoặc faculty không hợp lệ"
+                }); ;
+            }
+            return Ok(new { 
+                StatusMessage = "Update Successfully",
+                Info = studentInfo
+            });
         }
 
         [HttpGet("[action]")]

@@ -1,4 +1,5 @@
 ﻿using BMCSDL.DTOs;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BMCSDL.Services.Interfaces
 {
@@ -13,6 +14,11 @@ namespace BMCSDL.Services.Interfaces
 
         public Task<SubjectDTO> DeleteSubjectAsync(string subjectId);
 
+        public Task<object> UpdateSubjectAsync(UpdateSubjectInfo subjectDTO);
+
+        public Task<object> GetListStudentsRegisterSubject(string SubjectId);
+
+        public Task<object> UpdateMarkAsync(UpdateMarkForm updateMark);
 
     }
 }

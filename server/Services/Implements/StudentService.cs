@@ -2,6 +2,7 @@
 using BMCSDL.DTOs;
 using BMCSDL.Models;
 using BMCSDL.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Net;
@@ -192,6 +193,10 @@ namespace BMCSDL.Services.Implements
                 .ThenInclude(p => p.Faculty)
                 .FirstOrDefaultAsync(s => s.StudentId == studentId);
 
+            if(student == null)
+            {
+                return null;
+            }
 
             var studentToReturn = new
             {
@@ -215,6 +220,71 @@ namespace BMCSDL.Services.Implements
 
         }
 
+        public async Task<object> UpdateStudentByAsync(UpdateStudentInfo studentInfo)
+        {
+            if(!String.IsNullOrEmpty(studentInfo.PersonInfo.FacultyId))
+            { 
+                var isExistedFaculty = await context.Faculty
+                    .FirstOrDefaultAsync(f => f.FacultyId == studentInfo.PersonInfo.FacultyId);
 
+                if(isExistedFaculty == null)
+                {
+                    return null;
+                }
+            }
+
+
+            var isExistedStudent = await context.Student
+                .FirstOrDefaultAsync(s => s.StudentId == studentInfo.PersonInfo.PersonId);
+
+            if(isExistedStudent == null)
+            {
+                return null;
+            }
+
+            else
+            {
+                var student = await context.Student.Include(s => s.Person)
+                .FirstOrDefaultAsync(s => s.StudentId == studentInfo.PersonInfo.PersonId);
+                
+                if (!String.IsNullOrEmpty(studentInfo.PersonInfo.FullName))
+                {
+                    student.Person.FullName = studentInfo.PersonInfo.FullName;  
+                }
+
+                if(!string.IsNullOrEmpty(studentInfo.PersonInfo.Gender))
+                {
+                    student.Person.Gender = studentInfo.PersonInfo.Gender;
+                }
+
+                if(!string.IsNullOrEmpty(studentInfo.PersonInfo.PhoneNumber))
+                {
+                    student.Person.PhoneNumber = studentInfo.PersonInfo.PhoneNumber;
+                }
+
+                if(studentInfo.PersonInfo.DateOfBirth != default(DateTime))
+                {
+                    student.Person.DateOfBirth = studentInfo.PersonInfo.DateOfBirth;    
+                }
+
+                if(!String.IsNullOrEmpty(studentInfo.PersonInfo.Address))
+                {
+                    student.Person.Address = studentInfo.PersonInfo.Address;    
+                }
+
+                if(!String.IsNullOrEmpty(studentInfo.PersonInfo.FacultyId))
+                {
+                    student.Person.FacultyId = studentInfo.PersonInfo.FacultyId;   
+                }
+
+                context.Update(student);
+
+                context.SaveChanges();
+
+                return studentInfo;
+            }
+
+            return null;
+        }
     }
 }

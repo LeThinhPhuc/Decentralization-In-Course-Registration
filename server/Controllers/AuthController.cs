@@ -50,7 +50,10 @@ namespace BMCSDL.Controllers
             var dataToReturn = await accountService.RegisterAsync(user);
             if(dataToReturn == null )
             {
-                return BadRequest();
+                return BadRequest(new
+                {
+                    Message = "Có thể sai FacultyId"
+                });
             }
 
             return Ok(user);

@@ -25,6 +25,8 @@ namespace BMCSDL
             builder.Services.AddScoped<ISubjectService, SubjectService>();
             builder.Services.AddScoped<IStudentService, StudentService>();
             builder.Services.AddScoped<ITeacherService, TeacherService>();
+            builder.Services.AddScoped<IPersonService, PersonService>();    
+            builder.Services.AddScoped<IFacultyService, FacultyService>();  
             #endregion
 
             #region Auto Mapper

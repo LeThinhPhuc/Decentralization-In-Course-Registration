@@ -36,7 +36,6 @@ namespace BMCSDL.Controllers
             return Ok(subjects);
         }
 
-
         [HttpGet("[action]")]
         public async Task<ActionResult> GetAllSubjects()
         {
@@ -65,6 +64,27 @@ namespace BMCSDL.Controllers
             }); 
         }
 
+        [HttpPut("[action]")]
+        public async Task<ActionResult> UpdateSubject([FromBody] UpdateSubjectInfo subjectDTO)
+        {
+            var dataToReturn = await subjectService.UpdateSubjectAsync(subjectDTO);   
+
+            if(dataToReturn == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Có thể mã môn học không đúng hoặc mã khoa không đúng"
+                });
+            }
+
+            return Ok(new
+            {
+                StatusCode =200,
+                StatusMessage = "Update successfully",
+                Subject = subjectDTO    
+            });
+        }
+
         [HttpDelete("[action]")]
         public async Task<ActionResult> DeleteSubject([FromQuery]string subjectId)
         {
@@ -79,6 +99,41 @@ namespace BMCSDL.Controllers
             }
 
             return BadRequest();
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult> ListStudentsRegisterSubject([FromQuery]string SubjectId)
+        {
+            var data = await subjectService.GetListStudentsRegisterSubject(SubjectId);
+            if (data == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Có thể SubjectId"
+                });
+            }
+
+            return Ok(data);
+        }
+
+        [HttpPut("[action]")]
+        public async Task<ActionResult> UpdateMark([FromBody] UpdateMarkForm updateMark)
+        {
+            var response = await subjectService.UpdateMarkAsync(updateMark);
+
+            if (response == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Có thể id nào đó đã sai",
+                });
+            }
+
+            return Ok(new { 
+                StatusCode = 200,
+                StatusMessage = "Update successfully",
+                Info = response
+            });
         }
     }
 }
