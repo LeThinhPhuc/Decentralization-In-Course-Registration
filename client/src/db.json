@@ -1,0 +1,66 @@
+{
+  "students": [
+    {
+      "id": "1",
+      "MSSV": "47.01.104.101",
+      "Name": "Nguyễn Văn A",
+      "SDT": "123456789",
+      "Grade1": "09.5",
+      "Grade2": "08.6",
+      "Grade3": "09.6",
+      "AVG": ""
+    },
+    {
+      "id": "2",
+      "MSSV": "47.01.104.102",
+      "Name": "Nguyễn Văn B",
+      "SDT": "123456789",
+      "Grade1": 8,
+      "Grade2": 8,
+      "Grade3": 8,
+      "AVG": ""
+    },
+    {
+      "id": "3",
+      "MSSV": "47.01.104.103",
+      "Name": "Nguyễn Văn C",
+      "SDT": "123456789",
+      "Grade1": "6",
+      "Grade2": "7",
+      "Grade3": "1",
+      "AVG": ""
+    },
+    {
+      "id": "4",
+      "MSSV": "47.01.104.104",
+      "Name": "Nguyễn Văn D",
+      "SDT": "123456789",
+      "Grade1": 8,
+      "Grade2": 8,
+      "Grade3": 8,
+      "AVG": ""
+    },
+    {
+      "id": "5",
+      "MSSV": "47.01.104.105",
+      "Name": "Nguyễn Văn E",
+      "SDT": "123456789",
+      "Grade1": 8,
+      "Grade2": 8,
+      "Grade3": 8,
+      "AVG": ""
+    }
+  ],
+  "classes": [
+    {
+      "id": "1",
+      "name": "Bảo mật cơ sở dữ liệu",
+      "TC": "3",
+      "sdate": "",
+      "edate": "",
+      "maxslot": "50",
+      "Teacher": "Lê Thị B",
+      "Time": "2-5"
+    }
+  ]
+}
