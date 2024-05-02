@@ -12,12 +12,11 @@ namespace BMCSDL.Services.Implements
     public class TokenService : ITokenService
     {
         private readonly IConfiguration config;
-        private readonly IHttpContextAccessor httpContextAccessor;
+        //private readonly IHttpContextAccessor httpContextAccessor;
 
-        public TokenService(IConfiguration config,IHttpContextAccessor httpContextAccessor)
+        public TokenService(IConfiguration config)
         {
             this.config = config;
-            this.httpContextAccessor = httpContextAccessor;
         }
         public JwtSecurityToken GenerateJSONWebToken(Account account)
         {
@@ -26,10 +25,15 @@ namespace BMCSDL.Services.Implements
 
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Role,account.RoleId),
+                new Claim(ClaimTypes.NameIdentifier,account.UserName),
                 new Claim(ClaimTypes.Name,account.Person.FullName),
                 new Claim(ClaimTypes.NameIdentifier,account.Person.AccountId)
             };
+
+            foreach(var claim in account.RoleAccount) 
+            { 
+                claims.Add(new Claim(ClaimTypes.Role,claim.RoleId));
+            }
 
             var token = new JwtSecurityToken(
                     issuer: config["JWTSettings:issuer"],
@@ -43,15 +47,15 @@ namespace BMCSDL.Services.Implements
             //return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public void SetJWTCookie(string jwtToken)
-        {
-            var cookieOptions = new CookieOptions
-            {
-                HttpOnly = true,
-                Expires = DateTime.UtcNow.AddHours(3),
-            };
-            httpContextAccessor.HttpContext.Response.Cookies.Append("jwtCookie", jwtToken, cookieOptions);
-        }
+        //public void SetJWTCookie(string jwtToken)
+        //{
+        //    var cookieOptions = new CookieOptions
+        //    {
+        //        HttpOnly = true,
+        //        Expires = DateTime.UtcNow.AddHours(3),
+        //    };
+        //    httpContextAccessor.HttpContext.Response.Cookies.Append("jwtCookie", jwtToken, cookieOptions);
+        //}
 
     }
 }

@@ -7,6 +7,6 @@ namespace BMCSDL.Services.Interfaces
     {
         JwtSecurityToken GenerateJSONWebToken(Account account);
 
-        void SetJWTCookie(string jwtToken);
+        //void SetJWTCookie(string jwtToken);
     }
 }

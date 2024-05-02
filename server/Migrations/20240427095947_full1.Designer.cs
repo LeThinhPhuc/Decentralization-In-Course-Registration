@@ -311,7 +311,7 @@ namespace BMCSDL.Migrations
             modelBuilder.Entity("BMCSDL.Models.Student", b =>
                 {
                     b.HasOne("BMCSDL.Models.Person", "Person")
-                        .WithOne("Stuent")
+                        .WithOne("Student")
                         .HasForeignKey("BMCSDL.Models.Student", "PersonId");
 
                     b.Navigation("Person");
@@ -320,13 +320,13 @@ namespace BMCSDL.Migrations
             modelBuilder.Entity("BMCSDL.Models.StudentRegisteredSubject", b =>
                 {
                     b.HasOne("BMCSDL.Models.RegisteredSubject", "RegisteredSubject")
-                        .WithMany("Subjects")
+                        .WithMany("StudentRegisteredSubject")
                         .HasForeignKey("RegisteredSubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BMCSDL.Models.Student", "Student")
-                        .WithMany("RegisteredSubjects")
+                        .WithMany("StudentRegisteredSubject")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -390,7 +390,7 @@ namespace BMCSDL.Migrations
                 {
                     b.Navigation("GiaoVu");
 
-                    b.Navigation("Stuent");
+                    b.Navigation("Student");
 
                     b.Navigation("Teacher");
 
@@ -401,7 +401,7 @@ namespace BMCSDL.Migrations
 
             modelBuilder.Entity("BMCSDL.Models.RegisteredSubject", b =>
                 {
-                    b.Navigation("Subjects");
+                    b.Navigation("StudentRegisteredSubject");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Role", b =>
@@ -411,7 +411,7 @@ namespace BMCSDL.Migrations
 
             modelBuilder.Entity("BMCSDL.Models.Student", b =>
                 {
-                    b.Navigation("RegisteredSubjects");
+                    b.Navigation("StudentRegisteredSubject");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Subject", b =>
