@@ -27,7 +27,9 @@ namespace BMCSDL.Models
         public Time Time { get; set; }  
         public Teacher Teacher { get; set; }    
 
-        public float Mark { get; set; }    
+        public float Mark1 { get; set; }    
+        public float Mark2 { get; set; }    
+        public float Mark3 { get; set; }    
 
         public DateTime RegisterDate { get; set; }  
     }

@@ -1,8 +1,8 @@
 ﻿using BMCSDL.DTOs;
-using BMCSDL.Models;
 using BMCSDL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.NetworkInformation;
+using System.Net.WebSockets;
 
 namespace BMCSDL.Controllers
 {
@@ -24,7 +24,19 @@ namespace BMCSDL.Controllers
         }
 
         [HttpGet("[action]")]
+        public async Task<ActionResult> GetAllTeachersWithSchedule()
+        {
+            var teachersWithSchedule = await teacherService.GetAllTeachersWithSubjects();
 
+            if (teachersWithSchedule == null)
+            {
+                return NoContent();
+            }
+            return Ok(teachersWithSchedule);
+
+        }
+
+        [HttpGet("[action]")]
         public async Task<ActionResult> TeacherTeachingSchedule([FromQuery] string teacherId)
         {
             var teacherSchedule = await teacherService.GetTeacherTeachingSchelduleAsync(teacherId);
@@ -48,25 +60,10 @@ namespace BMCSDL.Controllers
             return Ok(teacher); 
         }
 
-        [HttpPost("[action]")]
-        public async Task<ActionResult> AddTeacherTime([FromBody] TeacherNewTimeDTO teacherTimeDTO)
-        {
-            var newTime = await teacherService.AddTeacherTimeAsync(teacherTimeDTO);
-
-            if(newTime == null)
-            {
-                return BadRequest();
-            }
-            return Ok(new
-            {
-                Status = "Add new time successfully",
-                NewTime = newTime
-            });
-
-        }
+        
 
         [HttpDelete("[action]")]
-        public async Task<ActionResult> DeleteTeacherTime([FromBody] TeacherNewTimeDTO teacherTimeDTO)
+        public async Task<ActionResult> DeleteTeacherTime([FromBody] NewScheduleDTO teacherTimeDTO)
         {
             var deletedTime = await teacherService.RemoveTeacherTimeAsync(teacherTimeDTO);
 
@@ -81,5 +78,6 @@ namespace BMCSDL.Controllers
             });
         }
 
+       
     }
 }

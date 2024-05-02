@@ -59,82 +59,70 @@ namespace BMCSDL.Services.Implements
 
         }
 
-        public async Task<object> AddTeacherTimeAsync(TeacherNewTimeDTO teacherTimeDTO)
+        public async Task<IEnumerable<object>> GetAllTeachersWithSubjects()
         {
+            var teachers = await context.Teacher
+               .Include(t => t.Person)
+               .ThenInclude(p => p.Faculty)
+               .Include(t => t.SubjectClass)
+               .ThenInclude(s => s.Subject)
+               .Include(t => t.SubjectClass)
+               .ThenInclude(s => s.Classroom)
+               .Include(t => t.SubjectClass)
+               .ThenInclude(s => s.Time)
+               .ToListAsync();
 
-            //check có bị trùng time không
-            //hiện tại do Time không bị đề lấn nhau nên giáo viên không bị trừng giờ
 
-            var isExistedTimeAndTeacher = await context.SubjectClass
-                .FirstOrDefaultAsync(sc => sc.TimeId == teacherTimeDTO.TimeId
-                && sc.TeacherId == teacherTimeDTO.TeacherId);
-
-
-            if (isExistedTimeAndTeacher != null)
+            if (teachers.Count() == 0)
             {
                 return null;
             }
 
-            //kiểm tra có trừng phòng và thời gian không
-            var isExistedTimeAndClassroom = await context.SubjectClass
-                .FirstOrDefaultAsync(sc => sc.ClassroomId == teacherTimeDTO.ClassRoomId 
-                && sc.TimeId == teacherTimeDTO.TimeId);
-
-            var newTime = new SubjectClass()
+            var dataToReturn = teachers.Select(t => new
             {
-                SubjectId = teacherTimeDTO.SubjectId,
-                ClassroomId = teacherTimeDTO.ClassRoomId,
-                TimeId = teacherTimeDTO.TimeId,
-                TeacherId  = teacherTimeDTO.TeacherId,  
-            };
-
-            context.SubjectClass.Add(newTime);
-            await context.SaveChangesAsync();
-
-            var time = context.SubjectClass
-                .Where(sc => 
-                sc.SubjectId == teacherTimeDTO.SubjectId 
-                && sc.ClassroomId == teacherTimeDTO.ClassRoomId
-                && sc.TimeId == teacherTimeDTO.TimeId
-                && sc.TeacherId == teacherTimeDTO.TeacherId)
-                .Include(sc => sc.Subject)
-                .Include (sc => sc.Classroom)   
-                .Include(sc => sc.Time)
-                .Include(sc => sc.Teacher)
-                .ThenInclude(t => t.Person)
-                .FirstOrDefault();
-
-            var dataToReturn = new
-            {
-                TeacherId = time.Teacher.TeacherId,
-                TeacherName = time.Teacher.Person.FullName,
-                newSchedule = new
+                TeacherId = t.TeacherId,
+                PersonInfo = new
                 {
-                    subject  = new
+                    FullName = t.Person.FullName,
+                    Gender = t.Person.Gender,
+                    PhoneNumber = t.Person.PhoneNumber,
+                    DateOfBirth = t.Person.DateOfBirth,
+                    Address = t.Person.Address,
+                },
+                Faculty = new
+                {
+                    FacultyId = t.Person.Faculty.FacultyId,
+                    FacultyName = t.Person.Faculty.FacultyName
+                },
+                Schedule = t.SubjectClass.Select(s => new
+                {
+                    Subject = new
                     {
-                        subjecId = time.Subject.SubjectId,
-                        subjectName = time.Subject.SubjectName,
+                        SubjectId = s.Subject.SubjectId,
+                        SubjectName = s.Subject.SubjectName,
                     },
-                    classroom = new
+                    Classroom = new
                     {
-                        classroomId = time.Classroom.ClassRoomId,
-                        classroomName = time.Classroom.ClassroomName
+                        ClassroomId = s.Classroom.ClassRoomId,
+                        ClassroomName = s.Classroom.ClassroomName,
                     },
-                    time = new
+                    Time = new
                     {
-                        timeId = time.Time.TimeId,
-                        timeName = time.Time.TimeName,
-                        DayOfWeek = time.Time.DayOfWeek,
-                        StartTime = time.Time.StartTime,
-                        EndTime = time.Time.EndTime,    
+                        TimeId = s.Time.TimeId,
+                        TimeName = s.Time.TimeName,
+                        StartTime = s.Time.StartTime,
+                        EndTime = s.Time.EndTime,
+                        DayOfWeek = s.Time.DayOfWeek,
                     }
-                }
-            };
+                })
+            }); ;
+
             return dataToReturn;
 
         }
 
-        public async Task<object> RemoveTeacherTimeAsync(TeacherNewTimeDTO teacherTimeDTO)
+
+        public async Task<object> RemoveTeacherTimeAsync(NewScheduleDTO teacherTimeDTO)
         {
             var isExistedTime = await context.SubjectClass
                 .Include(sc => sc.Subject)
@@ -269,5 +257,7 @@ namespace BMCSDL.Services.Implements
 
             return dataToReturn;
         }
+
+       
     }
 }

@@ -85,6 +85,26 @@ namespace BMCSDL.Controllers
             });
         }
 
+
+        [HttpPut("[action]")]
+        public async Task<ActionResult> OpenOrCloseSubject([FromBody] OpenCloseSubject isOpen)
+        {
+            var response = await subjectService.UpdateIsOpenAsync(isOpen);
+            if(response == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Có thể SubjectId sai"
+                }); ;
+            }
+            return Ok(new
+            {
+                StatusCode = 200,
+                StatusMessage = "Update successfully",
+                Response = response
+            });
+        }
+
         [HttpDelete("[action]")]
         public async Task<ActionResult> DeleteSubject([FromQuery]string subjectId)
         {

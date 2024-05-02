@@ -15,6 +15,7 @@ namespace BMCSDL.Services.Interfaces
         public Task<SubjectDTO> DeleteSubjectAsync(string subjectId);
 
         public Task<object> UpdateSubjectAsync(UpdateSubjectInfo subjectDTO);
+        public Task<object> UpdateIsOpenAsync(OpenCloseSubject subjectDTO);
 
         public Task<object> GetListStudentsRegisterSubject(string SubjectId);
 

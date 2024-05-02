@@ -71,7 +71,7 @@ namespace BMCSDL.Controllers
             {
                 return BadRequest(new
                 {
-                    Message = "Có thể môn đã đăng ký hoặc hết slot"
+                    Message = "Có thể môn đã đăng ký hoặc hết slot hoặc môn học không được mở"
                 });
             }
             

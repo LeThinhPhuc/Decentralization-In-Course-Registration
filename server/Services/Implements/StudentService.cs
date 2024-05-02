@@ -81,7 +81,9 @@ namespace BMCSDL.Services.Implements
                         ClassroomId = regisForm.ClassroomId,
                         TeacherId = regisForm.TeacherId,
                         TimeId = regisForm.TimeId,
-                        Mark = 0,
+                        Mark1 = 0,
+                        Mark2 = 0,
+                        Mark3 = 0,
                         RegisterDate = DateTime.Now,
                     };
 
@@ -169,8 +171,15 @@ namespace BMCSDL.Services.Implements
                     {
                         teacherId = s.Teacher.TeacherId,
                         teacherName = s.Teacher.Person.FullName,
+                    },
+                    marks = new
+                    {
+                        mark1 = s.Mark1,
+                        mark2 = s.Mark2,
+                        mark3 = s.Mark3,
                     }
                 })
+                
             };
             return studentToReturn ;
         }

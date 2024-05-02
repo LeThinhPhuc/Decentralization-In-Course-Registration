@@ -204,6 +204,7 @@ namespace BMCSDL.Services.Implements
                 isExistedSubject.FacultyId = subjectDTO.FacultyId;
             }
 
+
             context.Subject.Update(isExistedSubject);
 
             await context.SaveChangesAsync();
@@ -278,7 +279,9 @@ namespace BMCSDL.Services.Implements
                         EndTime = s.Time.EndTime,
                     },
 
-                    Mark = s.Mark
+                    Mark1 = s.Mark1,
+                    Mark2 = s.Mark2,
+                    Mark3 = s.Mark3
 
                 })
             };
@@ -301,12 +304,26 @@ namespace BMCSDL.Services.Implements
                 .ThenInclude(s => s.Person)
                 .FirstOrDefaultAsync();
 
-            if ( registeredSubjectOfStudent == null )
+            if (registeredSubjectOfStudent == null)
             {
                 return null;
             }
 
-            registeredSubjectOfStudent.Mark = updateMark.Mark;
+            if (!String.IsNullOrEmpty(registeredSubjectOfStudent.Mark1.ToString()))
+            {
+                registeredSubjectOfStudent.Mark1 = updateMark.Mark1;
+            }
+
+            if (!String.IsNullOrEmpty(registeredSubjectOfStudent.Mark2.ToString()))
+            {
+                registeredSubjectOfStudent.Mark2 = updateMark.Mark2;
+            }
+
+            if (!String.IsNullOrEmpty(registeredSubjectOfStudent.Mark3.ToString()))
+            {
+                registeredSubjectOfStudent.Mark3 = updateMark.Mark3;
+            }
+
             context.StudentRegisteredSubject.Update(registeredSubjectOfStudent);
             context.SaveChanges();
 
@@ -318,7 +335,40 @@ namespace BMCSDL.Services.Implements
                 SubjectId = updateMark.SubjectId,
                 ClassroomId = updateMark.ClassroomId,
                 Timeid = updateMark.TimeId,
-                Mark = updateMark.Mark               
+                Mark1 = updateMark.Mark1,
+                Mark2 = updateMark.Mark2,
+                Mark3 = updateMark.Mark3
+            };
+
+            return dataToReturn;
+        }
+
+        public async Task<object> UpdateIsOpenAsync(OpenCloseSubject subjectDTO)
+        {
+            var isExistedSubject = await context.Subject
+                .FirstOrDefaultAsync(s => s.SubjectId == subjectDTO.SubjectId);
+
+            if (isExistedSubject == null)
+            {
+                return null;
+            }
+
+            if(subjectDTO.isOpen == true)
+            {
+                isExistedSubject.isOpen = true;
+            }
+
+            else isExistedSubject.isOpen = false;
+
+            context.Subject.Update(isExistedSubject);
+
+            await context.SaveChangesAsync();
+
+            var dataToReturn = new
+            {
+                SubjectId = isExistedSubject.SubjectId,
+                SubjectName = isExistedSubject.SubjectName,
+                isOpen = isExistedSubject.isOpen == true ? "Đang mở" : "Đang đóng"
             };
 
             return dataToReturn;

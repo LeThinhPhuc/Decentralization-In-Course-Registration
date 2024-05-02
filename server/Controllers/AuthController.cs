@@ -52,7 +52,7 @@ namespace BMCSDL.Controllers
             {
                 return BadRequest(new
                 {
-                    Message = "Có thể sai FacultyId"
+                    Message = "Có thể sai FacultyId hoặc trùng usernam"
                 });
             }
 
