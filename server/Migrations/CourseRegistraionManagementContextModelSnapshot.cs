@@ -33,19 +33,50 @@ namespace BMCSDL.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("AccountId");
 
-                    b.HasIndex("RoleId")
+                    b.HasIndex("UserName")
                         .IsUnique()
-                        .HasFilter("[RoleId] IS NOT NULL");
+                        .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("Account");
+                });
+
+            modelBuilder.Entity("BMCSDL.Models.ClassTime", b =>
+                {
+                    b.Property<string>("ClassroomId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TimeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ClassroomId", "TimeId");
+
+                    b.HasIndex("TimeId");
+
+                    b.ToTable("ClassTime");
+                });
+
+            modelBuilder.Entity("BMCSDL.Models.Classroom", b =>
+                {
+                    b.Property<string>("ClassRoomId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ClassroomName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CurrentQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaxQuantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("ClassRoomId");
+
+                    b.ToTable("Classroom");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Faculty", b =>
@@ -118,22 +149,6 @@ namespace BMCSDL.Migrations
                     b.ToTable("Person");
                 });
 
-            modelBuilder.Entity("BMCSDL.Models.RegisteredSubject", b =>
-                {
-                    b.Property<string>("RegisteredSubjecId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("SubjectId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("RegisteredSubjecId");
-
-                    b.HasAlternateKey("SubjectId");
-
-                    b.ToTable("RegisteredSubject");
-                });
-
             modelBuilder.Entity("BMCSDL.Models.Role", b =>
                 {
                     b.Property<string>("RoleId")
@@ -145,6 +160,23 @@ namespace BMCSDL.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("Role");
+                });
+
+            modelBuilder.Entity("BMCSDL.Models.RoleAccount", b =>
+                {
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("AccountId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnOrder(1);
+
+                    b.HasKey("RoleId", "AccountId");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("RoleAccount");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Student", b =>
@@ -170,16 +202,43 @@ namespace BMCSDL.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasColumnOrder(0);
 
-                    b.Property<string>("RegisteredSubjectId")
+                    b.Property<string>("SubjectId")
                         .HasColumnType("nvarchar(450)")
                         .HasColumnOrder(1);
 
-                    b.Property<float>("Mark")
+                    b.Property<string>("ClassroomId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("TeacherId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnOrder(4);
+
+                    b.Property<string>("TimeId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnOrder(3);
+
+                    b.Property<float>("Mark1")
                         .HasColumnType("real");
 
-                    b.HasKey("StudentId", "RegisteredSubjectId");
+                    b.Property<float>("Mark2")
+                        .HasColumnType("real");
 
-                    b.HasIndex("RegisteredSubjectId");
+                    b.Property<float>("Mark3")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("StudentId", "SubjectId", "ClassroomId", "TeacherId", "TimeId");
+
+                    b.HasIndex("ClassroomId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.HasIndex("TimeId");
 
                     b.ToTable("StudentRegisteredSubject");
                 });
@@ -189,14 +248,14 @@ namespace BMCSDL.Migrations
                     b.Property<string>("SubjectId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Credits")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Credits")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("EndDay")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FacultyId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("StartDay")
                         .HasColumnType("datetime2");
@@ -204,9 +263,43 @@ namespace BMCSDL.Migrations
                     b.Property<string>("SubjectName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("isOpen")
+                        .HasColumnType("bit");
+
                     b.HasKey("SubjectId");
 
+                    b.HasIndex("FacultyId");
+
                     b.ToTable("Subject");
+                });
+
+            modelBuilder.Entity("BMCSDL.Models.SubjectClass", b =>
+                {
+                    b.Property<string>("SubjectId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("ClassroomId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("TimeId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("TeacherId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnOrder(3);
+
+                    b.HasKey("SubjectId", "ClassroomId", "TimeId", "TeacherId");
+
+                    b.HasIndex("ClassroomId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.HasIndex("TimeId");
+
+                    b.ToTable("SubjectClass");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Teacher", b =>
@@ -224,6 +317,43 @@ namespace BMCSDL.Migrations
                         .HasFilter("[PersonId] IS NOT NULL");
 
                     b.ToTable("Teacher");
+                });
+
+            modelBuilder.Entity("BMCSDL.Models.TeacherSubject", b =>
+                {
+                    b.Property<string>("SubjectId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TeacherId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("SubjectId", "TeacherId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("TeacherSubject");
+                });
+
+            modelBuilder.Entity("BMCSDL.Models.Time", b =>
+                {
+                    b.Property<string>("TimeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("DayOfWeek")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
+
+                    b.Property<string>("TimeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TimeId");
+
+                    b.ToTable("Time");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.TruongBoMon", b =>
@@ -260,13 +390,23 @@ namespace BMCSDL.Migrations
                     b.ToTable("TruongPhoKhoa");
                 });
 
-            modelBuilder.Entity("BMCSDL.Models.Account", b =>
+            modelBuilder.Entity("BMCSDL.Models.ClassTime", b =>
                 {
-                    b.HasOne("BMCSDL.Models.Role", "Role")
-                        .WithOne("Account")
-                        .HasForeignKey("BMCSDL.Models.Account", "RoleId");
+                    b.HasOne("BMCSDL.Models.Classroom", "Classroom")
+                        .WithMany("ClassTime")
+                        .HasForeignKey("ClassroomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Role");
+                    b.HasOne("BMCSDL.Models.Time", "Time")
+                        .WithMany("ClassTime")
+                        .HasForeignKey("TimeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Classroom");
+
+                    b.Navigation("Time");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.GiaoVu", b =>
@@ -294,21 +434,29 @@ namespace BMCSDL.Migrations
                     b.Navigation("Faculty");
                 });
 
-            modelBuilder.Entity("BMCSDL.Models.RegisteredSubject", b =>
+            modelBuilder.Entity("BMCSDL.Models.RoleAccount", b =>
                 {
-                    b.HasOne("BMCSDL.Models.Subject", "Subject")
-                        .WithOne("RegisteredSubject")
-                        .HasForeignKey("BMCSDL.Models.RegisteredSubject", "SubjectId")
+                    b.HasOne("BMCSDL.Models.Account", "Account")
+                        .WithMany("RoleAccount")
+                        .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Subject");
+                    b.HasOne("BMCSDL.Models.Role", "Role")
+                        .WithMany("RoleAccount")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Student", b =>
                 {
                     b.HasOne("BMCSDL.Models.Person", "Person")
-                        .WithOne("Stuent")
+                        .WithOne("Student")
                         .HasForeignKey("BMCSDL.Models.Student", "PersonId");
 
                     b.Navigation("Person");
@@ -316,32 +464,89 @@ namespace BMCSDL.Migrations
 
             modelBuilder.Entity("BMCSDL.Models.StudentRegisteredSubject", b =>
                 {
-                    b.HasOne("BMCSDL.Models.RegisteredSubject", "RegisteredSubject")
-                        .WithMany("Subjects")
-                        .HasForeignKey("RegisteredSubjectId")
+                    b.HasOne("BMCSDL.Models.Classroom", "Classroom")
+                        .WithMany("StudentRegisteredSubject")
+                        .HasForeignKey("ClassroomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BMCSDL.Models.Student", "Student")
-                        .WithMany("RegisteredSubjects")
+                        .WithMany("StudentRegisteredSubject")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("RegisteredSubject");
+                    b.HasOne("BMCSDL.Models.Subject", "Subject")
+                        .WithMany("StudentRegisteredSubject")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BMCSDL.Models.Teacher", "Teacher")
+                        .WithMany("StudentRegisteredSubject")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BMCSDL.Models.Time", "Time")
+                        .WithMany("StudentRegisteredSubject")
+                        .HasForeignKey("TimeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Classroom");
 
                     b.Navigation("Student");
+
+                    b.Navigation("Subject");
+
+                    b.Navigation("Teacher");
+
+                    b.Navigation("Time");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Subject", b =>
                 {
                     b.HasOne("BMCSDL.Models.Faculty", "Faculty")
                         .WithMany("Subject")
+                        .HasForeignKey("FacultyId");
+
+                    b.Navigation("Faculty");
+                });
+
+            modelBuilder.Entity("BMCSDL.Models.SubjectClass", b =>
+                {
+                    b.HasOne("BMCSDL.Models.Classroom", "Classroom")
+                        .WithMany("SubjectClass")
+                        .HasForeignKey("ClassroomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BMCSDL.Models.Subject", "Subject")
+                        .WithMany("SubjectClass")
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Faculty");
+                    b.HasOne("BMCSDL.Models.Teacher", "Teacher")
+                        .WithMany("SubjectClass")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BMCSDL.Models.Time", "Time")
+                        .WithMany("SubjectClass")
+                        .HasForeignKey("TimeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Classroom");
+
+                    b.Navigation("Subject");
+
+                    b.Navigation("Teacher");
+
+                    b.Navigation("Time");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Teacher", b =>
@@ -351,6 +556,25 @@ namespace BMCSDL.Migrations
                         .HasForeignKey("BMCSDL.Models.Teacher", "PersonId");
 
                     b.Navigation("Person");
+                });
+
+            modelBuilder.Entity("BMCSDL.Models.TeacherSubject", b =>
+                {
+                    b.HasOne("BMCSDL.Models.Subject", "Subject")
+                        .WithMany("TeacherSubject")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BMCSDL.Models.Teacher", "Teacher")
+                        .WithMany("TeacherSubject")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subject");
+
+                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.TruongBoMon", b =>
@@ -374,6 +598,17 @@ namespace BMCSDL.Migrations
             modelBuilder.Entity("BMCSDL.Models.Account", b =>
                 {
                     b.Navigation("Person");
+
+                    b.Navigation("RoleAccount");
+                });
+
+            modelBuilder.Entity("BMCSDL.Models.Classroom", b =>
+                {
+                    b.Navigation("ClassTime");
+
+                    b.Navigation("StudentRegisteredSubject");
+
+                    b.Navigation("SubjectClass");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Faculty", b =>
@@ -387,7 +622,7 @@ namespace BMCSDL.Migrations
                 {
                     b.Navigation("GiaoVu");
 
-                    b.Navigation("Stuent");
+                    b.Navigation("Student");
 
                     b.Navigation("Teacher");
 
@@ -396,24 +631,41 @@ namespace BMCSDL.Migrations
                     b.Navigation("TruongPhoKhoa");
                 });
 
-            modelBuilder.Entity("BMCSDL.Models.RegisteredSubject", b =>
-                {
-                    b.Navigation("Subjects");
-                });
-
             modelBuilder.Entity("BMCSDL.Models.Role", b =>
                 {
-                    b.Navigation("Account");
+                    b.Navigation("RoleAccount");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Student", b =>
                 {
-                    b.Navigation("RegisteredSubjects");
+                    b.Navigation("StudentRegisteredSubject");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Subject", b =>
                 {
-                    b.Navigation("RegisteredSubject");
+                    b.Navigation("StudentRegisteredSubject");
+
+                    b.Navigation("SubjectClass");
+
+                    b.Navigation("TeacherSubject");
+                });
+
+            modelBuilder.Entity("BMCSDL.Models.Teacher", b =>
+                {
+                    b.Navigation("StudentRegisteredSubject");
+
+                    b.Navigation("SubjectClass");
+
+                    b.Navigation("TeacherSubject");
+                });
+
+            modelBuilder.Entity("BMCSDL.Models.Time", b =>
+                {
+                    b.Navigation("ClassTime");
+
+                    b.Navigation("StudentRegisteredSubject");
+
+                    b.Navigation("SubjectClass");
                 });
 #pragma warning restore 612, 618
         }
