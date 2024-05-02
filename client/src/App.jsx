@@ -2,6 +2,7 @@ import { useState } from 'react'
 import ListAccount from './components/ListAccount/ListAccount'
 import CourseList from './components/HocPhan/ListHocPhan'
 import OpenCourses from './components/HocPhan/StudentListMon';
+import TeacherList from './components/DSGV&lich/dsgv';
 function App() {
   const data = [
     {
@@ -32,10 +33,13 @@ function App() {
     }
     // Thêm dữ liệu mẫu khác nếu cần
   ];
+  
 
   return (
     <div className="container mx-auto p-4">
-      <OpenCourses courses={data} />
+      {/* <OpenCourses courses={data} /> */}
+      {/* <TeacherSchedule/> */}
+      <TeacherList/>
     </div>
   )
 }
