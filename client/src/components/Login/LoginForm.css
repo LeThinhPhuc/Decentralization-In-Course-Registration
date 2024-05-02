@@ -1,0 +1,61 @@
+/* Đặt màu nền và font chữ cho toàn bộ trang */
+body {
+    background-color: #f4f4f4;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* Thiết kế cho form đăng nhập */
+  .login-form {
+    
+    background-color: #fff;
+    padding: 20px;
+    margin: 150px auto;
+    width: 500px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 420px;
+  }
+  
+  /* Thiết kế cho tiêu đề */
+  .login-form h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* Thiết kế cho các trường nhập liệu */
+  .login-form input[type='text'],
+  .login-form input[type='password'] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 30px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+  }
+  
+  /* Thiết kế cho nút đăng nhập */
+  .login-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #5c9bb8;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .login-form button:hover {
+    background-color: #4c66ae;
+  }
+  
+  /* Thiết kế cho các nút radio */
+  .login-form label {
+    margin-right: 10px;
+  }
+  
+  .login-form input[type='radio'] {
+    margin-right: 5px;
+  }
+  
+  .remember-me{
+    margin-top: 10px;
+  }
