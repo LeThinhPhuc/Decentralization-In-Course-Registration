@@ -48,20 +48,18 @@ namespace BMCSDL.Services.Implements
                 return null;
             }
 
-            
+            //check xem có lịc học trong subjectClass không
+            var subjectClass = await context.SubjectClass.FirstOrDefaultAsync(s =>
+            s.SubjectId == regisForm.SubjectId
+            && s.ClassroomId == regisForm.ClassroomId
+            && s.TimeId == regisForm.TimeId
+            && s.TeacherId == regisForm.TeacherId);
 
-            //cái này không cần cũng được
-            //var isRegisteredSubject2 = await context.StudentRegisteredSubject
-            //    .FirstOrDefaultAsync(e => e.StudentId == regisForm.StudentId 
-            //    && e.SubjectId == regisForm.SubjectId
-            //    && e.ClassroomId == regisForm.ClassroomId
-            //    && e.TeacherId == regisForm.TeacherId
-            //    && e.TimeId == regisForm.TimeId);
-
-            //if (isRegisteredSubject2 != null)
-            //{
-            //    return null;
-            //}
+            if(subjectClass == null)
+            {
+                return null;
+            }
+           
 
             await using var transaction = await context.Database.BeginTransactionAsync();
             try
@@ -132,7 +130,7 @@ namespace BMCSDL.Services.Implements
 
         public async Task<object> GetRegisteredSubjectsAsync(string studentId)
         {
-            var student = await context.Student
+            var student = await context.Student.Where(s => s.StudentId == studentId)
                 .Include(s => s.Person)
                 .Include(s => s.StudentRegisteredSubject)
                 .ThenInclude(s => s.Subject)

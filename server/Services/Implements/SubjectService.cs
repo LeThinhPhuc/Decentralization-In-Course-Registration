@@ -102,7 +102,16 @@ namespace BMCSDL.Services.Implements
 
         public async Task<IEnumerable<object>> GetllAllOpenedSubjectsAsync()
         {
-            var subjects = await context.Subject.Include(s => s.Faculty).Where(s => s.isOpen == true).ToListAsync();
+            var subjects = await context.Subject
+                .Where(s => s.isOpen == true)
+                .Include(s => s.SubjectClass)
+                .ThenInclude(s => s.Classroom)
+                .Include(s => s.SubjectClass)
+                .ThenInclude(s => s.Time)
+                .Include(s => s.SubjectClass)
+                .ThenInclude(s => s.Teacher)
+                .ThenInclude(t => t.Person)
+                .Include(s => s.Faculty).ToListAsync();
 
             if (!subjects.Any())
             {
@@ -121,7 +130,29 @@ namespace BMCSDL.Services.Implements
                 {
                     FacultyId = s.Faculty.FacultyId,
                     FacultyName = s.Faculty.FacultyName
-                }
+                },
+
+                Schedule = s.SubjectClass.Select(s => new
+                {
+                    Classroom = new
+                    {
+                        ClassroomId = s.Classroom.ClassRoomId,
+                        ClassroomName = s.Classroom.ClassroomName
+                    },
+
+                    Time = new
+                    {
+                        TimeId = s.Time.TimeId,
+                        DayOk = s.Time.DayOfWeek,
+                        StartTIme = s.Time.StartTime,
+                        EndTim = s.Time.EndTime
+                    },
+                    Teacher = new
+                    {
+                        TeacherId = s.Teacher.TeacherId,
+                        TeacherName = s.Teacher.Person.FullName
+                    }
+                })
             });
 
 
@@ -228,7 +259,9 @@ namespace BMCSDL.Services.Implements
             return null;
         }
 
-        public async Task<object> GetListStudentsRegisterSubject(string SubjectId)
+       
+
+        public async Task<object> GetSudentRegisteredSubjectBySubjectIdAsync(string SubjectId)
         {
             var subject = await context
                 .Subject.Where(s => s.SubjectId == SubjectId)
@@ -287,9 +320,6 @@ namespace BMCSDL.Services.Implements
             };
 
             return dataToReturn;
-
-
-
         }
 
         public async Task<object> UpdateMarkAsync(UpdateMarkForm updateMark)
@@ -373,5 +403,6 @@ namespace BMCSDL.Services.Implements
 
             return dataToReturn;
         }
+
     }
 }

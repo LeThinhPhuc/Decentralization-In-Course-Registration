@@ -20,6 +20,7 @@ namespace BMCSDL.Services.Implements
             //check có bị trùng time không
             //hiện tại do Time không bị đề lấn nhau nên giáo viên không bị trừng giờ
 
+
             var isExistedTimeAndTeacher = await context.SubjectClass
                 .FirstOrDefaultAsync(sc => sc.TimeId == newSchedule.TimeId
                 && sc.TeacherId == newSchedule.TeacherId);
@@ -29,6 +30,15 @@ namespace BMCSDL.Services.Implements
             {
                 return null;
             }
+
+            //kiểm tra xe môn học có mở không 
+            var isOpenSubject = await context.Subject.FirstOrDefaultAsync(s => s.SubjectId == newSchedule.SubjectId && s.isOpen == true);
+
+            if(isOpenSubject == null)
+            {
+                return null;
+            }
+
 
             //kiểm tra có trừng phòng và thời gian không
             var isExistedTimeAndClassroom = await context.SubjectClass
@@ -96,7 +106,9 @@ namespace BMCSDL.Services.Implements
                 .Include(s => s.Subject)
                 .Include(s => s.Time)
                 .Include(s => s.Classroom)
-                .Include(s => s.Teacher).ToListAsync();
+                .Include(s => s.Teacher)
+                .ThenInclude(t => t.Person)
+                .ToListAsync();
 
             if(schedules.Count() == 0)
             {
@@ -125,6 +137,11 @@ namespace BMCSDL.Services.Implements
                     DayOfWeek = s.Time.DayOfWeek,
                     StartTime = s.Time.StartTime,
                     EndTime = s.Time.EndTime,
+                },
+                Teacher = new
+                {
+                    TeacherId = s.Teacher.TeacherId,
+                    TeacherName = s.Teacher.Person.FullName
                 }
             });
 
@@ -141,10 +158,69 @@ namespace BMCSDL.Services.Implements
             throw new NotImplementedException();
         }
 
-        public Task<object> RemoveScheduleAsync(NewScheduleDTO teacherTimeDTO)
+        public async Task<object> RemoveScheduleAsync(NewScheduleDTO deleteSchedule)
         {
-            throw new NotImplementedException();
+            var schedule = await context.SubjectClass
+                .Where(s => 
+                s.SubjectId == deleteSchedule.SubjectId
+                && s.ClassroomId == deleteSchedule.ClassRoomId
+                && s.TimeId == deleteSchedule.TimeId
+                && s.TeacherId == deleteSchedule.TeacherId)
+                .Include(s => s.Subject)
+                .Include(s => s.Classroom)
+                .Include(s => s.Time)
+                .Include(s => s.Teacher)
+                .ThenInclude(t => t.Person)
+                .FirstOrDefaultAsync();
+
+
+            if(schedule == null)
+            {
+                return null;
+            }
+
+            //khi xóa thời schedule này thì student này đăng kí lịch này sẽ xóa theo
+            var registerdSubject = await context.StudentRegisteredSubject.Where(s =>
+                s.SubjectId == deleteSchedule.SubjectId
+                && s.ClassroomId == deleteSchedule.ClassRoomId
+                && s.TimeId == deleteSchedule.TimeId
+                && s.TeacherId == deleteSchedule.TeacherId).ToListAsync();
+
+            context.StudentRegisteredSubject.RemoveRange(registerdSubject);
+
+            context.SubjectClass.Remove(schedule);
+
+            context.SaveChanges();
+
+            var dataToReturn = new
+            {
+                Subject = new
+                {
+                    SubjectId = schedule.Subject.SubjectId,
+                    SubjectName = schedule.Subject.SubjectName,
+                },
+                Classroom = new
+                {
+                    ClassroomId = schedule.Classroom.ClassRoomId,
+                    ClassroomName = schedule.Classroom.ClassroomName,   
+                },
+                Time = new
+                {
+                    TimeId = schedule.Time.TimeId,
+                    DayOfWeek = schedule.Time.DayOfWeek,
+                    StartTime = schedule.Time.StartTime,
+                    EndTime = schedule.Time.EndTime,
+                },
+                Teacher = new
+                {
+                    TeacherId = schedule.Teacher.TeacherId,
+                    TeacherName = schedule.Teacher.Person.FullName
+                }
+            };
+
+            return dataToReturn;
         }
+
 
         public Task<object> UpdateScheduleAsync(ScheduleDTO newInfoSchedule)
         {

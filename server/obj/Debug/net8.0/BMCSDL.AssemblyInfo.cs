@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BMCSDL")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c60efde68f3635d9156968c6f1b666d4dc4837bf")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+05c37adc68998a1277ce64609377571d9b1fe3eb")]
 [assembly: System.Reflection.AssemblyProductAttribute("BMCSDL")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BMCSDL")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

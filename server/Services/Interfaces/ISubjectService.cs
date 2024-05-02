@@ -17,9 +17,10 @@ namespace BMCSDL.Services.Interfaces
         public Task<object> UpdateSubjectAsync(UpdateSubjectInfo subjectDTO);
         public Task<object> UpdateIsOpenAsync(OpenCloseSubject subjectDTO);
 
-        public Task<object> GetListStudentsRegisterSubject(string SubjectId);
+        public Task<object> GetSudentRegisteredSubjectBySubjectIdAsync(string SubjectId);
 
         public Task<object> UpdateMarkAsync(UpdateMarkForm updateMark);
+
 
     }
 }

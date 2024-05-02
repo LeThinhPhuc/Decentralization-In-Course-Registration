@@ -124,7 +124,7 @@ namespace BMCSDL.Controllers
         [HttpGet("[action]")]
         public async Task<ActionResult> ListStudentsRegisterSubject([FromQuery]string SubjectId)
         {
-            var data = await subjectService.GetListStudentsRegisterSubject(SubjectId);
+            var data = await subjectService.GetSudentRegisteredSubjectBySubjectIdAsync(SubjectId);
             if (data == null)
             {
                 return BadRequest(new
@@ -155,5 +155,22 @@ namespace BMCSDL.Controllers
                 Info = response
             });
         }
+
+
+        //[HttpGet("[action]")]
+        //public async Task<ActionResult> GetStudentRegisteredSubjectBySubjectId([FromQuery]string subjectId)
+        //{
+        //    var response = await subjectService.GetSudentRegisteredSubjectBySubjectIdAsync(subjectId);
+
+        //    if(response == null)
+        //    {
+        //        BadRequest(new
+        //        {
+        //            Message = "Có thể subjectId sai"
+        //        }); ;
+        //    }
+
+        //    return Ok(response);
+        //}
     }
 }

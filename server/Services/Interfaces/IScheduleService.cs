@@ -8,7 +8,7 @@ namespace BMCSDL.Services.Interfaces
         Task<IEnumerable<object>> GetAllScheduleWithTeacherAsync();
 
         Task<object> AddNewScheduleAsync(NewScheduleDTO newSchedule);
-        Task<object> RemoveScheduleAsync(NewScheduleDTO newSchedule);
+        Task<object> RemoveScheduleAsync(NewScheduleDTO deleteSchedule);
         Task<object> UpdateScheduleAsync(ScheduleDTO newInfoSchedule);
     }
 }

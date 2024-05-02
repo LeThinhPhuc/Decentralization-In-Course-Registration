@@ -32,14 +32,36 @@ namespace BMCSDL.Controllers
 
             if (newTime == null)
             {
-                return BadRequest();
+                return BadRequest(new
+                {
+                    Message = "Có thể id nào đó đã sai hoặc đã có schedule rồi hoặc môn học chưa dược mở"
+                });
             }
             return Ok(new
             {
-                Status = "Add new time successfully",
+                Status = "Add new schedule successfully",
                 NewTime = newTime
             });
 
+        }
+
+        [HttpDelete("[action]")]
+        public async Task<ActionResult> DeleteSchedule([FromBody] NewScheduleDTO deleteSchedule)
+        {
+            var response = await scheduleService.RemoveScheduleAsync(deleteSchedule);
+            if(response == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Có thể id nào đó đã sai"
+                });
+            }
+
+            return Ok(new
+            {
+                Status = "Delete schedule successfully",
+                DeletedTime = response
+            });
         }
     }
 }
