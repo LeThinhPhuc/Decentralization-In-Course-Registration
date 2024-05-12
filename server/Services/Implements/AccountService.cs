@@ -109,43 +109,42 @@ namespace BMCSDL.Services.Implements
                 return null;
             }
 
-            //kiểm tra có nhập đủ không tin không
-            if(String.IsNullOrEmpty(userRegisterDTO.UserName))
-            {
-                return null;
-            }
+            ////kiểm tra có nhập đủ không tin không
+            //if(String.IsNullOrEmpty(userRegisterDTO.UserName))
+            //{
+            //    return null;
+            //}
 
-            if (String.IsNullOrEmpty(userRegisterDTO.Password))
-            {
-                return null;
-            }
+            //if (String.IsNullOrEmpty(userRegisterDTO.Password))
+            //{
+            //    return null;
+            //}
 
-            if (String.IsNullOrEmpty(userRegisterDTO.PersonInfo.FullName))
-            {
-                return null;
-            }
+            //if (String.IsNullOrEmpty(userRegisterDTO.PersonInfo.FullName))
+            //{
+            //    return null;
+            //}
 
 
-            if (String.IsNullOrEmpty(userRegisterDTO.PersonInfo.Gender))
-            {
-                return null;
-            }
+            //if (String.IsNullOrEmpty(userRegisterDTO.PersonInfo.Gender))
+            //{
+            //    return null;
+            //}
 
-            if (String.IsNullOrEmpty(userRegisterDTO.PersonInfo.PhoneNumber))
-            {
-                return null;
-            }
+            //if (String.IsNullOrEmpty(userRegisterDTO.PersonInfo.PhoneNumber))
+            //{
+            //    return null;
+            //}
 
-            if (userRegisterDTO.PersonInfo.DateOfBirth == null || userRegisterDTO.PersonInfo.DateOfBirth == default(DateTime))
-            {
-                return null;
-            }
+            //if (userRegisterDTO.PersonInfo.DateOfBirth == null || userRegisterDTO.PersonInfo.DateOfBirth == default(DateTime))
+            //{
+            //    return null;
+            //}
 
-            if (String.IsNullOrEmpty(userRegisterDTO.PersonInfo.Address))
-            {
-                return null;
-            }
-
+            //if (String.IsNullOrEmpty(userRegisterDTO.PersonInfo.Address))
+            //{
+            //    return null;
+            //}
 
 
 

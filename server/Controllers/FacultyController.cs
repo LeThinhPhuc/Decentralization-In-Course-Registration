@@ -35,7 +35,7 @@ namespace BMCSDL.Controllers
             {
                 return BadRequest(new
                 {
-                    Message = "Có thể facultyId không đúng"
+                    Message = "Có thể facultyId không đúng hoặc không có sinh viên thuộc khoa này"
                 });
             }
 
@@ -67,7 +67,7 @@ namespace BMCSDL.Controllers
             {
                 return BadRequest(new
                 {
-                    Message = "Có thẻ facultyId bị sai"
+                    Message = "Có thẻ facultyId bị sai hoặc không có student thuộc khoa này"
                 });
             }
             return Ok(accounts);
