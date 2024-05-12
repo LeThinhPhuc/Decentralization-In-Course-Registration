@@ -6,5 +6,7 @@ namespace BMCSDL.Services.Interfaces
     {
         Task<RoleAccountDTO2> AssignRoleAsync(RoleAccountDTO2 RoleAccountDTO);
         Task<RoleAccountDTO2> RemoveRoleAsync(RoleAccountDTO2 RoleAccountDTO);
+
+        Task<IEnumerable<object>> GetAllRolesAsync();
     }
 }

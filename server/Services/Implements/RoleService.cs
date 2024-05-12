@@ -31,6 +31,24 @@ namespace BMCSDL.Services.Implements
 
             return RoleAccountDTO;
         }
+
+        public async Task<IEnumerable<object>> GetAllRolesAsync()
+        {
+            var roles =  await context.Role.ToListAsync();
+
+            if(roles == null || roles.Count == 0) {
+                return null;
+            }
+
+            var dataToReturn = roles.Select(r => new
+            {
+                roleId = r.RoleId,
+                roleName = r.RoleName,
+            });
+
+            return dataToReturn;
+        }
+
         public async Task<RoleAccountDTO2> RemoveRoleAsync(RoleAccountDTO2 RoleAccountDTO)
         {
 

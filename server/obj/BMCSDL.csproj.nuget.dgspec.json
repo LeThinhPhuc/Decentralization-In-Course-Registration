@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "D:\\HK2 Nam3\\BMCSDL\\Decentralization-In-Course-Registration\\server\\BMCSDL.csproj": {}
+    "C:\\Users\\tuand\\Desktop\\Project BMCSDL\\Decentralization-In-Course-Registration\\server\\BMCSDL.csproj": {}
   },
   "projects": {
-    "D:\\HK2 Nam3\\BMCSDL\\Decentralization-In-Course-Registration\\server\\BMCSDL.csproj": {
+    "C:\\Users\\tuand\\Desktop\\Project BMCSDL\\Decentralization-In-Course-Registration\\server\\BMCSDL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\HK2 Nam3\\BMCSDL\\Decentralization-In-Course-Registration\\server\\BMCSDL.csproj",
+        "projectUniqueName": "C:\\Users\\tuand\\Desktop\\Project BMCSDL\\Decentralization-In-Course-Registration\\server\\BMCSDL.csproj",
         "projectName": "BMCSDL",
-        "projectPath": "D:\\HK2 Nam3\\BMCSDL\\Decentralization-In-Course-Registration\\server\\BMCSDL.csproj",
-        "packagesPath": "C:\\Users\\phucl\\.nuget\\packages\\",
-        "outputPath": "D:\\HK2 Nam3\\BMCSDL\\Decentralization-In-Course-Registration\\server\\obj\\",
+        "projectPath": "C:\\Users\\tuand\\Desktop\\Project BMCSDL\\Decentralization-In-Course-Registration\\server\\BMCSDL.csproj",
+        "packagesPath": "C:\\Users\\tuand\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\tuand\\Desktop\\Project BMCSDL\\Decentralization-In-Course-Registration\\server\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\phucl\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\tuand\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -32,11 +38,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -99,7 +100,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

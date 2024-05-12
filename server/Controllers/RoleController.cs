@@ -14,6 +14,19 @@ namespace BMCSDL.Controllers
             this.roleService = roleService;
         }
 
+        [HttpGet("[action]")]
+        public async Task<ActionResult> GetAllRoles()
+        {
+            var roles =  await roleService.GetAllRolesAsync();
+
+            if(roles == null)
+            {
+                return NoContent();
+            }
+            return Ok(roles);
+
+        }
+
 
         [HttpPost("[action]")]
         public async Task<ActionResult> AssignRole([FromBody] RoleAccountDTO2 roleDTO)

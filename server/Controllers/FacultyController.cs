@@ -1,4 +1,5 @@
 ﻿using BMCSDL.DTOs;
+using BMCSDL.Models;
 using BMCSDL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,6 +26,52 @@ namespace BMCSDL.Controllers
             return Ok(faculties);
         }
 
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult> GetAllStudentsByFacultyId(string facultyId)
+        {
+            var students = await facultyService.GetAllStudentsByFacultyId(facultyId);
+            if(students == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Có thể facultyId không đúng"
+                });
+            }
+
+            return Ok(students);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult> GetAllTeachersByFacultyId(string facultyId)
+        {
+            var teachers = await facultyService.GetAllTeachersByFacultyId(facultyId);
+            if (teachers == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Có thể facultyId không đúng hoặc không có giáo viên thuộc khoa này"
+                });
+            }
+
+            return Ok(teachers);
+
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult> GetAllAccountsByFacultyId([FromQuery]string facultyId)
+        {
+            var accounts = await facultyService.GetAllAccountsByFacultyIdAsync(facultyId);
+            
+            if(accounts == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Có thẻ facultyId bị sai"
+                });
+            }
+            return Ok(accounts);
+        }
 
         [HttpGet("[action]")]
         public async Task<ActionResult> GetAllFacultiesWithSubject()
@@ -116,5 +163,7 @@ namespace BMCSDL.Controllers
                 Response = response
             });
         }
+
+
     }
 }
