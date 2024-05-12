@@ -415,4 +415,7 @@ C:\Users\qd041\OneDrive\Desktop\QLSV\Decentralization-In-Course-Registration\ser
 C:\Users\qd041\OneDrive\Desktop\QLSV\Decentralization-In-Course-Registration\server\obj\Debug\net8.0\BMCSDL.pdb
 C:\Users\qd041\OneDrive\Desktop\QLSV\Decentralization-In-Course-Registration\server\obj\Debug\net8.0\BMCSDL.genruntimeconfig.cache
 C:\Users\qd041\OneDrive\Desktop\QLSV\Decentralization-In-Course-Registration\server\obj\Debug\net8.0\ref\BMCSDL.dll
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
