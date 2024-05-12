@@ -31,7 +31,7 @@ namespace BMCSDL.Services.Implements
                 && s.isOpen == true);
 
             //nếu bằng null thì môn học không được mở hoặc không có môn học
-            if(isOpen == null)
+            if (isOpen == null)
             {
                 return null;
             }
@@ -43,7 +43,7 @@ namespace BMCSDL.Services.Implements
                 .FirstOrDefaultAsync(e => e.StudentId == regisForm.StudentId
                 && e.SubjectId == regisForm.SubjectId);
 
-            if(isRegisteredSubject != null) 
+            if (isRegisteredSubject != null)
             {
                 return null;
             }
@@ -55,11 +55,11 @@ namespace BMCSDL.Services.Implements
             && s.TimeId == regisForm.TimeId
             && s.TeacherId == regisForm.TeacherId);
 
-            if(subjectClass == null)
+            if (subjectClass == null)
             {
                 return null;
             }
-           
+
 
             await using var transaction = await context.Database.BeginTransactionAsync();
             try
@@ -68,7 +68,7 @@ namespace BMCSDL.Services.Implements
                 var room = await context.Classroom
                     .FirstOrDefaultAsync(c => c.ClassRoomId == regisForm.ClassroomId);
 
-                if(room != null && room.CurrentQuantity < room.MaxQuantity)
+                if (room != null && room.CurrentQuantity < room.MaxQuantity)
                 {
                     room.CurrentQuantity++;
                     context.Classroom.Update(room);
@@ -103,7 +103,7 @@ namespace BMCSDL.Services.Implements
                 return null;
             }
 
-            
+
         }
 
         public async Task<SubjectDTO> RemoveRegisteredSubjectAsync(RegistrationSubjectFormDTO regisForm)
@@ -122,11 +122,11 @@ namespace BMCSDL.Services.Implements
             var subject = await context.Subject.FirstOrDefaultAsync(s => s.SubjectId == regisForm.SubjectId);
 
             var subjectDTO = mapper.Map<SubjectDTO>(subject);
-            return subjectDTO;  
+            return subjectDTO;
 
         }
 
-      
+
 
         public async Task<object> GetRegisteredSubjectsAsync(string studentId)
         {
@@ -148,22 +148,28 @@ namespace BMCSDL.Services.Implements
                 StudentName = student.Person.FullName,
                 registeredSubjects = student.StudentRegisteredSubject.Select(s => new
                 {
-                    subject = new 
+                    subject = new
                     {
                         subjectId = s.Subject.SubjectId,
-                        subject = s.Subject.SubjectName
+                        subjectName = s.Subject.SubjectName
                     },
                     classroom = new
                     {
                         classRoomId = s.Classroom.ClassRoomId,
                         classroomName = s.Classroom.ClassroomName
                     },
+
+                    date = new
+                    {
+                        startDay = s.Subject.StartDay,
+                        endDay = s.Subject.EndDay,  
+                    },
                     time = new
                     {
                         timeId = s.Time.TimeId,
                         dayOfWeek = s.Time.DayOfWeek,
                         startTime = s.Time.StartTime,
-                        endTime = s.Time.EndTime,   
+                        endTime = s.Time.EndTime,
                     },
                     teacher = new
                     {
@@ -177,9 +183,9 @@ namespace BMCSDL.Services.Implements
                         mark3 = s.Mark3,
                     }
                 })
-                
+
             };
-            return studentToReturn ;
+            return studentToReturn;
         }
 
         public async Task<IEnumerable<StudentDTO>> GetAllStudents()
@@ -200,7 +206,7 @@ namespace BMCSDL.Services.Implements
                 .ThenInclude(p => p.Faculty)
                 .FirstOrDefaultAsync(s => s.StudentId == studentId);
 
-            if(student == null)
+            if (student == null)
             {
                 return null;
             }
@@ -214,7 +220,7 @@ namespace BMCSDL.Services.Implements
                     gender = student.Person.Gender,
                     phoneNumber = student.Person.PhoneNumber,
                     dateOfBirth = student.Person.DateOfBirth,
-                    address = student.Person.Address,   
+                    address = student.Person.Address,
                 },
                 faculty = new
                 {
@@ -229,12 +235,12 @@ namespace BMCSDL.Services.Implements
 
         public async Task<object> UpdateStudentByAsync(UpdateStudentInfo studentInfo)
         {
-            if(!String.IsNullOrEmpty(studentInfo.PersonInfo.FacultyId))
-            { 
+            if (!String.IsNullOrEmpty(studentInfo.PersonInfo.FacultyId))
+            {
                 var isExistedFaculty = await context.Faculty
                     .FirstOrDefaultAsync(f => f.FacultyId == studentInfo.PersonInfo.FacultyId);
 
-                if(isExistedFaculty == null)
+                if (isExistedFaculty == null)
                 {
                     return null;
                 }
@@ -244,7 +250,7 @@ namespace BMCSDL.Services.Implements
             var isExistedStudent = await context.Student
                 .FirstOrDefaultAsync(s => s.StudentId == studentInfo.PersonInfo.PersonId);
 
-            if(isExistedStudent == null)
+            if (isExistedStudent == null)
             {
                 return null;
             }
@@ -253,35 +259,35 @@ namespace BMCSDL.Services.Implements
             {
                 var student = await context.Student.Include(s => s.Person)
                 .FirstOrDefaultAsync(s => s.StudentId == studentInfo.PersonInfo.PersonId);
-                
+
                 if (!String.IsNullOrEmpty(studentInfo.PersonInfo.FullName))
                 {
-                    student.Person.FullName = studentInfo.PersonInfo.FullName;  
+                    student.Person.FullName = studentInfo.PersonInfo.FullName;
                 }
 
-                if(!string.IsNullOrEmpty(studentInfo.PersonInfo.Gender))
+                if (!string.IsNullOrEmpty(studentInfo.PersonInfo.Gender))
                 {
                     student.Person.Gender = studentInfo.PersonInfo.Gender;
                 }
 
-                if(!string.IsNullOrEmpty(studentInfo.PersonInfo.PhoneNumber))
+                if (!string.IsNullOrEmpty(studentInfo.PersonInfo.PhoneNumber))
                 {
                     student.Person.PhoneNumber = studentInfo.PersonInfo.PhoneNumber;
                 }
 
-                if(studentInfo.PersonInfo.DateOfBirth != default(DateTime))
+                if (studentInfo.PersonInfo.DateOfBirth != default(DateTime))
                 {
-                    student.Person.DateOfBirth = studentInfo.PersonInfo.DateOfBirth;    
+                    student.Person.DateOfBirth = studentInfo.PersonInfo.DateOfBirth;
                 }
 
-                if(!String.IsNullOrEmpty(studentInfo.PersonInfo.Address))
+                if (!String.IsNullOrEmpty(studentInfo.PersonInfo.Address))
                 {
-                    student.Person.Address = studentInfo.PersonInfo.Address;    
+                    student.Person.Address = studentInfo.PersonInfo.Address;
                 }
 
-                if(!String.IsNullOrEmpty(studentInfo.PersonInfo.FacultyId))
+                if (!String.IsNullOrEmpty(studentInfo.PersonInfo.FacultyId))
                 {
-                    student.Person.FacultyId = studentInfo.PersonInfo.FacultyId;   
+                    student.Person.FacultyId = studentInfo.PersonInfo.FacultyId;
                 }
 
                 context.Update(student);
