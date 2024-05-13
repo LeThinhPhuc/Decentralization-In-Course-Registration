@@ -283,7 +283,6 @@ C:\Users\qd041\OneDrive\Desktop\QLSV\Decentralization-In-Course-Registration\ser
 C:\Users\qd041\OneDrive\Desktop\QLSV\Decentralization-In-Course-Registration\server\bin\Debug\net8.0\BMCSDL.runtimeconfig.json
 C:\Users\qd041\OneDrive\Desktop\QLSV\Decentralization-In-Course-Registration\server\bin\Debug\net8.0\BMCSDL.dll
 C:\Users\qd041\OneDrive\Desktop\QLSV\Decentralization-In-Course-Registration\server\bin\Debug\net8.0\BMCSDL.pdb
-C:\Users\qd041\OneDrive\Desktop\QLSV\Decentralization-In-Course-Registration\server\bin\Debug\net8.0\AutoMapper.dll
 C:\Users\qd041\OneDrive\Desktop\QLSV\Decentralization-In-Course-Registration\server\bin\Debug\net8.0\Azure.Core.dll
 C:\Users\qd041\OneDrive\Desktop\QLSV\Decentralization-In-Course-Registration\server\bin\Debug\net8.0\Azure.Identity.dll
 C:\Users\qd041\OneDrive\Desktop\QLSV\Decentralization-In-Course-Registration\server\bin\Debug\net8.0\Humanizer.dll
@@ -415,7 +414,4 @@ C:\Users\qd041\OneDrive\Desktop\QLSV\Decentralization-In-Course-Registration\ser
 C:\Users\qd041\OneDrive\Desktop\QLSV\Decentralization-In-Course-Registration\server\obj\Debug\net8.0\BMCSDL.pdb
 C:\Users\qd041\OneDrive\Desktop\QLSV\Decentralization-In-Course-Registration\server\obj\Debug\net8.0\BMCSDL.genruntimeconfig.cache
 C:\Users\qd041\OneDrive\Desktop\QLSV\Decentralization-In-Course-Registration\server\obj\Debug\net8.0\ref\BMCSDL.dll
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
 >>>>>>> Stashed changes
