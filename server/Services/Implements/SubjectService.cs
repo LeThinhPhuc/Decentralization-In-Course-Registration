@@ -48,7 +48,7 @@ namespace BMCSDL.Services.Implements
         }
 
 
-        public async Task<IEnumerable<SubjectDTO3>> GetllAllSubjectsWithScheduleAsync()
+        public async Task<IEnumerable<object>> GetllAllSubjectsWithScheduleAsync()
         {
 
             var subjects = await context.Subject
@@ -62,26 +62,29 @@ namespace BMCSDL.Services.Implements
                 .ThenInclude(s => s.Time)
                 .ToListAsync();
 
-            var subjectDTO2 = subjects.Select(s => new SubjectDTO3()
+            var subjectDTO2 = subjects.Select(s => new 
             {
                 SubjectId = s.SubjectId,
                 SubjectName = s.SubjectName,
                 Credits = s.Credits,
                 StartDay = s.StartDay,
                 EndDay = s.EndDay,
+                isOpen = s.isOpen,
                 Faculty = new FacultyDTO()
                 {
                     FacultyId = s.Faculty.FacultyId,
                     FacultyName = s.Faculty.FacultyName
                 },
-                SubjectClass = s.SubjectClass.Select(s => new SubjectClassDTO2()
+                SubjectClass = s.SubjectClass.Select(s => new 
                 {
-                    Classroom = new ClassroomDTO()
+                    Classroom = new 
                     {
                         ClassRoomId = s.Classroom.ClassRoomId,
                         ClassroomName = s.Classroom.ClassroomName,
+                        CurrentQuantity = s.Classroom.CurrentQuantity,
+                        MaxQuantity = s.Classroom.MaxQuantity
                     },
-                    Time = new TimeDTO()
+                    Time = new 
                     {
                         TimeId = s.Time.TimeId,
                         TimeName = s.Time.TimeName,
@@ -137,7 +140,9 @@ namespace BMCSDL.Services.Implements
                     Classroom = new
                     {
                         ClassroomId = s.Classroom.ClassRoomId,
-                        ClassroomName = s.Classroom.ClassroomName
+                        ClassroomName = s.Classroom.ClassroomName,
+                        CurrentQuantity = s.Classroom.CurrentQuantity,
+                        MaxQuantity = s.Classroom.MaxQuantity
                     },
 
                     Time = new
@@ -212,7 +217,10 @@ namespace BMCSDL.Services.Implements
                 return null;
             }
 
-
+            if(subjectDTO.isOpen == true || subjectDTO.isOpen == false)
+            {
+                isExistedSubject.isOpen = subjectDTO.isOpen;
+            }
 
             if (!string.IsNullOrEmpty(subjectDTO.SubjectName))
             {

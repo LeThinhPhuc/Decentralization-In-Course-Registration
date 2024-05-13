@@ -31,9 +31,9 @@ namespace BMCSDL.Services.Implements
                 return null;
             }
 
-            //kiểm tra xe môn học có mở không 
+            //kiểm tra xem môn học có mở không 
             var isOpenSubject = await context.Subject.FirstOrDefaultAsync(s => s.SubjectId == newSchedule.SubjectId && s.isOpen == true);
-
+            //nếu môn học không mở
             if(isOpenSubject == null)
             {
                 return null;
