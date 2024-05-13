@@ -232,12 +232,17 @@ namespace BMCSDL.Services.Implements
                     Address = t.Person.Address,
                     FacultyId = t.Person.FacultyId
                 },
-                RoomTimeSubject = t.SubjectClass.Select(s => new RoomTimeSubject()
+                RoomTimeSubject = t.SubjectClass.Select(s => new 
                 {
                     Classroom = new ClassroomDTO()
                     {
                         ClassRoomId = s.Classroom.ClassRoomId,
                         ClassroomName = s.Classroom.ClassroomName,
+                    },
+                    date = new
+                    {
+                        startDay = s.Subject.StartDay,
+                        endDay = s.Subject.EndDay,
                     },
                     Time = new TimeDTO()
                     {
