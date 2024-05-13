@@ -64,6 +64,19 @@
       "Teacher": "Lê Thị B",
       "sTime": "2",
       "eTime": "2"
+    },
+    {
+      "id": "d0ce",
+      "classID": "a",
+      "name": "a",
+      "TC": "a",
+      "sdate": "a",
+      "edate": "a",
+      "minslot": "a",
+      "maxslot": "a",
+      "Teacher": "a",
+      "sTime": "a",
+      "eTime": "a"
     }
   ]
 }

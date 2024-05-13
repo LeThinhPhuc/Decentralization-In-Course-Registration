@@ -5,8 +5,9 @@ import AccountManage from "./components/AccountManage/AccountManage";
 import { AppProvider } from "./contexts/AccountContext";
 import TeachingSchedule from "./components/TeachingSchedule/TeachingSchedule";
 import { Routes, Route, Router } from "react-router-dom";
-import RegisterJubject from './components/HocPhan/final';
-import TeacherList from './components/DSGV&lich/dsgv';
+import RegisterJubject from "./components/HocPhan/final";
+import TeacherList from "./components/DSGV&lich/dsgv";
+import ListClass from "./components/ListClass";
 
 function App() {
   return (
@@ -23,13 +24,13 @@ function App() {
     // </AppProvider>
     // // <ChangeInfo/>
 
-
     <AppProvider>
       {/* <Router> */}
-      <Routes>
+      {/* <Routes>
         <Route exact path="/" element={<AccountManage />} />
         <Route exact path="/teacher/:id" element={<TeachingSchedule />} />
-      </Routes>
+      </Routes> */}
+      <ListClass />
       {/* </Router> */}
     </AppProvider>
   );

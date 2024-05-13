@@ -141,7 +141,7 @@ namespace BMCSDL
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+           // app.UseHttpsRedirection();
 
             #region Use CORS
             app.UseCors(builder =>
