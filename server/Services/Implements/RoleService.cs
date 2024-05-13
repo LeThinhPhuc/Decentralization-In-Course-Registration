@@ -37,10 +37,16 @@ namespace BMCSDL.Services.Implements
 
         public async Task<IEnumerable<object>> GetAllRolesAsync()
         {
+<<<<<<< HEAD
             var roles = await context.Role.ToListAsync();
 
             if (roles == null || roles.Count == 0)
             {
+=======
+            var roles =  await context.Role.ToListAsync();
+
+            if(roles == null || roles.Count == 0) {
+>>>>>>> bdbb170 (first)
                 return null;
             }
 

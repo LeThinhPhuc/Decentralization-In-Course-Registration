@@ -81,6 +81,10 @@ namespace BMCSDL.Services.Implements
                     {
                         ClassRoomId = s.Classroom.ClassRoomId,
                         ClassroomName = s.Classroom.ClassroomName,
+<<<<<<< HEAD
+=======
+                        CurrentQuantity = s.Classroom.CurrentQuantity,
+>>>>>>> bdbb170 (first)
                         MaxQuantity = s.Classroom.MaxQuantity
                     },
                     Time = new 
@@ -141,6 +145,11 @@ namespace BMCSDL.Services.Implements
                     {
                         ClassroomId = s.Classroom.ClassRoomId,
                         ClassroomName = s.Classroom.ClassroomName,
+<<<<<<< HEAD
+=======
+                        CurrentQuantity = s.Classroom.CurrentQuantity,
+                        MaxQuantity = s.Classroom.MaxQuantity
+>>>>>>> bdbb170 (first)
                     },
                     Time = new
                     {

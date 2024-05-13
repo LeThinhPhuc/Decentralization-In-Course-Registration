@@ -26,11 +26,10 @@ function App() {
 
     <AppProvider>
       {/* <Router> */}
-      {/* <Routes>
+      <Routes>
         <Route exact path="/" element={<AccountManage />} />
         <Route exact path="/teacher/:id" element={<TeachingSchedule />} />
-      </Routes> */}
-      <ListClass />
+      </Routes>
       {/* </Router> */}
     </AppProvider>
   );

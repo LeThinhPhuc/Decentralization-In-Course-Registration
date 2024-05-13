@@ -1,4 +1,4 @@
-//import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { useContext, useState, useEffect } from "react";
 import { AccountContext } from "../../../contexts/AccountContext";
 import uuid4 from "uuid4";

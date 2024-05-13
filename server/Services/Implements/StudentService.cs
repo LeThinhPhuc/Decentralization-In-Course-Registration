@@ -74,9 +74,13 @@ namespace BMCSDL.Services.Implements
                 var room = await context.Classroom
                     .FirstOrDefaultAsync(c => c.ClassRoomId == regisForm.ClassroomId);
 
+<<<<<<< HEAD
 
 
                 if (room != null && subjectClass.CurrentQuantity < room.MaxQuantity)
+=======
+                if (room != null && room.CurrentQuantity < room.MaxQuantity)
+>>>>>>> bdbb170 (first)
                 {
                     subjectClass.CurrentQuantity++;
                     context.SubjectClass.Update(subjectClass);
@@ -223,6 +227,17 @@ namespace BMCSDL.Services.Implements
                     throw;
                 }
             }
+<<<<<<< HEAD
+=======
+
+            context.StudentRegisteredSubject.Remove(registeredSubject);
+            await context.SaveChangesAsync();
+            var subject = await context.Subject.FirstOrDefaultAsync(s => s.SubjectId == regisForm.SubjectId);
+
+            var subjectDTO = mapper.Map<SubjectDTO>(subject);
+            return subjectDTO;
+
+>>>>>>> bdbb170 (first)
         }
 
 
@@ -261,7 +276,11 @@ namespace BMCSDL.Services.Implements
                     date = new
                     {
                         startDay = s.Subject.StartDay,
+<<<<<<< HEAD
                         endDay = s.Subject.EndDay,
+=======
+                        endDay = s.Subject.EndDay,  
+>>>>>>> bdbb170 (first)
                     },
                     time = new
                     {
