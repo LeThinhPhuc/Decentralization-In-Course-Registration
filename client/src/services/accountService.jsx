@@ -1,6 +1,6 @@
 import axios from 'axios'
 const accountService = {
-    getAll: () => axios.create({
+    getAll: (id) => axios.create({
         baseURL: "http://localhost:5146/",
         timeout: 5000,
         headers:{
@@ -8,7 +8,7 @@ const accountService = {
             "Access-Control-Allow-Headers": "*",
             Accept: "application/x-www-form-urlencoded, text/plain",
         }
-    }).get("api/Auth/GetAllAccounts"),
+    }).get(`api/Faculty/GetAllAccountsByFacultyId?facultyId=${id}`),
     createAccount: (infor) =>axios.create({
         baseURL: "http://localhost:5146/",
         timeout: 5000,

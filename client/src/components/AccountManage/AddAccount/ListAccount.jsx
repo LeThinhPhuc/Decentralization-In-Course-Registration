@@ -133,11 +133,11 @@ const AddAccount = () =>{
                 >
                   <option>Role</option>
 
-                  <option>Truong Pho Khoa</option>
-                  <option>Truong Bo Mon</option>
-                  <option>Giao Vu</option>
-                  <option>Giao Vien</option>
-                  <option>Sinh Vien</option>
+                  <option value="Truong Pho Khoa">Trưởng Phó Khoa</option>
+                  <option value="Truong Bo Mon">Trưởng Bộ Môn</option>
+                  <option value="Giao Vu">Giáo Vụ</option>
+                  <option value="Giao Vien">Giáo Viên</option>
+                  <option value="Sinh Vien">Sinh Viên</option>
 
                 </select>
               </div>
