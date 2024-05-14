@@ -11,5 +11,6 @@ namespace BMCSDL.Services.Interfaces
 
         Task<UserRegisterDTO> RegisterAsync(UserRegisterDTO userRegisterDTO);
 
+        Task<object> DeleteAccountAsync(string accountId);
     }
 }

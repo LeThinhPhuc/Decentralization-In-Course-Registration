@@ -59,6 +59,27 @@ namespace BMCSDL.Controllers
             return Ok(user);
         }
 
+
+        [HttpDelete("[action]")]
+        public async Task<ActionResult> DeleteAccount([FromBody] string accountId)
+        {
+            var deleteAccount = await accountService.DeleteAccountAsync(accountId);
+
+            if(deleteAccount == null )
+            {
+                return BadRequest(new
+                {
+                    Message = "Có thể sai accountId"
+                });
+            }
+
+            return Ok(new
+            {
+                Message = "Delete successfully",
+                Response = deleteAccount
+            });
+        }
+
         //[HttpPost("[action]")]
         //public async Task<ActionResult> LoginSQLSV([FromBody] LoginDTO account)
         //{
