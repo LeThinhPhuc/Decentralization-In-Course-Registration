@@ -61,7 +61,7 @@ namespace BMCSDL.Controllers
 
 
         [HttpDelete("[action]")]
-        public async Task<ActionResult> DeleteAccount([FromBody] string accountId)
+        public async Task<ActionResult> DeleteAccount([FromQuery] string accountId)
         {
             var deleteAccount = await accountService.DeleteAccountAsync(accountId);
 

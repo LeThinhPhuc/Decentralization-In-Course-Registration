@@ -48,12 +48,18 @@ namespace BMCSDL.Services.Implements
                 return null;
             }
 
-            //check xem có lịc học trong subjectClass không
-            var subjectClass = await context.SubjectClass.FirstOrDefaultAsync(s =>
+            //check xem có lịch học trong subjectClass không
+            var subjectClass = await context.SubjectClass.Where(s =>
             s.SubjectId == regisForm.SubjectId
             && s.ClassroomId == regisForm.ClassroomId
             && s.TimeId == regisForm.TimeId
-            && s.TeacherId == regisForm.TeacherId);
+            && s.TeacherId == regisForm.TeacherId)
+                .Include(s => s.Classroom)
+                .Include(s => s.Subject)
+                .Include(s => s.Time)
+                .Include(s => s.Teacher)
+                .ThenInclude(t => t.Person)
+                .FirstOrDefaultAsync();
 
             if (subjectClass == null)
             {
@@ -68,10 +74,12 @@ namespace BMCSDL.Services.Implements
                 var room = await context.Classroom
                     .FirstOrDefaultAsync(c => c.ClassRoomId == regisForm.ClassroomId);
 
-                if (room != null && room.CurrentQuantity < room.MaxQuantity)
+
+
+                if (room != null && subjectClass.CurrentQuantity < room.MaxQuantity)
                 {
-                    room.CurrentQuantity++;
-                    context.Classroom.Update(room);
+                    subjectClass.CurrentQuantity++;
+                    context.SubjectClass.Update(subjectClass);
                     var newRegistrationSubject = new StudentRegisteredSubject()
                     {
                         StudentId = regisForm.StudentId,
@@ -87,9 +95,34 @@ namespace BMCSDL.Services.Implements
 
                     context.StudentRegisteredSubject.Add(newRegistrationSubject);
                     context.SaveChanges();
-                    var subject = await context.Subject.FirstOrDefaultAsync(s => s.SubjectId == regisForm.SubjectId);
                     await transaction.CommitAsync();
-                    return mapper.Map<SubjectDTO>(subject);
+
+                    return new
+                    {
+                        subject = new
+                        {
+                            subjectId = subjectClass.Subject.SubjectId,
+                            subjectName = subjectClass.Subject.SubjectName
+                        },
+                        time = new
+                        {
+                            time = subjectClass.Time.TimeId,
+                            StartTime = subjectClass.Time.StartTime,
+                            EndTime = subjectClass.Time.EndTime,
+                        },
+                        teacher = new
+                        {
+                            teacherId = subjectClass.Teacher.TeacherId,
+                            teacherName = subjectClass.Teacher.Person.FullName
+                        },
+                        classroom = new
+                        {
+                            ClassroomId = subjectClass.Classroom.ClassRoomId,
+                            ClassroomName = subjectClass.Classroom.ClassroomName,
+                            MaxQuantity = subjectClass.Classroom.MaxQuantity,
+                        },
+                        CurrentSlot = subjectClass.CurrentQuantity
+                    };
                 }
                 else
                 {
@@ -106,24 +139,90 @@ namespace BMCSDL.Services.Implements
 
         }
 
-        public async Task<SubjectDTO> RemoveRegisteredSubjectAsync(RegistrationSubjectFormDTO regisForm)
+        public async Task<object> RemoveRegisteredSubjectAsync(RegistrationSubjectFormDTO regisForm)
         {
-            var registeredSubject = await context
-                .StudentRegisteredSubject
-                .FirstOrDefaultAsync(s => s.StudentId == regisForm.StudentId && s.SubjectId == regisForm.SubjectId);
-
-            if (registeredSubject == null)
+            using (var transaction = await context.Database.BeginTransactionAsync())
             {
-                return null;
+                try
+                {
+                    // Kiểm tra học sinh có học môn đó không
+                    var registeredSubject = await context
+                        .StudentRegisteredSubject
+                        .Where(s => s.StudentId == regisForm.StudentId && s.SubjectId == regisForm.SubjectId)
+                        .FirstOrDefaultAsync();
+
+                    if (registeredSubject == null)
+                    {
+                        return null;
+                    }
+
+                    // Tiếp theo, update schedule học phần đó trừ 1 slot
+                    var subjectClass = await context.SubjectClass.Where(s =>
+            s.SubjectId == regisForm.SubjectId
+            && s.ClassroomId == regisForm.ClassroomId
+            && s.TimeId == regisForm.TimeId
+            && s.TeacherId == regisForm.TeacherId)
+                .Include(s => s.Classroom)
+                .Include(s => s.Subject)
+                .Include(s => s.Time)
+                .Include(s => s.Teacher)
+                .ThenInclude(t => t.Person)
+                .FirstOrDefaultAsync();
+
+                    if (subjectClass == null)
+                    {
+                        return null;
+                    }
+
+                    // Giảm số lượng hiện tại
+                    subjectClass.CurrentQuantity--;
+                    context.SubjectClass.Update(subjectClass);
+
+                    // Xóa đăng ký học phần của học sinh
+                    context.StudentRegisteredSubject.Remove(registeredSubject);
+
+                    // Lưu thay đổi
+                    await context.SaveChangesAsync();
+
+                    // Commit transaction
+                    await transaction.CommitAsync();
+
+
+
+                    return new
+                    {
+                        subject = new
+                        {
+                            subjectId = subjectClass.Subject.SubjectId,
+                            subjectName = subjectClass.Subject.SubjectName
+                        },
+                        time = new
+                        {
+                            time = subjectClass.Time.TimeId,
+                            StartTime = subjectClass.Time.StartTime,
+                            EndTime = subjectClass.Time.EndTime,
+                        },
+                        teacher = new
+                        {
+                            teacherId = subjectClass.Teacher.TeacherId,
+                            teacherName = subjectClass.Teacher.Person.FullName
+                        },
+                        classroom = new
+                        {
+                            ClassroomId = subjectClass.Classroom.ClassRoomId,
+                            ClassroomName = subjectClass.Classroom.ClassroomName,
+                            MaxQuantity = subjectClass.Classroom.MaxQuantity,
+                        },
+                        CurrentQuantity = subjectClass.CurrentQuantity
+                    };
+                }
+                catch
+                {
+                    // Rollback transaction nếu có lỗi xảy ra
+                    await transaction.RollbackAsync();
+                    throw;
+                }
             }
-
-            context.StudentRegisteredSubject.Remove(registeredSubject);
-            await context.SaveChangesAsync();
-            var subject = await context.Subject.FirstOrDefaultAsync(s => s.SubjectId == regisForm.SubjectId);
-
-            var subjectDTO = mapper.Map<SubjectDTO>(subject);
-            return subjectDTO;
-
         }
 
 
@@ -162,7 +261,7 @@ namespace BMCSDL.Services.Implements
                     date = new
                     {
                         startDay = s.Subject.StartDay,
-                        endDay = s.Subject.EndDay,  
+                        endDay = s.Subject.EndDay,
                     },
                     time = new
                     {

@@ -91,7 +91,10 @@ namespace BMCSDL.Controllers
             var deletingSubject = await studentService.RemoveRegisteredSubjectAsync(regisForm);
             if (deletingSubject == null)
             {
-                return BadRequest();
+                return BadRequest(new
+                {
+                    Message = "Có thể sinh viên chưa đăng kí môn học hoặc id sai"
+                });
             }
             return Ok(new
             {

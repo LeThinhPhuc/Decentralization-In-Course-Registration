@@ -142,6 +142,11 @@ namespace BMCSDL.Services.Implements
                 {
                     TeacherId = s.Teacher.TeacherId,
                     TeacherName = s.Teacher.Person.FullName
+                },
+                Quantity = new
+                {
+                    CurrentQuanity = s.CurrentQuantity,
+                    MaxQuantity = s.Classroom.MaxQuantity
                 }
             });
 

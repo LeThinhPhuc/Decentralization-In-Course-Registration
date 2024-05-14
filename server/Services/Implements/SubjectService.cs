@@ -81,7 +81,6 @@ namespace BMCSDL.Services.Implements
                     {
                         ClassRoomId = s.Classroom.ClassRoomId,
                         ClassroomName = s.Classroom.ClassroomName,
-                        CurrentQuantity = s.Classroom.CurrentQuantity,
                         MaxQuantity = s.Classroom.MaxQuantity
                     },
                     Time = new 
@@ -116,6 +115,7 @@ namespace BMCSDL.Services.Implements
                 .ThenInclude(t => t.Person)
                 .Include(s => s.Faculty).ToListAsync();
 
+            
             if (!subjects.Any())
             {
                 return null;
@@ -141,10 +141,7 @@ namespace BMCSDL.Services.Implements
                     {
                         ClassroomId = s.Classroom.ClassRoomId,
                         ClassroomName = s.Classroom.ClassroomName,
-                        CurrentQuantity = s.Classroom.CurrentQuantity,
-                        MaxQuantity = s.Classroom.MaxQuantity
                     },
-
                     Time = new
                     {
                         TimeId = s.Time.TimeId,
@@ -156,6 +153,11 @@ namespace BMCSDL.Services.Implements
                     {
                         TeacherId = s.Teacher.TeacherId,
                         TeacherName = s.Teacher.Person.FullName
+                    },
+                    Slot = new
+                    {
+                        CurrentQuantity = s.CurrentQuantity,
+                        MaxQuantity = s.Classroom.MaxQuantity
                     }
                 })
             });

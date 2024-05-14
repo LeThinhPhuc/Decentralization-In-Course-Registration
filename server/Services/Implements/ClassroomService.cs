@@ -30,7 +30,6 @@ namespace BMCSDL.Services.Implements
             {
                 ClassRoomId = classroomId,  
                 ClassroomName = newClassRoom.ClassroomName,
-                CurrentQuantity = newClassRoom.CurrentQuantity, 
                 MaxQuantity = newClassRoom.MaxQuantity, 
             };
 
@@ -41,7 +40,6 @@ namespace BMCSDL.Services.Implements
             {
                 ClassroomId = classroomId,
                 ClassroomName = newClassRoom.ClassroomName,
-                CurrentQuantity = newClassRoom.CurrentQuantity, 
                 MaxQuantity = newClassRoom.MaxQuantity
             };
 
@@ -55,7 +53,6 @@ namespace BMCSDL.Services.Implements
             var dataToReturn = classrooms.Select(x => new { 
                 ClassroomId = x.ClassRoomId,
                 ClassroomName = x.ClassroomName,
-                CurrentQuantity = x.CurrentQuantity,
                 MaxQuantity = x.MaxQuantity,
             });
 
@@ -79,7 +76,6 @@ namespace BMCSDL.Services.Implements
             {
                 ClassroomId = ClassroomId,
                 ClassroomName = isExistedClassroom.ClassroomName,
-                CurrentQuantity = isExistedClassroom.CurrentQuantity,
                 MaxQuantity = isExistedClassroom.MaxQuantity
             };
         }
@@ -111,10 +107,6 @@ namespace BMCSDL.Services.Implements
                 classroom.MaxQuantity = newInfoClassroom.MaxQuantity;
             }
 
-            if(!String.IsNullOrEmpty(newInfoClassroom.CurrentQuantity.ToString()))
-            {
-                classroom.CurrentQuantity = newInfoClassroom.CurrentQuantity;
-            }
 
 
             context.Classroom.Update(classroom);

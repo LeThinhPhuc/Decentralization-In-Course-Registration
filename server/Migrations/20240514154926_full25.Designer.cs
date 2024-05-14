@@ -4,6 +4,7 @@ using BMCSDL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BMCSDL.Migrations
 {
     [DbContext(typeof(CourseRegistraionManagementContext))]
-    partial class CourseRegistraionManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20240514154926_full25")]
+    partial class full25
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,6 +70,9 @@ namespace BMCSDL.Migrations
 
                     b.Property<string>("ClassroomName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CurrentQuantity")
+                        .HasColumnType("int");
 
                     b.Property<int>("MaxQuantity")
                         .HasColumnType("int");
