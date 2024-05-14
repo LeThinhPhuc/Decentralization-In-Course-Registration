@@ -71,5 +71,12 @@ namespace BMCSDL.Controllers
                 response = response
             });
         }
+
+
+        public async Task<ActionResult> UpdateAccountRoles([FromBody] UpdateAccountRoles accountRoles)
+        {
+            var response  = await roleService.UpdateAccountRolesAsync(accountRoles);
+            return Ok();
+        }
     }
 }

@@ -5,6 +5,7 @@ using BMCSDL.Models;
 using BMCSDL.ReturnModels;
 using BMCSDL.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.WebSockets;
 using System.Security.Cryptography;
@@ -242,5 +243,20 @@ namespace BMCSDL.Services.Implements
             return userRegisterDTO;
         }
 
+        public async Task<object> DeleteAccountAsync(string accountId)
+        {
+            Account account =  await context.Account.FirstOrDefaultAsync(a => a.AccountId == accountId);
+
+            if(account == null)
+            {
+                return null;
+            }
+
+            return new
+            {
+                AccountId = account.AccountId,
+                UserName = account.UserName
+            };
+        }
     }
 }
