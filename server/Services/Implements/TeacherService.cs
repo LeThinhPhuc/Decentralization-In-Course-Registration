@@ -238,7 +238,6 @@ namespace BMCSDL.Services.Implements
                     {
                         ClassRoomId = s.Classroom.ClassRoomId,
                         ClassroomName = s.Classroom.ClassroomName,
-                        CurrentQuantity = s.Classroom.CurrentQuantity,
                         MaxQuantity = s.Classroom.MaxQuantity
                     },
                     Time = new TimeDTO()

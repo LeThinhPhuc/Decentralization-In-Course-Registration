@@ -17,6 +17,8 @@ namespace BMCSDL.Models
         [Key, Column(Order = 3)]
         public string TeacherId { get; set; }   
 
+        public int CurrentQuantity { get; set; }
+
         public Subject Subject { get; set; }
         public Classroom Classroom { get; set; }
         public Time Time { get; set; }  

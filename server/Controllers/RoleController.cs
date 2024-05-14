@@ -72,12 +72,20 @@ namespace BMCSDL.Controllers
             });
         }
 
-        [HttpPut("[action]")]
+        [HttpPost("[action]")]
 
         public async Task<ActionResult> UpdateAccountRoles([FromBody] UpdateAccountRoles accountRoles)
         {
             var response  = await roleService.UpdateAccountRolesAsync(accountRoles);
-            return Ok();
+
+            if(response == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Có thể accountId không tồn tại"
+                });
+            }
+            return Ok(response);
         }
     }
 }
