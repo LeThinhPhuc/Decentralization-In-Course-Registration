@@ -72,6 +72,7 @@ namespace BMCSDL.Controllers
             });
         }
 
+        [HttpPut("[action]")]
 
         public async Task<ActionResult> UpdateAccountRoles([FromBody] UpdateAccountRoles accountRoles)
         {
