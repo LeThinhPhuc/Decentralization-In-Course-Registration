@@ -21,11 +21,13 @@ const ListSubject = () => {
   };
   const handleRegister = async (course) => {
     try {
-      console.log({studentId: "e95b6ed8-b38f-4186-ba40-26eb27d62a06", 
-        subjectId: course.subjectId ,
-        classroomId: course.classroomId,
-        teacherId: course.teacherId,
-        timeId: course.timeId});
+      console.log({
+      studentId: "e95b6ed8-b38f-4186-ba40-26eb27d62a06", 
+      subjectId: course.subjectId ,
+      classroomId: course.schedule[0].classroom.classroomId,
+      teacherId: course.schedule[0].teacher.teacherId,
+      timeId: course.schedule[0].time.timeId
+    });
       const response = await fetch("http://localhost:5146/api/Student/RegisterSubject", {
         method: 'POST',
         headers: {

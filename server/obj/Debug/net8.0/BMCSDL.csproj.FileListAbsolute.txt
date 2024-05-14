@@ -540,7 +540,6 @@ D:\DuyTan\source\repos\Decentralization-In-Course-Registration\server\obj\Debug\
 D:\DuyTan\source\repos\Decentralization-In-Course-Registration\server\obj\Debug\net8.0\BMCSDL.csproj.CoreCompileInputs.cache
 D:\DuyTan\source\repos\Decentralization-In-Course-Registration\server\obj\Debug\net8.0\BMCSDL.MvcApplicationPartsAssemblyInfo.cs
 D:\DuyTan\source\repos\Decentralization-In-Course-Registration\server\obj\Debug\net8.0\BMCSDL.MvcApplicationPartsAssemblyInfo.cache
-D:\DuyTan\source\repos\Decentralization-In-Course-Registration\server\obj\Debug\net8.0\BMCSDL.sourcelink.json
 D:\DuyTan\source\repos\Decentralization-In-Course-Registration\server\obj\Debug\net8.0\staticwebassets.build.json
 D:\DuyTan\source\repos\Decentralization-In-Course-Registration\server\obj\Debug\net8.0\staticwebassets.development.json
 D:\DuyTan\source\repos\Decentralization-In-Course-Registration\server\obj\Debug\net8.0\staticwebassets\msbuild.BMCSDL.Microsoft.AspNetCore.StaticWebAssets.props

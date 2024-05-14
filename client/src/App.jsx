@@ -7,7 +7,6 @@ import { AppProvider } from './contexts/AccountContext';
 import TeachingSchedule from './components/TeachingSchedule/TeachingSchedule';
 import { Routes, Route, Router } from "react-router-dom";
 import TeacherList from './components/DSGV&lich/dsgv';
-import ListSubject from './components/HocPhan/ListSubject';
 import RegisterJubject from './components/HocPhan/axios';
 
 
