@@ -8,5 +8,8 @@ namespace BMCSDL.Services.Interfaces
         Task<RoleAccountDTO2> RemoveRoleAsync(RoleAccountDTO2 RoleAccountDTO);
 
         Task<IEnumerable<object>> GetAllRolesAsync();
+
+        Task<object> UpdateRoleAsync(UpdateRoleDTO updateRole);
+
     }
 }

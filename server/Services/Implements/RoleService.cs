@@ -66,5 +66,28 @@ namespace BMCSDL.Services.Implements
             return null;
         }
 
+        public async Task<object> UpdateRoleAsync(UpdateRoleDTO updateRole)
+        {
+            var role = await context.Role
+                .FirstOrDefaultAsync(r => r.RoleId == updateRole.RoleId);
+
+            if (role == null)
+            {
+                return null;
+            }
+
+
+            if (!String.IsNullOrEmpty(updateRole.RoleName))
+            {
+                role.RoleName = updateRole.RoleName;
+            }
+            else return null;
+
+            context.Role.Update(role);
+            context.SaveChanges();
+
+            return updateRole;
+        }
+
     }
 }

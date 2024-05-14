@@ -51,5 +51,25 @@ namespace BMCSDL.Controllers
 
             return Ok(roleDTO);
         }
+
+        [HttpPut("[action]")]
+        public async Task<ActionResult> UpdateRole([FromBody] UpdateRoleDTO updateRole)
+        {
+
+            var response = await roleService.UpdateRoleAsync(updateRole);
+            if(response == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Có thể roleId sai hoặc roleName bị trống"
+                });
+            }
+
+            return Ok(new
+            {
+                Message = "Update Successfully",
+                response = response
+            });
+        }
     }
 }

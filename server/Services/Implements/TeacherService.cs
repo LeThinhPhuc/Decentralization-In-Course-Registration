@@ -234,15 +234,12 @@ namespace BMCSDL.Services.Implements
                 },
                 RoomTimeSubject = t.SubjectClass.Select(s => new 
                 {
-                    Classroom = new ClassroomDTO()
+                    Classroom = new 
                     {
                         ClassRoomId = s.Classroom.ClassRoomId,
                         ClassroomName = s.Classroom.ClassroomName,
-                    },
-                    date = new
-                    {
-                        startDay = s.Subject.StartDay,
-                        endDay = s.Subject.EndDay,
+                        CurrentQuantity = s.Classroom.CurrentQuantity,
+                        MaxQuantity = s.Classroom.MaxQuantity
                     },
                     Time = new TimeDTO()
                     {
@@ -252,10 +249,13 @@ namespace BMCSDL.Services.Implements
                         StartTime = s.Time.StartTime,
                         EndTime = s.Time.EndTime
                     },
-                    Subject = new SubjectDTO2()
+                    Subject = new 
                     {
                         SubjectId = s.Subject.SubjectId,
                         SubjectName = s.Subject.SubjectName,
+                        Credits = s.Subject.Credits,
+                        startDay = s.Subject.StartDay,
+                        endDay = s.Subject.EndDay,
                     }
                 }).ToList()
             };

@@ -10,5 +10,6 @@ namespace BMCSDL.Services.Interfaces
         Task<UserDTO> LoginAsync(LoginDTO account);
 
         Task<UserRegisterDTO> RegisterAsync(UserRegisterDTO userRegisterDTO);
+
     }
 }
