@@ -1,55 +1,25 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AccountContext } from "../../../contexts/AccountContext";
 import { useNavigate } from "react-router-dom";
 
 const TableAccount = () => {
 
     const navigate = useNavigate()
-   const {accounts, setSelectAccount, setCheck, check, deleteAccount} = useContext(AccountContext)
+   const {accounts, setSelectAccount, setCheck, check, deleteAccount, roles} = useContext(AccountContext)
    const [search,setSearch] = useState("");
    const [selRole, setSelRole]=useState("");
+   const [filteredAccounts, setFilteredAccounts] = useState(accounts);
+
+    useEffect(() => {
+        setFilteredAccounts(accounts);
+    }, [accounts]);
  
+   console.log("acc ; ", accounts)
    const handleClick = (id) =>{
     navigate(`/teacher/${id}`)
 }
     return (
-        // <table class="table-auto border-cyan-400 rounded-md border-2 w-[60vw] text-center">
-        //     <thead>
-        //         <tr>
-        //             <th class=" border-b border-t-slate-500 border-b-slate-500 border-l-slate-500 ">Username</th>
-        //             <th class="border-b border-t-slate-500 border-b-slate-500 border-l-slate-500 " >Phone Number</th>
-        //             <th class="border-b border-t-slate-500 border-b-slate-500 border-r-slate-500">Role</th>
-        //             <th class="border-b border-t-slate-500 border-b-slate-500 border-l-slate-500 font-bold" ></th>
-        //             <th class="border-b border-t-slate-500 border-b-slate-500 border-l-slate-500 font-bold" ></th>
-
-        //         </tr>
-        //     </thead>
-        //     <tbody>
-        //         {
-        //             accounts?.map((item) => {
-        //                 return (
-        //                     <tr key={item.id}>
-        //                         <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">{item.userName}</td>
-        //                         <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">{item.phoneNumber}</td>
-        //                         <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">{item.role}</td>
-        //                         <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500" onClick={()=>{setSelectAccount(item); setCheck(true)}}>✏️</td>
-        //                         <td class=" border-t-slate-500 border-b-slate-500 border-r-slate-500" onClick={()=>{deleteAccount(item.id)}}>❌</td>
-        //                         {
-        //                             item.role=='Giao Vien'?(<td class=" border-t-slate-500 border-b-slate-500 border-r-slate-500">📖</td>):""
-
-                                    
-        //                         }
-        //                     </tr>
-        //                 )
-        //             })
-        //         }
-                
-        //     </tbody>
-        // </table>
-
-
-
-        <div className="rounded-lg w-[70vw]">
+        <div className="rounded-lg w-[50vw]">
           <div className="pb-3">
           <div className="w-full flex justify-center items-center">
                 <div className="relative w-4/5">
@@ -90,11 +60,11 @@ const TableAccount = () => {
                   <option selected value="">
                     Role
                   </option>
-                  <option value="Truong Pho Khoa">Truong Pho Khoa</option>
-                  <option value="Truong Bo Mon">Truong Bo Mon</option>
-                  <option value="Giao Vu">Giao Vu</option>
-                  <option value="Giao Vien">Giao Vien</option>
-                  <option value="Sinh Vien">Sinh Vien</option>
+                  {
+                    roles.map((item)=>{
+                      return <option id={`${item.roleId}`} value={`${item.roleName}`}>{item.roleName}</option>
+                    })
+                  }
                 </select>
                
               </div>
@@ -108,9 +78,9 @@ const TableAccount = () => {
               >
                 Username
               </th>
-              <th scope="col" className="w-1/8 px-3 py-3 font-semibold">
+              {/* <th scope="col" className="w-1/8 px-3 py-3 font-semibold">
                 Phone Number
-              </th>
+              </th> */}
               <th scope="col" className="w-1/8 px-3 py-3 font-semibold">
                 Role
               </th>
@@ -118,33 +88,33 @@ const TableAccount = () => {
               </th>
               <th scope="col" className="w-1/8 px-3 py-3 font-semibold">
               </th>
-              <th
+              {/* <th
                 scope="col"
                 className="w-1/8 px-3 py-3 font-semibold rounded-tr-lg"
               >
                 &nbsp;
-              </th>
+              </th> */}
             </tr>
           </thead>
           <tbody className="border-[1.5px] border-t-0 border-sky-200">
           {
-                    accounts.filter((item)=>{
+                    filteredAccounts?.filter((item)=>{
                         return(
                             item?.userName
-                        ).toLowerCase().includes(search.toLowerCase())&&(selRole==""||item?.role?.toLowerCase().includes(selRole.toLowerCase()))
+                        ).toLowerCase().includes(search.toLowerCase())&&(selRole==""||item?.roleAccount[0].role.roleName?.toLowerCase().includes(selRole.toLowerCase()))
                     })?.map((item) => {
                         return (
-                            <tr key={item.id}>
+                            <tr key={item.accountId}>
                                 <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">{item.userName}</td>
-                                <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">{item.phoneNumber}</td>
-                                <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">{item.role}</td>
+                                {/* <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">{item.phoneNumber}</td> */}
+                                <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">{item.roleAccount[0].role.roleName}</td>
                                 <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500" onClick={()=>{setSelectAccount(item); setCheck(true)}}>✏️</td>
                                 <td class=" border-t-slate-500 border-b-slate-500 border-r-slate-500" onClick={()=>{deleteAccount(item.id)}}>❌</td>
-                                {
-                                    item.role=='Giao Vien'?(<td class=" border-t-slate-500 border-b-slate-500 border-r-slate-500" onClick={()=>handleClick(item.id)}>📖</td>):""
+                                {/* {
+                                    item.roleAccount[0].role.roleName=='Giáo Viên'?(<td class=" border-t-slate-500 border-b-slate-500 border-r-slate-500" onClick={()=>handleClick(item.accountId)}>📖</td>):""
 
                                     
-                                }
+                                } */}
                             </tr>
                         )
                     })
