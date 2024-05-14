@@ -89,5 +89,35 @@ namespace BMCSDL.Services.Implements
             return updateRole;
         }
 
+
+        public async Task<object> UpdateAccountRolesAsync(UpdateAccountRoles accountRoles)
+        {
+            var account = await context.Account
+                .FirstOrDefaultAsync(a => a.AccountId == accountRoles.AccountId);
+
+            if(account == null)
+            {
+                return null;
+            }
+
+            foreach(var roleId in accountRoles.RoleIds)
+            {
+                var roleAccount = await context
+                    .RoleAccount
+                    .FirstOrDefaultAsync(ra => ra.AccountId == account.AccountId
+                    && ra.RoleId == roleId);
+
+                //nếu mà account chưa có role này 
+                List<RoleAccount>
+                if(roleAccount == null)
+                {
+                    
+                }
+            }
+
+            return null;
+        }
+
+
     }
 }

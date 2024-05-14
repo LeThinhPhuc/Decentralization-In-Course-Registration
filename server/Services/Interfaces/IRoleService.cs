@@ -11,5 +11,7 @@ namespace BMCSDL.Services.Interfaces
 
         Task<object> UpdateRoleAsync(UpdateRoleDTO updateRole);
 
+        Task<object> UpdateAccountRolesAsync(UpdateAccountRoles accountRoles);
+
     }
 }
