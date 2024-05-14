@@ -2,14 +2,16 @@ import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 import { useContext, useState, useEffect } from 'react';
 import { AccountContext } from '../../../contexts/AccountContext';
 import uuid4 from "uuid4";
-const initialValues = {
- id:"",userName:"",passWord:"",role:""
-};
+import accountService from '../../../services/accountService';
+
 const AddAccount = () =>{
-  const { selectAccount, check, accounts, setCheck, setAccounts } = useContext(AccountContext);
+  const { selectAccount, check, accounts, setCheck, setAccounts, khoaId, roles, fetchAccounts } = useContext(AccountContext);
+  const initialValues = {
+    userName:"",password:"",roleId:[],personInfo:{fullName:"None", gender:"None", phoneNumber:"None", dateOfBirth:`2024-05-14T05:01:41.327Z`, address:"None", facultyId:khoaId}
+   };
   const [accountForm, setAccountForm] = useState(initialValues);
   const [noti, setNoti] = useState("")
-
+ 
   useEffect(() => {
     if (check && selectAccount) {
       // If check is true and selectAccount exists, use selectAccount's values
@@ -28,6 +30,11 @@ const AddAccount = () =>{
     });
   };
 
+  const onChange = (e) =>{
+    setAccountForm({...accountForm,roleId:[e]})
+    console.log(accountForm)
+  }
+
   const handleSave = () =>{
     const index = accounts.findIndex(account => account.id === selectAccount.id);
     if (index !== -1) {
@@ -41,12 +48,12 @@ const AddAccount = () =>{
     setCheck(false)
   }
 
-  const handleAdd = () =>{
-    if(accountForm.passWord&&accountForm.role&&accountForm.role){
-      const id = uuid4(); // Generate a new UUID for the id
-      const newAccount = { ...accountForm, id }; // Create a new account object with the id
-      const updatedAccounts = [...accounts, newAccount]; // Add the new account to the accounts array
-      setAccounts(updatedAccounts); // Update the accounts state
+  const handleAdd = async () =>{
+    if(accountForm.password&&accountForm.roleId&&accountForm.roleId){
+      await accountService.createAccount(accountForm)
+      console.log('them: ', accountForm)
+      await fetchAccounts()
+      // setAccounts(updatedAccounts); // Update the accounts state
       setAccountForm(initialValues); // Clear the form after adding
       setNoti("")
     }else{
@@ -101,11 +108,11 @@ const AddAccount = () =>{
               <div className="mt-2">
                 <input
                   type="text"
-                  value={accountForm.passWord}
+                  value={accountForm.password}
 
                   onChange={(e)=>handleText(e)}
 
-                  name="passWord"
+                  name="password"
                   id="last-name"
                   autoComplete="family-name"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -122,10 +129,10 @@ const AddAccount = () =>{
               <div className="mt-2">
                 <select
                   id="country"
-                  name="role"
-                  value={accountForm.role}
+                  name="roleId"
+                  value={accountForm.roleId}
                   
-                  onChange={(e)=>handleText(e)}
+                  onChange={(e)=>onChange(e.target.value)}
 
                   autoComplete="country-name"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
@@ -133,11 +140,11 @@ const AddAccount = () =>{
                 >
                   <option>Role</option>
 
-                  <option>Truong Pho Khoa</option>
-                  <option>Truong Bo Mon</option>
-                  <option>Giao Vu</option>
-                  <option>Giao Vien</option>
-                  <option>Sinh Vien</option>
+                  {
+                    roles.map((item)=>{
+                      return <option value={`${item.roleId}`} id={`${item.roleName}`}>{item.roleName}</option>
+                    })
+                  }
 
                 </select>
               </div>

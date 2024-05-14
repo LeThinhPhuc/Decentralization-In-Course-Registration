@@ -1,54 +1,20 @@
-import { createContext, useState } from "react"
+import { createContext, useEffect, useState } from "react"
+import accountService from "../services/accountService";
+import roleService from "../services/roleService";
+import teacherService from "../services/teacherService";
 
 export const AccountContext = createContext({});
 export const AppProvider = ({children}) =>{
     const [selectAccount, setSelectAccount] = useState([])
     const [check, setCheck] = useState(false)
+    const roleId = "truongphokhoa"
+  
+    const khoaId = "455a615d-f12c-403e-8b1e-a03c15ee1bc8"
     const [accounts, setAccounts] = useState(
-        [
-        {
-            id:1,
-            userName: "Thinh Phuc",
-            phoneNumber: "0123292233",
-            role: "Truong Pho Khoa",
-            passWord:"111456"
-        },
-        {
-            id:2,
-            userName: "Hieu Han",
-            phoneNumber: "0987889911",
-            role: "Truong Bo Mon",
-            passWord:"123999"
-
-        },
-        {
-            id:3,
-            userName: "Thanh Trieu",
-            phoneNumber: "0335544448",
-            role: "Sinh Vien",
-            passWord:"212121"
-
-        },
-        {
-            id:4,
-            userName: "Minh Tuan",
-            phoneNumber: "0132244448",
-            role: "Giao Vien",
-            passWord:"212121"
-
-        },
-        {
-            id:5,
-            userName: "Kim Len",
-            phoneNumber: "0132243338",
-            role: "Giao Vien",
-            passWord:"212121"
-
-        }
-    
-    ]
+        []
     )
-
+    const [roles, setRoles] = useState([])
+    const [scheduleTeacher,setScheduleTeacher] = useState([])
     const deleteAccount = (id) =>{
         const tmp = accounts.filter((item) =>{
             return item.id!=id
@@ -56,8 +22,29 @@ export const AppProvider = ({children}) =>{
         setAccounts(tmp)
     }
 
+    const fetchAccounts = async ( ) =>{
+        const tmp = await accountService.getAll(khoaId);
+        
+       setAccounts(tmp.data.accounts)
+       console.log(tmp.data)
+    }
+    const fetchRoles = async () =>{
+        const tmp = await roleService.getAll();
+        setRoles(tmp.data);
+        console.log(tmp.data)
+    }
+    const fetchSchedule = async (id) =>{
+        const tmp = await teacherService.getScheduleByTeachId(id)
+        setScheduleTeacher(tmp.data)
+        console.log("sche", tmp)
+    }
+   
+    useEffect(()=>{
+        fetchAccounts()
+        fetchRoles()
+    },[])
     return(
-        <AccountContext.Provider value={{accounts, selectAccount, setSelectAccount, check, setCheck, setAccounts, deleteAccount}}>
+        <AccountContext.Provider value={{accounts, selectAccount, setSelectAccount, check, setCheck, setAccounts, deleteAccount, roleId, khoaId, roles, fetchAccounts, fetchSchedule, scheduleTeacher}}>
             {children}
         </AccountContext.Provider>
     )

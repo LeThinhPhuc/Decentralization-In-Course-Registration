@@ -1,59 +1,22 @@
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import { AccountContext } from "../../contexts/AccountContext"
 
 const TeachingSchedule = () =>{
     const param = useParams()
     const {id} = param
     const [search, setSearch] = useState("")
-    const arrSubject = [
-        {
-            id:"COMP1",
-            name:"LTCB",
-            tc:3,
-            dateStart:"02/07/2024",
-            dateEnd:"07/08/2024",
-            tiet:"7-10",
-            soLuongToiDa:40,
-            idTeach:4
-        },
-        {
-            id:"COMP2",
-            name:"LTNC",
-            tc:3,
-            dateStart:"01/07/2024",
-            dateEnd:"03/08/2024",
-            tiet:"2-6",
-            soLuongToiDa:40,
-            idTeach:4
+    const {scheduleTeacher, fetchSchedule} = useContext(AccountContext)
+    const [data,setData] = useState(scheduleTeacher)
 
-        },
-        {
-            id:"COMP3",
-            name:"LTHDT",
-            tc:3,
-            dateStart:"04/07/2024",
-            dateEnd:"10/08/2024",
-            tiet:"1-5",
-            soLuongToiDa:40,
-            idTeach:5
+    useEffect(()=>{
+      setData(scheduleTeacher)
+    },[scheduleTeacher])
 
-        }
-        ,
-        {
-            id:"COMP4",
-            name:"LTDD",
-            tc:3,
-            dateStart:"12/07/2024",
-            dateEnd:"17/08/2024",
-            tiet:"7-10",
-            soLuongToiDa:40,
-            idTeach:4
-
-        }
-    ]
-
-
-   
+   useEffect(async ()=>{
+    await fetchSchedule(id)
+    console.log("mon: ",scheduleTeacher)
+   },[])
     return(
         <div >
             <h2 className="text-base font-semibold leading-7 text-gray-900 text-center pt-5 pb-5">Teaching Schedule</h2>
@@ -73,9 +36,7 @@ const TeachingSchedule = () =>{
             <table className="w-full   text-sm text-center text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-500  bg-gray-100 border-b-[1.5px] dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th scope="col" className="px-3 py-3 font-semibold">
-                    Ma Mon
-                  </th>
+                 
                   <th scope="col" className="px-3 py-3 font-semibold">
                     Ten Mon
                   </th>
@@ -89,28 +50,33 @@ const TeachingSchedule = () =>{
                     Ngay Ket Thuc
                   </th>
                   <th scope="col" class="px-3 py-3 font-semibold">
-                    Tiet Hoc
+                    Phong
                   </th>
                   <th scope="col" class="px-3 py-3 font-semibold">
                     So Luong Toi Da
+                  </th>
+                  <th scope="col" className="px-3 py-3 font-semibold">
+                    Gio Hoc
+                  </th>
+                  <th scope="col" className="px-3 py-3 font-semibold">
+                    Giao Vien
                   </th>
                   <th scope="col" class="px-3 py-3 font-semibold">
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {arrSubject.filter((item)=>{
-                    return(item.name).toLowerCase().includes(search)
-                })?.filter((item)=>{return(item.idTeach==id)})?.map((item) => {
+                {data?.map((item) => {
                   return (
                     <tr key={item.id}>
-                                <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">{item.id}</td>
-                                <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">{item.name}</td>
-                                <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">{item.tc}</td>
-                                <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">{item.dateStart}</td>
-                                <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">{item.dateEnd}</td>
-                                <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">{item.tiet}</td>
-                                <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">{item.soLuongToiDa}</td>
+                                <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">{item.subject.subjectName}</td>
+                                <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500"></td>
+                                <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500"></td>
+                                <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500"></td>
+                                <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">{item.classroom.classroomName}</td>
+                                <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500"></td>
+                                <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">{item.time.startTime} - {item.time.endTime}</td>
+                                <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">{item.time.startTime} - {item.time.endTime}</td>
                                 <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">🧾</td>
 
 
