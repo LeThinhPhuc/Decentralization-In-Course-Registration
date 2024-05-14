@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "D:\\HK2 Nam3\\BMCSDL\\Decentralization-In-Course-Registration\\server\\BMCSDL.csproj": {}
+    "D:\\DuyTan\\source\\repos\\Decentralization-In-Course-Registration\\server\\BMCSDL.csproj": {}
   },
   "projects": {
-    "D:\\HK2 Nam3\\BMCSDL\\Decentralization-In-Course-Registration\\server\\BMCSDL.csproj": {
+    "D:\\DuyTan\\source\\repos\\Decentralization-In-Course-Registration\\server\\BMCSDL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\HK2 Nam3\\BMCSDL\\Decentralization-In-Course-Registration\\server\\BMCSDL.csproj",
+        "projectUniqueName": "D:\\DuyTan\\source\\repos\\Decentralization-In-Course-Registration\\server\\BMCSDL.csproj",
         "projectName": "BMCSDL",
-        "projectPath": "D:\\HK2 Nam3\\BMCSDL\\Decentralization-In-Course-Registration\\server\\BMCSDL.csproj",
-        "packagesPath": "C:\\Users\\phucl\\.nuget\\packages\\",
-        "outputPath": "D:\\HK2 Nam3\\BMCSDL\\Decentralization-In-Course-Registration\\server\\obj\\",
+        "projectPath": "D:\\DuyTan\\source\\repos\\Decentralization-In-Course-Registration\\server\\BMCSDL.csproj",
+        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+        "outputPath": "D:\\DuyTan\\source\\repos\\Decentralization-In-Course-Registration\\server\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\phucl\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
