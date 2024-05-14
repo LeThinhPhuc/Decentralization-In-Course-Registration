@@ -108,11 +108,11 @@ namespace BMCSDL.Services.Implements
                     && ra.RoleId == roleId);
 
                 //nếu mà account chưa có role này 
-                List<RoleAccount>
-                if(roleAccount == null)
-                {
+                //List<RoleAccount>
+                //if(roleAccount == null)
+                //{
                     
-                }
+                //}
             }
 
             return null;
