@@ -34,5 +34,29 @@ namespace BMCSDL.Controllers
                 Info = dataToReturn
             });
         }
+
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult> GetAllPersons()
+        {
+            var people = await personService.GetAllPersonsAsync();  
+            return Ok(people);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult> GetPersonById([FromQuery]string personId)
+        {
+            var person = await personService.GetPersonByIdAsync(personId);
+            if(person == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Có thể personId sai"
+                });
+            }
+
+            return Ok(person);
+        }
+
     }
 }

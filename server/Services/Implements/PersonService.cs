@@ -3,6 +3,8 @@ using BMCSDL.Models;
 using BMCSDL.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Net;
 
 namespace BMCSDL.Services.Implements
 {
@@ -14,6 +16,63 @@ namespace BMCSDL.Services.Implements
         {
             this.context = context;
         }
+
+        public async Task<object> GetAllPersonsAsync()
+        {
+            var people = await context.Person
+                .Include(p =>p.Faculty)
+                .ToListAsync();
+
+            var dataToReturn = people.Select( person => new
+            {
+                PersonId = person.PersonId,
+                FullName = person.FullName,
+                Gender = person.Gender,
+                PhoneNumber = person.PhoneNumber,
+                DateOfBirth = person.DateOfBirth,
+                Address = person.Address,
+                Faculty = new
+                {
+                    FacultyId = person.Faculty.FacultyId,
+                    FacultyName = person.Faculty.FacultyName
+                }
+            });
+
+            return dataToReturn;
+        }
+
+        public async Task<object> GetPersonByIdAsync(string personId)
+        {
+
+            var person = await context
+                .Person
+                .Where(p => p.PersonId == personId)
+                .Include(p => p.Faculty)
+                .FirstOrDefaultAsync();
+
+            if(person == null)
+            {
+                return null;
+            }
+
+            var dataToReturn = new
+            {
+                PersonId = person.PersonId,
+                FullName = person.FullName,
+                Gender = person.Gender,
+                PhoneNumber = person.PhoneNumber,
+                DateOfBirth = person.DateOfBirth,
+                Address = person.Address,
+                Faculty = new
+                {
+                    FacultyId = person.Faculty.FacultyId,
+                    FacultyName = person.Faculty.FacultyName
+                }
+            };
+
+            return dataToReturn;
+        }
+
         public async Task<object> UpdatePersonInformationAsync(UpdatePersonInfo updatePersonInfo)
         {
 
