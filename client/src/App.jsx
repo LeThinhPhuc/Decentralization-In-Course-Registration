@@ -31,6 +31,7 @@ function App() {
         <Route exact path="/teacher/:id" element={<TeachingSchedule />} />
       </Routes>
       {/* </Router> */}
+      <ListClass />
     </AppProvider>
   );
 }
