@@ -6,18 +6,19 @@ import { AppProvider } from "./contexts/AccountContext";
 import TeachingSchedule from "./components/TeachingSchedule/TeachingSchedule";
 import { Routes, Route, Router } from "react-router-dom";
 import ListClass from "./components/ListClass";
-
+import ChangeInfo from "./components/ChangeInfo/PersonalInfoEditor"
 function App() {
   return (
-    <AppProvider>
-      {/* <Router> */}
-      {/* <Routes>
-          <Route exact path="/" element={<AccountManage />} />
-          <Route exact path="/teacher/:id" element={<TeachingSchedule />} />
-        </Routes> */}
-      {/* </Router> */}
-      <ListClass />
-    </AppProvider>
+    // <AppProvider>
+    //   {/* <Router> */}
+    //   {/* <Routes>
+    //       <Route exact path="/" element={<AccountManage />} />
+    //       <Route exact path="/teacher/:id" element={<TeachingSchedule />} />
+    //     </Routes> */}
+    //   {/* </Router> */}
+    //   <ListClass />
+    // </AppProvider>
+    <ChangeInfo/>
   );
 }
 
