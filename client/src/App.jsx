@@ -1,22 +1,22 @@
-
-import { useState } from 'react';
+import { useState } from "react";
 import React from "react";
 
-import AccountManage from './components/AccountManage/AccountManage';
-import { AppProvider } from './contexts/AccountContext';
-import TeachingSchedule from './components/TeachingSchedule/TeachingSchedule';
+import AccountManage from "./components/AccountManage/AccountManage";
+import { AppProvider } from "./contexts/AccountContext";
+import TeachingSchedule from "./components/TeachingSchedule/TeachingSchedule";
 import { Routes, Route, Router } from "react-router-dom";
-
+import ListClass from "./components/ListClass";
 
 function App() {
   return (
     <AppProvider>
       {/* <Router> */}
-        <Routes>
+      {/* <Routes>
           <Route exact path="/" element={<AccountManage />} />
           <Route exact path="/teacher/:id" element={<TeachingSchedule />} />
-        </Routes>
+        </Routes> */}
       {/* </Router> */}
+      <ListClass />
     </AppProvider>
   );
 }
