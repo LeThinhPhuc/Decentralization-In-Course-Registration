@@ -8,20 +8,11 @@ export default function Example() {
       fullName:'Pham Thanh Trieu',
       gender:'Male',
       phoneNumber:'0907795988',
-      dateOfBirth:'07/03/2003',
+      dateOfBirth:'2003/07/03',
       address:'GO CONG',
      
-    
     });
-    const Info ={
-      personId: personId,
-      fullName:fullName,
-      gender: gender,
-      phoneNumber:phoneNumber,
-      dateOfBirth: dateOfBirth,
-      address:address,
-      
-    }
+
 
     const handleChange = (e) => {
       setFormData({ ...formData, [e.target.name]: e.target.value });
