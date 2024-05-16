@@ -80,6 +80,7 @@ const ListSubject = () => {
             <th className="border border-gray-300 p-2 w-24">Số lượng tối đa</th>
             <th className="border border-gray-300 p-2 w-24">Đã đăng ký</th>
             <th className="border border-gray-300 p-2 w-96">Lịch học</th>
+            <th className="border border-gray-300 p-2 w-24">Thời gian</th>
             <th className="border border-gray-300 p-2"></th>
           </tr>
         </thead>
@@ -90,9 +91,10 @@ const ListSubject = () => {
               <td className="border border-gray-300 p-2 text-center">{course.subjectName}</td>
               <td className="border border-gray-300 p-2 text-center">{course.faculty.facultyName}</td>
               <td className="border border-gray-300 p-2 text-center">{course.credits}</td>
-              <td className="border border-gray-300 p-2 text-center">{course.schedule[0].classroom.maxQuantity}</td>
-              <td className="border border-gray-300 p-2 text-center">{course.schedule[0].classroom.currentQuantity}</td>
+              <td className="border border-gray-300 p-2 text-center">{course.schedule[0].slot.maxQuantity}</td>
+              <td className="border border-gray-300 p-2 text-center">{course.schedule[0].slot.currentQuantity}</td>
               <td className="border border-gray-300 p-2 text-center">Từ ngày: {course.startDay} <br/> đến ngày:{course.endDay}</td>
+              <td className="border border-gray-300 p-2 text-center">{course.schedule[0].time.startTIme} <br/>{course.schedule[0].time.endTim}</td>
               <td className="border border-gray-300 p-2 text-center">
                 <button
                   className="bg-blue-500 text-white py-1 px-2 rounded"
