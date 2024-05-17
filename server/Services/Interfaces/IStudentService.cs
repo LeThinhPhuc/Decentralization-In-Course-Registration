@@ -9,11 +9,12 @@ namespace BMCSDL.Services.Interfaces
 
         Task<object> GetRegisteredSubjectsAsync(string studentId);
 
-
         Task<IEnumerable<StudentDTO>> GetAllStudents(); 
 
         Task<object> GetStudentByIdAsync(string studentId);
 
         Task<object> UpdateStudentByAsync(UpdateStudentInfo studentInfo);
+
+        Task<object> UpdateMarkAsync(UpdateMark newMark);
     }
 }

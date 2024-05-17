@@ -28,7 +28,7 @@ namespace BMCSDL.Controllers
         {
             var student = await this.studentService.GetStudentByIdAsync(studentId);
 
-            if(student == null)
+            if (student == null)
             {
                 return BadRequest(new
                 {
@@ -43,14 +43,15 @@ namespace BMCSDL.Controllers
         public async Task<ActionResult> UpdateSudentInformation([FromBody] UpdateStudentInfo studentInfo)
         {
             var isExistedStudent = await studentService.UpdateStudentByAsync(studentInfo);
-            if(isExistedStudent == null)
+            if (isExistedStudent == null)
             {
                 return BadRequest(new
                 {
                     Message = "Có thể StudentId hoặc faculty không hợp lệ"
                 }); ;
             }
-            return Ok(new { 
+            return Ok(new
+            {
                 StatusMessage = "Update Successfully",
                 Info = studentInfo
             });
@@ -74,7 +75,7 @@ namespace BMCSDL.Controllers
                     Message = "Có thể môn đã đăng ký hoặc hết slot hoặc môn học không được mở hoặc không có trong thời khóa biểu"
                 });
             }
-            
+
 
             return Ok(new
             {
@@ -100,6 +101,44 @@ namespace BMCSDL.Controllers
             {
                 Status = "Delete Successfully",
                 Subject = deletingSubject
+            });
+        }
+
+        [HttpPut("[action]")]
+        public async Task<ActionResult> UpdateMark([FromBody] UpdateMark newMark)
+        {
+            var response = await studentService.UpdateMarkAsync(newMark);
+
+
+            if (int.TryParse(response.ToString(), out int result1) && result1 == 1)
+            {
+                return BadRequest(new
+                {
+                    Message = "Có thể studentId bị sai"
+                });
+            }
+
+            if (int.TryParse(response.ToString(), out int result2) && result2 == 2)
+            {
+                return BadRequest(new
+                {
+                    Message = "có thể subjectId bị sai"
+                });
+            }
+
+            if (int.TryParse(response.ToString(), out int result3) && result3 == 3)
+            {
+                return BadRequest(new
+                {
+                    Message = "có thể student không học môn đó"
+                });
+            }
+
+
+            return Ok(new
+            {
+                Message = "Update Successfully",
+                response = response
             });
         }
 

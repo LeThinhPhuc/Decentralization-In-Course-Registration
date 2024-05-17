@@ -398,5 +398,70 @@ namespace BMCSDL.Services.Implements
 
             return null;
         }
+
+        public async Task<object> UpdateMarkAsync(UpdateMark newMark)
+        {
+            //kiểm tra có student không
+            if(await context.Student.FirstOrDefaultAsync(s => s.StudentId == newMark.StudentId) == null)
+            {
+                return 1;
+            }
+            //kiểm tra có subject không không
+
+            if (await context.Subject.FirstOrDefaultAsync(s => s.SubjectId == newMark.SubjectId) == null)
+            {
+                return 2;
+            }
+
+            //kiểm tra học sinh có học môn đó không
+            var studentSubject = await context
+                .StudentRegisteredSubject
+                .Where(s =>
+                                        s.StudentId == newMark.StudentId && s.SubjectId == newMark.SubjectId)
+                .Include (s => s.Subject)
+                .Include(s => s.Student)
+                .ThenInclude(s => s.Person)
+                .FirstOrDefaultAsync();
+            if (studentSubject == null)
+            {
+                return 3;
+            }
+
+            if(!String.IsNullOrEmpty(newMark.Mark1))
+            {
+                studentSubject.Mark1 = float.Parse(newMark.Mark1);
+            }
+
+            if (!String.IsNullOrEmpty(newMark.Mark2))
+            {
+                studentSubject.Mark2 = float.Parse(newMark.Mark2);
+            }
+
+            if (!String.IsNullOrEmpty(newMark.Mark3))
+            {
+                studentSubject.Mark3 = float.Parse(newMark.Mark3);
+            }
+
+            context.StudentRegisteredSubject.Update(studentSubject);
+            context.SaveChanges();
+
+            return new
+            {
+                Student = new
+                {
+                    StudentId = newMark.StudentId,
+                    StudentName = studentSubject.Student.Person.FullName
+                },
+                Subject = new
+                {
+                    SubjectId = studentSubject.Subject.SubjectId,
+                    SubjectName = studentSubject.Subject.SubjectName
+                },
+                Mark1 = studentSubject.Mark1,
+                Mark2 = studentSubject.Mark2,
+                Mark3 = studentSubject.Mark3,
+            };
+
+            }
     }
 }
