@@ -252,6 +252,9 @@ namespace BMCSDL.Services.Implements
                 return null;
             }
 
+            context.Account.Remove(account);
+            context.SaveChanges();
+
             return new
             {
                 AccountId = account.AccountId,
