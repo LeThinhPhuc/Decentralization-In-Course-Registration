@@ -20,7 +20,6 @@ namespace BMCSDL.Controllers
             this.config = config;
         }
 
-        [Authorize]
         [HttpGet("[action]")]
         public async Task<ActionResult<IEnumerable<AccountDTO>>> GetAllAccounts()
         {
