@@ -4,7 +4,6 @@ import PersonalInfoService from './PersonalInfoService';
 export default function Example() {
     const [formData,setFormData]=useState(
     {
-      personId:'2',
       fullName:'Pham Thanh Trieu',
       gender:'Male',
       phoneNumber:'0907795988',
@@ -36,7 +35,6 @@ export default function Example() {
       // Đóng form
       // Xóa dữ liệu đã nhập bằng cách cập nhật lại state formData với dữ liệu mặc định
       setFormData({
-        personId: '',
         fullName: '',
         gender: '',
         phoneNumber: '',

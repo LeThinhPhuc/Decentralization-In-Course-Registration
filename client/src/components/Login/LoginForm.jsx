@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './LoginForm.css';
 import LoginFormService from './LoginFormService';
 import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from 'jwt-decode';
 const LoginForm = () => {
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
@@ -13,17 +14,17 @@ const LoginForm = () => {
  
       const doLogin = async () => {
         const response = await LoginFormService.doLogin(account);
-
         if (response.status == 200) {
             localStorage.setItem("user", JSON.stringify(response.data));
-        
+            const decode = jwtDecode(response.data.token);
+            console.log(decode);
         }
+       
     };
 
   return (
       <div className="login-form">
           <h2>Đăng Nhập</h2>
-          <form >
               <div className="input-group">
                   <label htmlFor="username">Tên người dùng:</label>
                   <input
@@ -47,7 +48,6 @@ const LoginForm = () => {
               <button className="btn-Login" type="submit"  onClick={() => {
                                 doLogin();
                             }}>Đăng nhập</button>
-          </form>
       </div>
   );
 
