@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react"
 import accountService from "../services/accountService";
 import roleService from "../services/roleService";
 import teacherService from "../services/teacherService";
-
+const userId = 'e95b6ed8-b38f-4186-ba40-26eb27d62a06';
 export const AccountContext = createContext({});
 export const AppProvider = ({children}) =>{
     const [selectAccount, setSelectAccount] = useState([])
@@ -15,11 +15,12 @@ export const AppProvider = ({children}) =>{
     )
     const [roles, setRoles] = useState([])
     const [scheduleTeacher,setScheduleTeacher] = useState([])
-    const deleteAccount = (id) =>{
-        const tmp = accounts.filter((item) =>{
-            return item.id!=id
-        })
-        setAccounts(tmp)
+    const [teacherFalculty, setTeacherFalculty]= useState([])
+    const deleteAccount = async (id) =>{
+        console.log(id)
+
+        await accountService.deleteAccount(id);
+        await fetchAccounts()
     }
 
     const fetchAccounts = async ( ) =>{
@@ -38,14 +39,31 @@ export const AppProvider = ({children}) =>{
         setScheduleTeacher(tmp.data)
         console.log("sche", tmp)
     }
-   
+    const fetchRegister = async ()=>{
+      const response = await fetch(`http://localhost:5146/api/Student/GetRegisteredSubjectsByStudentId?studentId=${userId}`);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setRegister(data.registeredSubjects || []);
+    const fetchTeacherFalculty = async () =>{
+        const tmp = await teacherService.getAllTeacherByFalculty(khoaId)
+        setTeacherFalculty(tmp.data.teachers)
+        console.log(teacherFalculty)
+    }
     useEffect(()=>{
         fetchAccounts()
         fetchRoles()
+        fetchRegister()
+        fetchTeacherFalculty()
     },[])
+  
+   
+   
     return(
-        <AccountContext.Provider value={{accounts, selectAccount, setSelectAccount, check, setCheck, setAccounts, deleteAccount, roleId, khoaId, roles, fetchAccounts, fetchSchedule, scheduleTeacher}}>
+        <AccountContext.Provider value={{accounts, selectAccount, setSelectAccount, check, setCheck, setAccounts, deleteAccount, roleId, khoaId, roles, fetchAccounts, fetchSchedule, scheduleTeacher, teacherFalculty, fetchTeacherFalculty}}>
             {children}
         </AccountContext.Provider>
     )
+}
 }
