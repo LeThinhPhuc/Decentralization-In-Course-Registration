@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react"
 import accountService from "../services/accountService";
 import roleService from "../services/roleService";
 import teacherService from "../services/teacherService";
-
+const userId = 'e95b6ed8-b38f-4186-ba40-26eb27d62a06';
 export const AccountContext = createContext({});
 export const AppProvider = ({children}) =>{
     const [selectAccount, setSelectAccount] = useState([])
@@ -15,6 +15,7 @@ export const AppProvider = ({children}) =>{
     )
     const [roles, setRoles] = useState([])
     const [scheduleTeacher,setScheduleTeacher] = useState([])
+    const [register, setRegister] = useState([])
     const deleteAccount = (id) =>{
         const tmp = accounts.filter((item) =>{
             return item.id!=id
@@ -38,13 +39,21 @@ export const AppProvider = ({children}) =>{
         setScheduleTeacher(tmp.data)
         console.log("sche", tmp)
     }
-   
+    const fetchRegister = async ()=>{
+      const response = await fetch(`http://localhost:5146/api/Student/GetRegisteredSubjectsByStudentId?studentId=${userId}`);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setRegister(data.registeredSubjects || []);
+    }
     useEffect(()=>{
         fetchAccounts()
         fetchRoles()
+        fetchRegister()
     },[])
     return(
-        <AccountContext.Provider value={{accounts, selectAccount, setSelectAccount, check, setCheck, setAccounts, deleteAccount, roleId, khoaId, roles, fetchAccounts, fetchSchedule, scheduleTeacher}}>
+        <AccountContext.Provider value={{accounts, selectAccount, setSelectAccount, check, setCheck, setAccounts, deleteAccount, roleId, khoaId, roles, fetchAccounts, fetchSchedule, scheduleTeacher,register,fetchRegister}}>
             {children}
         </AccountContext.Provider>
     )

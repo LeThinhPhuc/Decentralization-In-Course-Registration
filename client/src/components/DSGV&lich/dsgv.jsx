@@ -1,30 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 const TeacherList = () => {
-  const [teachers, setTeachers] = useState([
-    { id: 1, name: "John Doe", phone: "123-456-7890", schedule: {  } },
-    { id: 2, name: "Jane Smith", phone: "098-765-4321", schedule: {  } },
-    // Thêm thông tin về giáo viên khác nếu cần
-  ]);
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [searchName, setSearchName] = useState('');
-
+  const [teachers, setTeachers] = useState([]);
   const handleViewSchedule = (teacher) => {
     setSelectedTeacher(teacher);
   }
-
-  const handleCloseModal = () => {
-    setSelectedTeacher(null);
-  }
-
   const handleSearchChange = (e) => {
     setSearchName(e.target.value);
   }
-
   // Lọc danh sách giáo viên dựa trên tên tìm kiếm
   const filteredTeachers = teachers.filter(teacher =>
-    teacher.name.toLowerCase().includes(searchName.toLowerCase())
+    teacher.teacherName.toLowerCase().includes(searchName.toLowerCase())
   );
-
+  useEffect(() => {
+    fetchTeachers();
+  }, []);
+  const fetchTeachers = async () => {
+    try {
+      const response = await fetch('http://localhost:5146/api/Teacher/GetAllTeachers');
+      const data = await response.json();
+      setTeachers(data);
+    } catch (error) {
+      console.error('Error fetching teachers:', error);
+    }
+  };
+  
   return (
     <div className="p-4">
       <h2 className="text-2xl mb-4">Teacher List</h2>
@@ -48,12 +49,12 @@ const TeacherList = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredTeachers.map(teacher => (
+          {filteredTeachers.map((teacher, index)=> (
             <tr key={teacher.id}>
-              <td className="p-2 border"> {teacher.id}</td>
-              <td className="p-2 border"> {teacher.name}</td>
-              <td className="p-2 border">{teacher.phone}</td>
-              <td className="p-2 border">
+              <td className="p-2 border text-center"> {index+1}</td>
+              <td className="p-2 border"> {teacher.teacherName}</td>
+              <td className="p-2 border">{teacher.teacherInfo.phoneNumber}</td>
+              <td className="p-2 border text-center">
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" >Xem lịch</button>
               </td>
             </tr>
