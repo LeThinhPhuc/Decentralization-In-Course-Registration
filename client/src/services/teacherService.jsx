@@ -9,6 +9,15 @@ const teacherService = {
             "Access-Control-Allow-Headers": "*",
             Accept: "application/x-www-form-urlencoded, text/plain",
         }
-    }).get(`api/Teacher/TeacherTeachingSchedule?teacherId=${id}`)
+    }).get(`api/Teacher/TeacherTeachingSchedule?teacherId=${id}`),
+    getAllTeacherByFalculty:(id) => axios.create({
+        baseURL: "http://localhost:5146/",
+        timeout: 5000,
+        headers:{
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Headers": "*",
+            Accept: "application/x-www-form-urlencoded, text/plain",
+        }
+    }).get(`api/Faculty/GetAllTeachersByFacultyId?facultyId=${id}`)
 }
 export default teacherService;

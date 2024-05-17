@@ -3,6 +3,7 @@ import { useContext, useState, useEffect } from 'react';
 import { AccountContext } from '../../../contexts/AccountContext';
 import uuid4 from "uuid4";
 import accountService from '../../../services/accountService';
+import roleService from '../../../services/roleService';
 
 const AddAccount = () =>{
   const { selectAccount, check, accounts, setCheck, setAccounts, khoaId, roles, fetchAccounts } = useContext(AccountContext);
@@ -16,6 +17,7 @@ const AddAccount = () =>{
     if (check && selectAccount) {
       // If check is true and selectAccount exists, use selectAccount's values
       setAccountForm(selectAccount);
+      console.log(accountForm)
     } else {
       // Otherwise, use default values
       setAccountForm(initialValues);
@@ -35,16 +37,18 @@ const AddAccount = () =>{
     console.log(accountForm)
   }
 
-  const handleSave = () =>{
-    const index = accounts.findIndex(account => account.id === selectAccount.id);
-    if (index !== -1) {
+  const handleSave = async () =>{
       // Create a copy of the accounts array
-      const updatedAccounts = [...accounts];
+      // const updatedAccounts = [...accounts];
       // Update the account at the found index with new values
-      updatedAccounts[index] = { ...updatedAccounts[index], ...accountForm };
+      // updatedAccounts[index] = { ...updatedAccounts[index], ...accountForm };
+      console.log({accountId:accountForm.accountId, roleIds:accountForm.roleId[0]})
+      await roleService.updateRoleAccount({accountId:accountForm.accountId, roleIds:accountForm.roleId})
+
       // Set the state with the updated array
-      setAccounts(updatedAccounts);
-    }
+      // setAccounts(updatedAccounts);
+      await fetchAccounts()
+
     setCheck(false)
   }
 
