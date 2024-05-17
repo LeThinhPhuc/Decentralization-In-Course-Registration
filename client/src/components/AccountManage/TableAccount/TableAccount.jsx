@@ -15,9 +15,7 @@ const TableAccount = () => {
     }, [accounts]);
  
    console.log("acc ; ", accounts)
-   const handleClick = (id) =>{
-    navigate(`/teacher/${id}`)
-}
+   
     return (
         <div className="rounded-lg w-[50vw]">
           <div className="pb-3">
@@ -103,13 +101,14 @@ const TableAccount = () => {
                             item?.userName
                         ).toLowerCase().includes(search.toLowerCase())&&(selRole==""||item?.roleAccount[0].role.roleName?.toLowerCase().includes(selRole.toLowerCase()))
                     })?.map((item) => {
+                        const tmp ={accountId:item.accountId, roleId:[`${item.roleAccount[0].role.roleId}`]}
                         return (
                             <tr key={item.accountId}>
                                 <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">{item.userName}</td>
                                 {/* <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">{item.phoneNumber}</td> */}
                                 <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500">{item.roleAccount[0].role.roleName}</td>
-                                <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500" onClick={()=>{setSelectAccount(item); setCheck(true)}}>✏️</td>
-                                <td class=" border-t-slate-500 border-b-slate-500 border-r-slate-500" onClick={()=>{deleteAccount(item.id)}}>❌</td>
+                                <td class=" border-t-slate-500 border-b-slate-500 border-l-slate-500" onClick={()=>{setSelectAccount(tmp); setCheck(true)}}>✏️</td>
+                                <td class=" border-t-slate-500 border-b-slate-500 border-r-slate-500" onClick={()=>{deleteAccount(item.accountId)}}>❌</td>
                                 {/* {
                                     item.roleAccount[0].role.roleName=='Giáo Viên'?(<td class=" border-t-slate-500 border-b-slate-500 border-r-slate-500" onClick={()=>handleClick(item.accountId)}>📖</td>):""
 
