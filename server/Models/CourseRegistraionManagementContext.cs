@@ -44,6 +44,11 @@ namespace BMCSDL.Models
             {
                 entity.HasIndex(a => a.UserName).IsUnique();
                 entity.HasKey(a => a.AccountId);
+
+                entity.HasOne(a => a.Person)
+                      .WithOne(p => p.Account)
+                      .HasForeignKey<Person>(p => p.PersonId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<TruongPhoKhoa>(entity =>
@@ -91,12 +96,14 @@ namespace BMCSDL.Models
                 entity.HasKey(p => p.PersonId);
                 entity.HasOne(p => p.Account)
                       .WithOne(a => a.Person)
-                      .HasForeignKey<Person>(p => p.AccountId);
+                      .HasForeignKey<Person>(p => p.AccountId)
+                      .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(p => p.Faculty)
                       .WithMany(f => f.Person)
                       .HasForeignKey(p => p.FacultyId)
                       .OnDelete(DeleteBehavior.Cascade);
+
             });
 
             modelBuilder.Entity<Faculty>(entity =>
