@@ -15,12 +15,12 @@ export const AppProvider = ({children}) =>{
     )
     const [roles, setRoles] = useState([])
     const [scheduleTeacher,setScheduleTeacher] = useState([])
-    const [register, setRegister] = useState([])
-    const deleteAccount = (id) =>{
-        const tmp = accounts.filter((item) =>{
-            return item.id!=id
-        })
-        setAccounts(tmp)
+    const [teacherFalculty, setTeacherFalculty]= useState([])
+    const deleteAccount = async (id) =>{
+        console.log(id)
+
+        await accountService.deleteAccount(id);
+        await fetchAccounts()
     }
 
     const fetchAccounts = async ( ) =>{
@@ -65,4 +65,5 @@ export const AppProvider = ({children}) =>{
             {children}
         </AccountContext.Provider>
     )
+}
 }

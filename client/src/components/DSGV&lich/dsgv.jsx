@@ -1,5 +1,3 @@
-import React, { useState , useEffect} from 'react';
-const TeacherList = () => {
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AccountContext } from '../../contexts/AccountContext';
@@ -20,8 +18,8 @@ const TeacherList = () => {
     setSearchName(e.target.value);
   }
   // Lọc danh sách giáo viên dựa trên tên tìm kiếm
-  const filteredTeachers = teachers.filter(teacher =>
-    teacher.teacherName.toLowerCase().includes(searchName.toLowerCase())
+  const filteredTeachers = teachers?.filter(teacher =>
+    teacher?.teacherInfo.fullName?.toLowerCase().includes(searchName.toLowerCase())
   );
   useEffect(() => {
     fetchTeachers();
