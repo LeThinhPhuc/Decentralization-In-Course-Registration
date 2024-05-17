@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AccountContext } from '../../contexts/AccountContext';
 const TeacherList = () => {
-  const [teachers, setTeachers] = useState([
-    { id: 1, name: "John Doe", phone: "123-456-7890", schedule: {  } },
-    { id: 2, name: "Jane Smith", phone: "098-765-4321", schedule: {  } },
-    // Thêm thông tin về giáo viên khác nếu cần
-  ]);
+  const navigate = useNavigate()
+  const {teacherFalculty} = useContext(AccountContext)
+  const [teachers, setTeachers] = useState([]);
+  useEffect(()=>{
+    setTeachers(teacherFalculty)
+    console.log(teacherFalculty)
+  }, [teachers, teacherFalculty])
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [searchName, setSearchName] = useState('');
 
@@ -21,10 +25,13 @@ const TeacherList = () => {
   }
 
   // Lọc danh sách giáo viên dựa trên tên tìm kiếm
-  const filteredTeachers = teachers.filter(teacher =>
-    teacher.name.toLowerCase().includes(searchName.toLowerCase())
+  const filteredTeachers = teachers?.filter(teacher =>
+    teacher?.teacherInfo.fullName?.toLowerCase().includes(searchName.toLowerCase())
   );
 
+  const handleClick = (id) =>{
+    navigate(`/teacher/${id}`)
+}
   return (
     <div className="p-4">
       <h2 className="text-2xl mb-4">Teacher List</h2>
@@ -41,20 +48,21 @@ const TeacherList = () => {
       <table className="w-full border-collapse border">
         <thead>
           <tr>
-            <th className="p-2 border">STT</th>
             <th className="p-2 border">Họ và Tên</th>
             <th className="p-2 border">Số điện thoại</th>
+            <th className="p-2 border">Giới tính</th>
             <th className="p-2 border">Lịch học</th>
           </tr>
         </thead>
         <tbody>
-          {filteredTeachers.map(teacher => (
-            <tr key={teacher.id}>
-              <td className="p-2 border"> {teacher.id}</td>
-              <td className="p-2 border"> {teacher.name}</td>
-              <td className="p-2 border">{teacher.phone}</td>
+          {filteredTeachers?.map(teacher => (
+            <tr key={teacher?.teacherId}>
+              <td className="p-2 border"> {teacher.teacherInfo.fullName}</td>
+              <td className="p-2 border">{teacher.teacherInfo.phoneNumber}</td>
+              <td className="p-2 border"> {teacher.teacherInfo.gender}</td>
+
               <td className="p-2 border">
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" >Xem lịch</button>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={()=>{handleClick(teacher.teacherId)}}>Xem lịch</button>
               </td>
             </tr>
           ))}

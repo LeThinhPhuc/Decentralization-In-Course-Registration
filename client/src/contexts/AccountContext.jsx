@@ -15,11 +15,12 @@ export const AppProvider = ({children}) =>{
     )
     const [roles, setRoles] = useState([])
     const [scheduleTeacher,setScheduleTeacher] = useState([])
-    const deleteAccount = (id) =>{
-        const tmp = accounts.filter((item) =>{
-            return item.id!=id
-        })
-        setAccounts(tmp)
+    const [teacherFalculty, setTeacherFalculty]= useState([])
+    const deleteAccount = async (id) =>{
+        console.log(id)
+
+        await accountService.deleteAccount(id);
+        await fetchAccounts()
     }
 
     const fetchAccounts = async ( ) =>{
@@ -38,13 +39,21 @@ export const AppProvider = ({children}) =>{
         setScheduleTeacher(tmp.data)
         console.log("sche", tmp)
     }
-   
+    const fetchTeacherFalculty = async () =>{
+        const tmp = await teacherService.getAllTeacherByFalculty(khoaId)
+        setTeacherFalculty(tmp.data.teachers)
+        console.log(teacherFalculty)
+    }
     useEffect(()=>{
         fetchAccounts()
         fetchRoles()
+        fetchTeacherFalculty()
     },[])
+  
+   
+   
     return(
-        <AccountContext.Provider value={{accounts, selectAccount, setSelectAccount, check, setCheck, setAccounts, deleteAccount, roleId, khoaId, roles, fetchAccounts, fetchSchedule, scheduleTeacher}}>
+        <AccountContext.Provider value={{accounts, selectAccount, setSelectAccount, check, setCheck, setAccounts, deleteAccount, roleId, khoaId, roles, fetchAccounts, fetchSchedule, scheduleTeacher, teacherFalculty, fetchTeacherFalculty}}>
             {children}
         </AccountContext.Provider>
     )
