@@ -16,6 +16,7 @@ export const AppProvider = ({children}) =>{
     const [roles, setRoles] = useState([])
     const [scheduleTeacher,setScheduleTeacher] = useState([])
     const [teacherFalculty, setTeacherFalculty]= useState([])
+    const [register, setRegister] = useState([])
     const deleteAccount = async (id) =>{
         console.log(id)
 
@@ -39,13 +40,14 @@ export const AppProvider = ({children}) =>{
         setScheduleTeacher(tmp.data)
         console.log("sche", tmp)
     }
-    const fetchRegister = async ()=>{
-      const response = await fetch(`http://localhost:5146/api/Student/GetRegisteredSubjectsByStudentId?studentId=${userId}`);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
-      setRegister(data.registeredSubjects || []);
+    // const fetchRegister = async ()=>{
+    //   const response = await fetch(`http://localhost:5146/api/Student/GetRegisteredSubjectsByStudentId?studentId=${userId}`);
+    //   if (!response.ok) {
+    //     throw new Error("Network response was not ok");
+    //   }
+    //   const data = await response.json();
+    //   setRegister(data.registeredSubjects || []);
+    // }
     const fetchTeacherFalculty = async () =>{
         const tmp = await teacherService.getAllTeacherByFalculty(khoaId)
         setTeacherFalculty(tmp.data.teachers)
@@ -54,7 +56,7 @@ export const AppProvider = ({children}) =>{
     useEffect(()=>{
         fetchAccounts()
         fetchRoles()
-        fetchRegister()
+        // fetchRegister()
         fetchTeacherFalculty()
     },[])
   
@@ -65,5 +67,5 @@ export const AppProvider = ({children}) =>{
             {children}
         </AccountContext.Provider>
     )
-}
+
 }
