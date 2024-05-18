@@ -1,17 +1,47 @@
 import { LockClosedIcon } from '@heroicons/react/24/solid';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import PersonalInfoService from './PersonalInfoService';
-export default function Example() {
+import { jwtDecode } from 'jwt-decode';
+import { AccountContext } from '../../contexts/AccountContext';
+ const initValue = {
+  fullName:'',
+  gender:'',
+  phoneNumber:'',
+ // dateOfBirth:'',
+  address:'',
+ }
+export default function ChangeInfo() {
+    const {personInfo} = useContext(AccountContext);
+  // useEffect( () => {
+  //   var user= localStorage.getItem("user");
+  //   let userData = JSON.parse(user);
+  //   const decode = jwtDecode(userData.token);
+  //   const person = decode.personId;
+  //   const personInfo =  GetInfo(person);
+  //     temp = personInfo;
+  //   //   setFormData({
+  //   //     fullName: personInfo.fullName,
+  //   //     gender: personInfo.gender,
+  //   //     phoneNumber: personInfo.phoneNumber,
+  //   //   //  dateOfBirth: personInfo.dateOfBirth,
+  //   //     address: personInfo.address,
+  //   //   });
+  //   // console.log(personInfo.data);
+  //   // console.log(formData);
+  // }, []);
     const [formData,setFormData]=useState(
-    {
-      fullName:'Pham Thanh Trieu',
-      gender:'Male',
-      phoneNumber:'0907795988',
-      dateOfBirth:'2003/07/03',
-      address:'GO CONG',
-     
-    });
+   personInfo
+   
+    );
+    console.log(formData);
+   
+ 
 
+    // const GetInfo = async (personId) => {
+    //     const response = await  PersonalInfoService.GetInfo(personId);
+    //     console.log(response);
+    //     return response;
+    // }
 
     const handleChange = (e) => {
       setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -50,20 +80,6 @@ export default function Example() {
         <h2 className="text-xl font-bold mb-4">Change infomation</h2>
         <form className="space-y-6">
           <div>
-          <label htmlFor="personId" className="block text-sm font-medium leading-5 text-gray-900">
-              Person ID
-            </label>
-            <div className="mt-1 relative rounded-md shadow-sm">
-              <input
-                id="personId"
-                name="personId"
-                type="text"
-                className="form-input block w-full sm:text-sm sm:leading-5"
-                placeholder="Enter Person ID"
-                value={formData.personId}
-                onChange={handleChange}
-              />
-            </div>
             <label htmlFor="fullname" className="block text-sm font-medium leading-5 text-gray-900">
               Full Name
             </label>
@@ -73,8 +89,7 @@ export default function Example() {
                 name="fullname"
                 type="text"
                 className="form-input block w-full sm:text-sm sm:leading-5"
-                placeholder="John Doe"
-                value={formData.fullName}
+                value={formData?.fullName}
                 onChange={handleChange}
               />
             </div>
@@ -83,17 +98,14 @@ export default function Example() {
             <label htmlFor="gender" className="block text-sm font-medium leading-5 text-gray-900">
               Gender
             </label>
-            <select
+            <input
               id="gender"
               name="gender"
               className="form-select block w-full mt-1 pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm sm:leading-5"
-              value={formData.gender}
+              value={formData?.gender}
               onChange={handleChange}          
            >
-              <option>Male</option>
-              <option>Female</option>
-              <option>Other</option>
-            </select>
+            </input>
           </div>
           <div>
             <label htmlFor="phone" className="block text-sm font-medium leading-5 text-gray-900">
@@ -106,13 +118,13 @@ export default function Example() {
                 type="text"
                 className="form-input block w-full sm:text-sm sm:leading-5"
                 placeholder="123-456-7890"
-                value={formData.phoneNumber}
+                value={formData?.phoneNumber}
                 onChange={handleChange}
               />
             </div>
           </div>
           <div>
-            <label htmlFor="birthdate" className="block text-sm font-medium leading-5 text-gray-900">
+            {/* <label htmlFor="birthdate" className="block text-sm font-medium leading-5 text-gray-900">
               Date of Birth
             </label>
             <div className="mt-1 relative rounded-md shadow-sm">
@@ -121,8 +133,10 @@ export default function Example() {
                 name="birthdate"
                 type="date"
                 className="form-input block w-full sm:text-sm sm:leading-5"
+                value={formData.dateOfBirth}
+                onChange={handleChange}
               />
-            </div>
+            </div> */}
           </div>
           <div>
             <label htmlFor="address" className="block text-sm font-medium leading-5 text-gray-900">
@@ -135,7 +149,7 @@ export default function Example() {
                 type="text"
                 className="form-input block w-full sm:text-sm sm:leading-5"
                 placeholder="123 Main St, City, Country"
-                value={formData.address}
+                value={formData?.address}
                 onChange={handleChange}
               />
             </div>

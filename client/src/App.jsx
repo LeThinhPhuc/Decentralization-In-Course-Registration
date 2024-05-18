@@ -1,7 +1,6 @@
 import { useState } from "react";
 import React from "react";
 
-import AccountManage from "./components/AccountManage/AccountManage";
 import { AppProvider } from "./contexts/AccountContext";
 // import TeachingSchedule from "./components/TeachingSchedule/TeachingSchedule";
 import TeachingSchedule from "./components/TeachingSchedule/TeachingSchedule";
@@ -32,6 +31,8 @@ function App() {
     <AppProvider>
             {/* <Router> */}
                 <AnimateRoute />
+                {/* <AnimateRoute /> */}
+                <ChangeInfo/>
             {/* </Router> */}
      </AppProvider>
   );
