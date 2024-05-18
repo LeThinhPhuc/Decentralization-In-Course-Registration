@@ -246,21 +246,67 @@ namespace BMCSDL.Services.Implements
 
         public async Task<object> DeleteAccountAsync(string accountId)
         {
-            Account account =  await context.Account.FirstOrDefaultAsync(a => a.AccountId == accountId);
-
-            if(account == null)
+            using (var transaction = context.Database.BeginTransaction())
             {
-                return null;
+                try
+                {
+                    Account account = await context.Account.FirstOrDefaultAsync(a => a.AccountId == accountId);
+
+                    if (account == null)
+                    {
+                        return null;
+                    }
+
+                    //lấy person 
+                    var person = await context.Person.FirstOrDefaultAsync(a => a.AccountId == account.AccountId);
+
+                    //kiểm tra perons này thuộc loại perons nào
+                    var giaovu = await context.GiaoVu.FirstOrDefaultAsync(g => g.PersonId == person.PersonId);
+                    var teacher = await context.Teacher.FirstOrDefaultAsync(g => g.PersonId == person.PersonId);
+                    var student = await context.Student.FirstOrDefaultAsync(g => g.PersonId == person.PersonId);
+                    var truongPhoKhoa = await context.TruongPhoKhoa.FirstOrDefaultAsync(g => g.PersonId == person.PersonId);
+                    var truongBoMon = await context.TruongBoMon.FirstOrDefaultAsync(g => g.PersonId == person.PersonId);
+
+                    if (giaovu != null)
+                    {
+                        context.GiaoVu.Remove(giaovu);
+                    }
+                    else if (teacher != null)
+                    {
+                        context.Teacher.Remove(teacher);
+                    }
+                    else if (student != null)
+                    {
+                        context.Student.Remove(student);
+                    }
+                    else if (truongPhoKhoa != null)
+                    {
+                        context.TruongPhoKhoa.Remove(truongPhoKhoa);
+                    }
+                    else if (truongBoMon != null)
+                    {
+                        context.TruongBoMon.Remove(truongBoMon);
+                    }
+
+                    context.Person.Remove(person);
+                    context.Account.Remove(account);
+
+                    await context.SaveChangesAsync();
+                    transaction.Commit();
+
+                    return new
+                    {
+                        AccountId = account.AccountId,
+                        UserName = account.UserName
+                    };
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
             }
-
-            context.Account.Remove(account);
-            context.SaveChanges();
-
-            return new
-            {
-                AccountId = account.AccountId,
-                UserName = account.UserName
-            };
         }
+
     }
 }
