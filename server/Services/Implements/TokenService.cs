@@ -25,19 +25,20 @@ namespace BMCSDL.Services.Implements
 
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.NameIdentifier,account.UserName),
-                new Claim(ClaimTypes.Name,account.Person.FullName),
-                new Claim(ClaimTypes.NameIdentifier,account.Person.AccountId)
+                new Claim("facultyId",account.Person.Faculty.FacultyId),
+                new Claim("username",account.UserName),
+                new Claim("accountId",account.Person.AccountId),
+                new Claim("fullName",account.Person.FullName)
             };
 
             foreach(var claim in account.RoleAccount) 
             { 
-                claims.Add(new Claim(ClaimTypes.Role,claim.RoleId));
+                claims.Add(new Claim("roles",claim.RoleId));
             }
 
             var token = new JwtSecurityToken(
                     issuer: config["JWTSettings:issuer"],
-                    audience: config["JWTSettings:issuer"],
+                    audience: config["JWTSettings:audience"],
                     expires: DateTime.Now.AddHours(3),
                     signingCredentials: credentials,
                     claims : claims

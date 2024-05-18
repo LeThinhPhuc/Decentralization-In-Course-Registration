@@ -51,6 +51,7 @@ namespace BMCSDL.Services.Implements
         {
             var user = await context.Account
                 .Include(a => a.Person)
+                .ThenInclude(p => p.Faculty)
                 .Include(a => a.RoleAccount)  
                 .FirstOrDefaultAsync(a => a.UserName == account.username);
 

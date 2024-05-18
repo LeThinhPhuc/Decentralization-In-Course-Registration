@@ -136,26 +136,7 @@ namespace BMCSDL.Controllers
             return Ok(data);
         }
 
-        [HttpPut("[action]")]
-        public async Task<ActionResult> UpdateMark([FromBody] UpdateMarkForm updateMark)
-        {
-            var response = await subjectService.UpdateMarkAsync(updateMark);
-
-            if (response == null)
-            {
-                return BadRequest(new
-                {
-                    Message = "Có thể id nào đó đã sai",
-                });
-            }
-
-            return Ok(new { 
-                StatusCode = 200,
-                StatusMessage = "Update successfully",
-                Info = response
-            });
-        }
-
+        
 
         //[HttpGet("[action]")]
         //public async Task<ActionResult> GetStudentRegisteredSubjectBySubjectId([FromQuery]string subjectId)

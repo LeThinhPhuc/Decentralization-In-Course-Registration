@@ -19,7 +19,6 @@ namespace BMCSDL.Services.Interfaces
 
         public Task<object> GetSudentRegisteredSubjectBySubjectIdAsync(string SubjectId);
 
-        public Task<object> UpdateMarkAsync(UpdateMarkForm updateMark);
 
 
     }

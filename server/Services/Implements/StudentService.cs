@@ -399,7 +399,7 @@ namespace BMCSDL.Services.Implements
             return null;
         }
 
-        public async Task<object> UpdateMarkAsync(UpdateMark newMark)
+        public async Task<object> UpdateMarkAsync(UpdateMarkForm newMark)
         {
             //kiểm tra có student không
             if(await context.Student.FirstOrDefaultAsync(s => s.StudentId == newMark.StudentId) == null)
