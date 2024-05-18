@@ -105,7 +105,7 @@ namespace BMCSDL.Controllers
         }
 
         [HttpPut("[action]")]
-        public async Task<ActionResult> UpdateMark([FromBody] UpdateMark newMark)
+        public async Task<ActionResult> UpdateMark([FromBody] UpdateMarkForm newMark)
         {
             var response = await studentService.UpdateMarkAsync(newMark);
 

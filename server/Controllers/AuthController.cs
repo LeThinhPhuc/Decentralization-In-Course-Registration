@@ -2,6 +2,7 @@
 using BMCSDL.Models;
 using BMCSDL.ReturnModels;
 using BMCSDL.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net.WebSockets;
@@ -52,7 +53,7 @@ namespace BMCSDL.Controllers
             {
                 return BadRequest(new
                 {
-                    Message = "Có thể sai FacultyId hoặc trùng username, hoặc role sai"
+                    Message = "Có thể sai FacultyId hoặc trùng username hoặc role sai  "
                 });
             }
 

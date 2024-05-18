@@ -332,56 +332,7 @@ namespace BMCSDL.Services.Implements
             return dataToReturn;
         }
 
-        public async Task<object> UpdateMarkAsync(UpdateMarkForm updateMark)
-        {
-            var registeredSubjectOfStudent = await context.StudentRegisteredSubject
-                .Where(s =>
-                s.StudentId == updateMark.StudentId &&
-                s.SubjectId == updateMark.SubjectId &&
-                s.ClassroomId == updateMark.ClassroomId &&
-                s.TimeId == updateMark.TimeId)
-                .Include(s => s.Student)
-                .ThenInclude(s => s.Person)
-                .FirstOrDefaultAsync();
-
-            if (registeredSubjectOfStudent == null)
-            {
-                return null;
-            }
-
-            if (!String.IsNullOrEmpty(registeredSubjectOfStudent.Mark1.ToString()))
-            {
-                registeredSubjectOfStudent.Mark1 = updateMark.Mark1;
-            }
-
-            if (!String.IsNullOrEmpty(registeredSubjectOfStudent.Mark2.ToString()))
-            {
-                registeredSubjectOfStudent.Mark2 = updateMark.Mark2;
-            }
-
-            if (!String.IsNullOrEmpty(registeredSubjectOfStudent.Mark3.ToString()))
-            {
-                registeredSubjectOfStudent.Mark3 = updateMark.Mark3;
-            }
-
-            context.StudentRegisteredSubject.Update(registeredSubjectOfStudent);
-            context.SaveChanges();
-
-
-            var dataToReturn = new
-            {
-                StudentId = updateMark.StudentId,
-                StudentName = registeredSubjectOfStudent.Student.Person.FullName,
-                SubjectId = updateMark.SubjectId,
-                ClassroomId = updateMark.ClassroomId,
-                Timeid = updateMark.TimeId,
-                Mark1 = updateMark.Mark1,
-                Mark2 = updateMark.Mark2,
-                Mark3 = updateMark.Mark3
-            };
-
-            return dataToReturn;
-        }
+       
 
         public async Task<object> UpdateIsOpenAsync(OpenCloseSubject subjectDTO)
         {

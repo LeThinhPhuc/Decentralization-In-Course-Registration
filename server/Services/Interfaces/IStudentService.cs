@@ -15,6 +15,6 @@ namespace BMCSDL.Services.Interfaces
 
         Task<object> UpdateStudentByAsync(UpdateStudentInfo studentInfo);
 
-        Task<object> UpdateMarkAsync(UpdateMark newMark);
+        Task<object> UpdateMarkAsync(UpdateMarkForm newMark);
     }
 }

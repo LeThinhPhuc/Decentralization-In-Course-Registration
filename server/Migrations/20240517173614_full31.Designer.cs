@@ -4,6 +4,7 @@ using BMCSDL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BMCSDL.Migrations
 {
     [DbContext(typeof(CourseRegistraionManagementContext))]
-    partial class CourseRegistraionManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20240517173614_full31")]
+    partial class full31
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,7 +45,7 @@ namespace BMCSDL.Migrations
                         .IsUnique()
                         .HasFilter("[UserName] IS NOT NULL");
 
-                    b.ToTable("Account", (string)null);
+                    b.ToTable("Account");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.ClassTime", b =>
@@ -57,7 +60,7 @@ namespace BMCSDL.Migrations
 
                     b.HasIndex("TimeId");
 
-                    b.ToTable("ClassTime", (string)null);
+                    b.ToTable("ClassTime");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Classroom", b =>
@@ -73,7 +76,7 @@ namespace BMCSDL.Migrations
 
                     b.HasKey("ClassRoomId");
 
-                    b.ToTable("Classroom", (string)null);
+                    b.ToTable("Classroom");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Faculty", b =>
@@ -89,7 +92,7 @@ namespace BMCSDL.Migrations
 
                     b.HasKey("FacultyId");
 
-                    b.ToTable("Faculty", (string)null);
+                    b.ToTable("Faculty");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.GiaoVu", b =>
@@ -106,7 +109,7 @@ namespace BMCSDL.Migrations
                         .IsUnique()
                         .HasFilter("[PersonId] IS NOT NULL");
 
-                    b.ToTable("GiaoVu", (string)null);
+                    b.ToTable("GiaoVu");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Person", b =>
@@ -143,7 +146,7 @@ namespace BMCSDL.Migrations
 
                     b.HasIndex("FacultyId");
 
-                    b.ToTable("Person", (string)null);
+                    b.ToTable("Person");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Role", b =>
@@ -156,7 +159,7 @@ namespace BMCSDL.Migrations
 
                     b.HasKey("RoleId");
 
-                    b.ToTable("Role", (string)null);
+                    b.ToTable("Role");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.RoleAccount", b =>
@@ -173,7 +176,7 @@ namespace BMCSDL.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.ToTable("RoleAccount", (string)null);
+                    b.ToTable("RoleAccount");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Student", b =>
@@ -190,7 +193,7 @@ namespace BMCSDL.Migrations
                         .IsUnique()
                         .HasFilter("[PersonId] IS NOT NULL");
 
-                    b.ToTable("Student", (string)null);
+                    b.ToTable("Student");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.StudentRegisteredSubject", b =>
@@ -237,7 +240,7 @@ namespace BMCSDL.Migrations
 
                     b.HasIndex("TimeId");
 
-                    b.ToTable("StudentRegisteredSubject", (string)null);
+                    b.ToTable("StudentRegisteredSubject");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Subject", b =>
@@ -267,7 +270,7 @@ namespace BMCSDL.Migrations
 
                     b.HasIndex("FacultyId");
 
-                    b.ToTable("Subject", (string)null);
+                    b.ToTable("Subject");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.SubjectClass", b =>
@@ -299,7 +302,7 @@ namespace BMCSDL.Migrations
 
                     b.HasIndex("TimeId");
 
-                    b.ToTable("SubjectClass", (string)null);
+                    b.ToTable("SubjectClass");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Teacher", b =>
@@ -316,7 +319,7 @@ namespace BMCSDL.Migrations
                         .IsUnique()
                         .HasFilter("[PersonId] IS NOT NULL");
 
-                    b.ToTable("Teacher", (string)null);
+                    b.ToTable("Teacher");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.TeacherSubject", b =>
@@ -331,7 +334,7 @@ namespace BMCSDL.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("TeacherSubject", (string)null);
+                    b.ToTable("TeacherSubject");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.Time", b =>
@@ -353,7 +356,7 @@ namespace BMCSDL.Migrations
 
                     b.HasKey("TimeId");
 
-                    b.ToTable("Time", (string)null);
+                    b.ToTable("Time");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.TruongBoMon", b =>
@@ -370,7 +373,7 @@ namespace BMCSDL.Migrations
                         .IsUnique()
                         .HasFilter("[PersonId] IS NOT NULL");
 
-                    b.ToTable("TruongBoMon", (string)null);
+                    b.ToTable("TruongBoMon");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.TruongPhoKhoa", b =>
@@ -387,7 +390,7 @@ namespace BMCSDL.Migrations
                         .IsUnique()
                         .HasFilter("[PersonId] IS NOT NULL");
 
-                    b.ToTable("TruongPhoKhoa", (string)null);
+                    b.ToTable("TruongPhoKhoa");
                 });
 
             modelBuilder.Entity("BMCSDL.Models.ClassTime", b =>

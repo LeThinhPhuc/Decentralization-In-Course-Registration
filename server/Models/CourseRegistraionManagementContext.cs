@@ -51,7 +51,9 @@ namespace BMCSDL.Models
                 entity.HasKey(e => e.TruongPhoKhoaId);
                 entity.HasOne(e => e.Person)
                       .WithOne(p => p.TruongPhoKhoa)
-                      .HasForeignKey<TruongPhoKhoa>(p => p.PersonId);
+                      .HasForeignKey<TruongPhoKhoa>(p => p.PersonId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
             });
 
             modelBuilder.Entity<TruongBoMon>(entity =>
@@ -59,7 +61,9 @@ namespace BMCSDL.Models
                 entity.HasKey(e => e.TruongBoMonId);
                 entity.HasOne(e => e.Person)
                       .WithOne(e => e.TruongBoMon)
-                      .HasForeignKey<TruongBoMon>(t => t.PersonId);
+                      .HasForeignKey<TruongBoMon>(t => t.PersonId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
             });
 
             modelBuilder.Entity<GiaoVu>(entity =>
@@ -75,7 +79,9 @@ namespace BMCSDL.Models
                 entity.HasKey(e => e.TeacherId);
                 entity.HasOne(e => e.Person)
                       .WithOne(e => e.Teacher)
-                      .HasForeignKey<Teacher>(t => t.PersonId);
+                      .HasForeignKey<Teacher>(t => t.PersonId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
             });
 
             modelBuilder.Entity<Student>(entity =>
@@ -83,7 +89,9 @@ namespace BMCSDL.Models
                 entity.HasKey(s => s.StudentId);
                 entity.HasOne(e => e.Person)
                       .WithOne(e => e.Student)
-                      .HasForeignKey<Student>(t => t.PersonId);
+                      .HasForeignKey<Student>(t => t.PersonId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
             });
 
             modelBuilder.Entity<Person>(entity =>
@@ -91,7 +99,8 @@ namespace BMCSDL.Models
                 entity.HasKey(p => p.PersonId);
                 entity.HasOne(p => p.Account)
                       .WithOne(a => a.Person)
-                      .HasForeignKey<Person>(p => p.AccountId);
+                      .HasForeignKey<Person>(p => p.AccountId)
+                      .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(p => p.Faculty)
                       .WithMany(f => f.Person)
@@ -106,7 +115,7 @@ namespace BMCSDL.Models
                       .WithOne(p => p.Faculty)
                       .HasForeignKey(e => e.FacultyId)
                       .OnDelete(DeleteBehavior.Cascade);
-                
+
             });
 
 
@@ -118,7 +127,7 @@ namespace BMCSDL.Models
 
             modelBuilder.Entity<StudentRegisteredSubject>(entity =>
             {
-                entity.HasKey(k => new { k.StudentId, k.SubjectId ,k.ClassroomId,k.TeacherId,k.TimeId});
+                entity.HasKey(k => new { k.StudentId, k.SubjectId, k.ClassroomId, k.TeacherId, k.TimeId });
             });
 
             modelBuilder.Entity<StudentRegisteredSubject>(entity =>
@@ -136,7 +145,7 @@ namespace BMCSDL.Models
                       .HasForeignKey(k => k.SubjectId);
             });
 
-           
+
 
             modelBuilder.Entity<SubjectClass>(e =>
             {
@@ -148,7 +157,7 @@ namespace BMCSDL.Models
             {
                 entity.HasOne(e => e.Subject)
                       .WithMany(e => e.SubjectClass)
-                      .HasForeignKey(e =>e.SubjectId);  
+                      .HasForeignKey(e => e.SubjectId);
             });
 
             modelBuilder.Entity<SubjectClass>(entity =>
@@ -167,7 +176,7 @@ namespace BMCSDL.Models
 
             modelBuilder.Entity<ClassTime>(entity =>
             {
-                entity.HasKey(k => new {k.ClassroomId,k.TimeId});
+                entity.HasKey(k => new { k.ClassroomId, k.TimeId });
             });
 
             modelBuilder.Entity<ClassTime>(entity =>
@@ -190,7 +199,7 @@ namespace BMCSDL.Models
 
                 entity.HasMany(e => e.SubjectClass)
                       .WithOne(s => s.Time)
-                      .HasForeignKey(s => s.TimeId);    
+                      .HasForeignKey(s => s.TimeId);
             });
 
             modelBuilder.Entity<TeacherSubject>(entity =>
@@ -202,7 +211,7 @@ namespace BMCSDL.Models
             {
                 entity.HasOne(e => e.Teacher)
                       .WithMany(t => t.TeacherSubject)
-                      .HasForeignKey( k => k.TeacherId);
+                      .HasForeignKey(k => k.TeacherId);
             });
 
             modelBuilder.Entity<TeacherSubject>(entity =>
@@ -211,7 +220,7 @@ namespace BMCSDL.Models
                       .WithMany(s => s.TeacherSubject)
                       .HasForeignKey(k => k.SubjectId);
             });
-            
+
 
         }
 
@@ -226,12 +235,12 @@ namespace BMCSDL.Models
         public DbSet<GiaoVu> GiaoVu { get; set; }
         public DbSet<Student> Student { get; set; }
         public DbSet<StudentRegisteredSubject> StudentRegisteredSubject { get; set; }
-        public DbSet<Classroom> Classroom { get; set; } 
+        public DbSet<Classroom> Classroom { get; set; }
         public DbSet<SubjectClass> SubjectClass { get; set; }
         public DbSet<Time> Time { get; set; }
         public DbSet<ClassTime> ClassTime { get; set; }
         public DbSet<TeacherSubject> TeacherSubject { get; set; }
         public DbSet<RoleAccount> RoleAccount { get; set; }
-        
+
     }
 }
