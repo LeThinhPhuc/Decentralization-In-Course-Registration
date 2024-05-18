@@ -4,11 +4,11 @@ import PersonalInfoService from './PersonalInfoService';
 export default function Example() {
     const [formData,setFormData]=useState(
     {
-      fullName:'Pham Thanh Trieu',
-      gender:'Male',
-      phoneNumber:'0907795988',
-      dateOfBirth:'2003/07/03',
-      address:'GO CONG',
+      fullName:'',
+      gender:'',
+      phoneNumber:'',
+      dateOfBirth:'',
+      address:'',
      
     });
 
@@ -50,20 +50,6 @@ export default function Example() {
         <h2 className="text-xl font-bold mb-4">Change infomation</h2>
         <form className="space-y-6">
           <div>
-          <label htmlFor="personId" className="block text-sm font-medium leading-5 text-gray-900">
-              Person ID
-            </label>
-            <div className="mt-1 relative rounded-md shadow-sm">
-              <input
-                id="personId"
-                name="personId"
-                type="text"
-                className="form-input block w-full sm:text-sm sm:leading-5"
-                placeholder="Enter Person ID"
-                value={formData.personId}
-                onChange={handleChange}
-              />
-            </div>
             <label htmlFor="fullname" className="block text-sm font-medium leading-5 text-gray-900">
               Full Name
             </label>
