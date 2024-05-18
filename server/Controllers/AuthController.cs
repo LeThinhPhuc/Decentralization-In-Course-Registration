@@ -35,6 +35,7 @@ namespace BMCSDL.Controllers
             return Ok(accountsDTO);
         }
 
+
         [HttpPost("[action]")]
         public async Task<ActionResult> Login([FromBody] LoginDTO account)
         {
@@ -47,6 +48,7 @@ namespace BMCSDL.Controllers
             return Unauthorized();
         }
 
+        [Authorize(Roles = "truongphokhoa")]
         [HttpPost("[action]")]
         public async Task<ActionResult> Register([FromBody]UserRegisterDTO user)
         {
@@ -63,6 +65,8 @@ namespace BMCSDL.Controllers
         }
 
 
+
+        [Authorize(Roles = "truongphokhoa")]
         [HttpDelete("[action]")]
         public async Task<ActionResult> DeleteAccount([FromQuery] string accountId)
         {
