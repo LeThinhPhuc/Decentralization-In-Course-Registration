@@ -28,6 +28,7 @@ namespace BMCSDL.Services.Implements
                 new Claim("facultyId",account.Person.Faculty.FacultyId),
                 new Claim("username",account.UserName),
                 new Claim("accountId",account.Person.AccountId),
+                new Claim("personId",account.Person.PersonId),
                 new Claim("fullName",account.Person.FullName)
             };
 
