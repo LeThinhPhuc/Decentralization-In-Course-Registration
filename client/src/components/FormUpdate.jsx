@@ -1,16 +1,18 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 
-const FormUpdate = ({ closeModal, datas, id }) => {
+const FormUpdate = ({ closeModal, id, datas }) => {
   const [data, setData] = useState([]);
-  const [value, setValue] = useState({
-    subjectName: "",
-    credits: "",
-    startDay: "",
-    endDay: "",
-    facultyId: "",
+  const [info, setInfo] = useState({
+    subjectId: datas.subjectId,
+    subjectName: datas.subjectName,
+    credits: datas.credits,
+    startDay: datas.startDay,
+    endDay: datas.endDay,
+    facultyId: datas.facultyId,
+    isOpen: true,
   });
-  console.log(datas);
+
   useEffect(() => {
     axios
       .get("http://localhost:5146/api/Faculty/GetAllFaculties")
@@ -22,10 +24,11 @@ const FormUpdate = ({ closeModal, datas, id }) => {
 
   const handleUpdate = (event) => {
     event.preventDefault();
+    console.log(info);
     axios
       .put(
         "http://localhost:5146/api/Subject/UpdateSubject?subjectId=" + id,
-        value
+        info
       )
       .then((res) => {
         console.log(res);
@@ -33,6 +36,7 @@ const FormUpdate = ({ closeModal, datas, id }) => {
       })
       .catch((err) => console.log(err));
   };
+
   return (
     <div className="flex items-center justify-center h-screen">
       <div
@@ -86,8 +90,9 @@ const FormUpdate = ({ closeModal, datas, id }) => {
                     name="name"
                     id="name"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 "
+                    value={info.subjectName}
                     onChange={(e) =>
-                      setValue({ ...datas, subjectName: e.target.value })
+                      setInfo({ ...info, subjectName: e.target.value })
                     }
                   />
                 </div>
@@ -99,13 +104,14 @@ const FormUpdate = ({ closeModal, datas, id }) => {
                     Tín chỉ
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="name"
                     id="name"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 "
                     required=""
+                    value={info.credits}
                     onChange={(e) =>
-                      setValue({ ...datas, credits: e.target.value })
+                      setInfo({ ...info, credits: e.target.value })
                     }
                   />
                 </div>
@@ -115,13 +121,17 @@ const FormUpdate = ({ closeModal, datas, id }) => {
                     for="price"
                     className="block mb-2 text-sm font-medium text-gray-900 "
                   >
-                    Thời gian bắt đầu
+                    Thời gian bắt đầu (YYYY/MM/DD)
                   </label>
                   <input
                     type="text"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 "
+                    value={info.startDay}
                     onChange={(e) =>
-                      setValue({ ...datas, startDay: e.target.value })
+                      setInfo({
+                        ...info,
+                        startDay: e.target.value + "T14:18:31.774",
+                      })
                     }
                   />
                 </div>
@@ -131,14 +141,18 @@ const FormUpdate = ({ closeModal, datas, id }) => {
                     for="category"
                     className="block mb-2 text-sm font-medium text-gray-900 "
                   >
-                    Thời gian kết thúc
+                    Thời gian kết thúc (YYYY/MM/DD)
                   </label>
                   <input
                     datepicker
                     type="text"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 "
+                    value={info.endDay}
                     onChange={(e) =>
-                      setValue({ ...datas, endDay: e.target.value })
+                      setInfo({
+                        ...info,
+                        endDay: e.target.value + "T14:18:31.774",
+                      })
                     }
                   />
                 </div>
@@ -162,11 +176,12 @@ const FormUpdate = ({ closeModal, datas, id }) => {
                   /> */}
                   <select
                     onChange={(e) => {
-                      setValue({ ...value, facultyId: e.target.value });
+                      setInfo({ ...info, facultyId: e.target.value });
                     }}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
                   >
-                    {data.map((item) => {
+                    <option className="">Chọn khoa</option>
+                    {data?.map((item) => {
                       return (
                         <option
                           key={item.facultyId}

@@ -99,28 +99,34 @@ const FormCreate = ({ closeModal }) => {
 
                 <div className="col-span-2 ">
                   <label className="block mb-2 text-sm font-medium text-gray-900 ">
-                    Thời gian bắt đầu
+                    Thời gian bắt đầu (YYYY/MM/DD)
                   </label>
                   <input
                     type="text"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 "
                     required=""
                     onChange={(e) =>
-                      setValue({ ...value, startDay: e.target.value })
+                      setValue({
+                        ...value,
+                        startDay: e.target.value + "T14:18:31.774",
+                      })
                     }
                   />
                 </div>
 
                 <div className="col-span-2 ">
                   <label className="block mb-2 text-sm font-medium text-gray-900 ">
-                    Thời gian kết thúc
+                    Thời gian kết thúc (YYYY/MM/DD)
                   </label>
                   <input
                     datepicker
                     type="text"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 "
                     onChange={(e) =>
-                      setValue({ ...value, endDay: e.target.value })
+                      setValue({
+                        ...value,
+                        endDay: e.target.value + "T14:18:31.774",
+                      })
                     }
                   />
                 </div>

@@ -11,7 +11,7 @@ import TeacherList from "./components/DSGV&lich/dsgv";
 import ListClass from "./components/ListClass";
 
 import ListClass from "./components/ListClass";
-import ChangeInfo from "./components/ChangeInfo/PersonalInfoEditor"
+import ChangeInfo from "./components/ChangeInfo/PersonalInfoEditor";
 import SideBar from "./components/SideBar/SideBar";
 import AnimateRoute from "./components/Animate/AnimateRoute";
 function App() {
@@ -30,10 +30,11 @@ function App() {
     // // <ChangeInfo/>
 
     <AppProvider>
-            {/* <Router> */}
-                <AnimateRoute />
-            {/* </Router> */}
-     </AppProvider>
+      {/* <Router> */}
+      {/* <AnimateRoute /> */}
+      {/* </Router> */}
+      <ListClass />
+    </AppProvider>
   );
 }
 

@@ -3,7 +3,7 @@ import axios from "axios";
 import FormCreate from "./FormCreate";
 import FormUpdate from "./FormUpdate";
 import FormSchedule from "./FormSchedule";
-import ListAccount from "./ListAccount";
+import ListSubjectStudent from "./ListSubjectStudent";
 
 const ListClass = () => {
   const [query, setQuery] = useState("");
@@ -261,11 +261,18 @@ const ListClass = () => {
 
           {openAddModal && <FormCreate closeModal={setOpenAddModal} />}
           {openEditModal && (
-            <FormUpdate closeModal={setOpenEditModal} id={editID} />
+            <FormUpdate
+              closeModal={setOpenEditModal}
+              id={editID}
+              datas={editData}
+            />
           )}
 
           {openViewModal && (
-            <ListAccount closeModal={setOpenViewModal} id={editID} />
+            <ListSubjectStudent
+              closeModal={setOpenViewModal}
+              subjectID={editID}
+            />
           )}
 
           {openScheduleModal && (
