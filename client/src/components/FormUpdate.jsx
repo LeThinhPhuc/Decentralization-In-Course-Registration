@@ -1,9 +1,8 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 
-const FormUpdate = ({ closeModal, datas }) => {
+const FormUpdate = ({ closeModal, datas, id }) => {
   const [data, setData] = useState([]);
-
   const [value, setValue] = useState({
     subjectName: "",
     credits: "",
@@ -11,17 +10,15 @@ const FormUpdate = ({ closeModal, datas }) => {
     endDay: "",
     facultyId: "",
   });
-  setValue(data);
-
-  // useEffect(() => {
-  //   axios
-  //     .get("http://localhost:5146/api/Subject/GetAllSubjects?subjectId=" + id)
-  //     .then((res) => {
-  //       setValue(res.data);
-  //       console.log(res);
-  //     })
-  //     .catch((er) => console.log(er));
-  // });
+  console.log(datas);
+  useEffect(() => {
+    axios
+      .get("http://localhost:5146/api/Faculty/GetAllFaculties")
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((er) => console.log(er));
+  });
 
   const handleUpdate = (event) => {
     event.preventDefault();
@@ -37,12 +34,12 @@ const FormUpdate = ({ closeModal, datas }) => {
       .catch((err) => console.log(err));
   };
   return (
-    <div>
+    <div className="flex items-center justify-center h-screen">
       <div
         id="crud-modal"
         tabindex="-1"
         aria-hidden="true"
-        className=" overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+        className=" bg-black bg-opacity-50 flex overflow-y-auto overflow-x-hidden fixed top-1/2  left-1/2 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
       >
         <div className="relative p-4 w-full max-w-xl max-h-full">
           <div className="relative bg-white rounded-lg shadow ">
@@ -89,9 +86,8 @@ const FormUpdate = ({ closeModal, datas }) => {
                     name="name"
                     id="name"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 "
-                    value={value.subjectName}
                     onChange={(e) =>
-                      setValue({ ...value, subjectName: e.target.value })
+                      setValue({ ...datas, subjectName: e.target.value })
                     }
                   />
                 </div>
@@ -108,9 +104,8 @@ const FormUpdate = ({ closeModal, datas }) => {
                     id="name"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 "
                     required=""
-                    value={value.credits}
                     onChange={(e) =>
-                      setValue({ ...value, credits: e.target.value })
+                      setValue({ ...datas, credits: e.target.value })
                     }
                   />
                 </div>
@@ -124,12 +119,9 @@ const FormUpdate = ({ closeModal, datas }) => {
                   </label>
                   <input
                     type="text"
-                    name="price"
-                    id="price"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 "
-                    required=""
                     onChange={(e) =>
-                      setValue({ ...value, startDay: e.target.value })
+                      setValue({ ...datas, startDay: e.target.value })
                     }
                   />
                 </div>
@@ -146,7 +138,7 @@ const FormUpdate = ({ closeModal, datas }) => {
                     type="text"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 "
                     onChange={(e) =>
-                      setValue({ ...value, edate: e.target.value })
+                      setValue({ ...datas, endDay: e.target.value })
                     }
                   />
                 </div>
@@ -170,7 +162,7 @@ const FormUpdate = ({ closeModal, datas }) => {
                   /> */}
                   <select
                     onChange={(e) => {
-                      console.log(e.target.value);
+                      setValue({ ...value, facultyId: e.target.value });
                     }}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
                   >

@@ -10,6 +10,7 @@ const FormCreate = ({ closeModal }) => {
     endDay: "",
     facultyId: "",
   });
+
   useEffect(() => {
     axios
       .get("http://localhost:5146/api/Faculty/GetAllFaculties")
@@ -18,6 +19,7 @@ const FormCreate = ({ closeModal }) => {
       })
       .catch((er) => console.log(er));
   });
+
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(value);
@@ -26,13 +28,14 @@ const FormCreate = ({ closeModal }) => {
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   };
+
   return (
     <div>
       <div
         id="crud-modal"
         tabindex="-1"
         aria-hidden="true"
-        className=" overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+        className=" bg-black bg-opacity-50 flex overflow-y-auto overflow-x-hidden fixed top-1/2  left-1/2 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
       >
         <div className="relative p-4 w-full max-w-xl max-h-full">
           <div className="relative bg-white rounded-lg shadow ">
@@ -133,6 +136,7 @@ const FormCreate = ({ closeModal }) => {
                     }}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
                   >
+                    <option className="">Chọn khoa</option>
                     {data.map((item) => {
                       return (
                         <option

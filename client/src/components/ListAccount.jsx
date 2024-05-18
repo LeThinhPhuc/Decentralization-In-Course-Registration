@@ -1,49 +1,53 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const ListAccount = ({ closeModal }) => {
+const ListAccount = ({ closeModal, id }) => {
   const [query, setQuery] = useState("");
   const [data, dataSet] = useState([]);
   const [editID, setEditId] = useState(-1);
   const [grade1, setGrade1] = useState(0);
   const [grade2, setGrade2] = useState(0);
   const [grade3, setGrade3] = useState(0);
+
   useEffect(() => {
     axios
-      .get("http://localhost:3000/students")
+      .get(
+        "http://localhost:5146/api/Subject/ListStudentsRegisterSubject?SubjectId=" +
+          id
+      )
       .then((res) => dataSet(res.data))
       .catch((er) => console.log(er));
   });
   const handleEdit = (id) => {
-    axios.get("http://localhost:3000/students/" + id).then((res) => {
-      console.log(res.data);
-      setGrade1(res.data.grade1);
-      setGrade2(res.data.grade2);
-      setGrade3(res.data.grade3);
-    });
-    setEditId(id);
+    // axios
+    //   .get(
+    //     "http://localhost:5146/api/Subject/ListStudentsRegisterSubject?subjectId=" +
+    //       id
+    //   )
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     setGrade1(res.data.grade1);
+    //     setGrade2(res.data.grade2);
+    //     setGrade3(res.data.grade3);
+    //   });
+    // setEditId(id);
   };
 
   const handleUpdate = () => {
-    const user = axios
-      .get("http://localhost:3000/students/" + editID)
-      .then((r) => r.data);
-
-    axios
-      .patch("http://localhost:3000/students/" + editID, {
-        id: editID,
-
-        Grade1: grade1,
-        Grade2: grade2,
-        Grade3: grade3,
-      })
-      .then((res) => {
-        console.log(user);
-        console.log(res);
-        location.reload();
-        setEditId(-1);
-      })
-      .catch((err) => console.log(err));
+    // const user = axios.get("" + editID).then((r) => r.data);
+    // axios
+    //   .patch("" + editID, {
+    //     Grade1: grade1,
+    //     Grade2: grade2,
+    //     Grade3: grade3,
+    //   })
+    //   .then((res) => {
+    //     console.log(user);
+    //     console.log(res);
+    //     location.reload();
+    //     setEditId(-1);
+    //   })
+    //   .catch((err) => console.log(err));
   };
   return (
     <div className=" text-center ">
@@ -52,7 +56,7 @@ const ListAccount = ({ closeModal }) => {
         data-modal-backdrop="static"
         tabindex="-1"
         aria-hidden="true"
-        class=" overflow-y-auto overflow-x-auto fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+        className=" bg-black bg-opacity-50 flex overflow-y-auto overflow-x-hidden fixed top-1/2  left-1/2 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
       >
         <div class="relative p-4 w-full max-w-[70vw] ">
           <div class="relative bg-gray-100 rounded-lg shadow-xl ">
@@ -131,9 +135,7 @@ const ListAccount = ({ closeModal }) => {
                     <th scope="col" class="px-6 py-3">
                       Họ và tên
                     </th>
-                    <th scope="col" class="px-6 py-3">
-                      Số điện thoại
-                    </th>
+
                     <th scope="col" class="px-6 py-3">
                       Điểm hệ số 1
                     </th>
@@ -151,11 +153,10 @@ const ListAccount = ({ closeModal }) => {
                 </thead>
                 <tbody>
                   {data
-                    .filter(
-                      (item) =>
-                        item.Name.toLowerCase().includes(query) ||
-                        item.MSSV.toLowerCase().includes(query)
-                    )
+                    .filter((item) => {
+                      item.StudentName.toLowerCase().includes(query) ||
+                        item.Username.toLowerCase().includes(query);
+                    })
                     .map((item, index) =>
                       item.id === editID ? (
                         <tr class="bg-white border-b ">
@@ -163,10 +164,9 @@ const ListAccount = ({ closeModal }) => {
                             scope="row"
                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
                           >
-                            {item.MSSV}
+                            {item.Username}
                           </th>
-                          <td class="px-6 py-4">{item.Name}</td>
-                          <td class="px-6 py-4">{item.SDT}</td>
+                          <td class="px-6 py-4">{item.StudentName}</td>
                           <td>
                             <input
                               type="number"
@@ -201,9 +201,9 @@ const ListAccount = ({ closeModal }) => {
                           </td>
                           <td class="px-6 py-4">
                             {(
-                              (parseFloat(item.Grade1) +
-                                parseFloat(item.Grade2) * 2 +
-                                parseFloat(item.Grade3) * 3) /
+                              (parseFloat(item.Mark1) +
+                                parseFloat(item.Mark2) * 2 +
+                                parseFloat(item.Mark3) * 3) /
                               6
                             ).toFixed(2)}
                           </td>
@@ -232,18 +232,17 @@ const ListAccount = ({ closeModal }) => {
                             scope="row"
                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
                           >
-                            {item.MSSV}
+                            {item.Username}
                           </th>
-                          <td class="px-6 py-4">{item.Name}</td>
-                          <td class="px-6 py-4">{item.SDT}</td>
-                          <td class="px-6 py-4">{item.Grade1}</td>
-                          <td class="px-6 py-4">{item.Grade2}</td>
-                          <td class="px-6 py-4">{item.Grade3}</td>
+                          <td class="px-6 py-4">{item.StudentName}</td>
+                          <td class="px-6 py-4">{item.Mark1}</td>
+                          <td class="px-6 py-4">{item.Mark2}</td>
+                          <td class="px-6 py-4">{item.Mark3}</td>
                           <td class="px-6 py-4">
                             {(
-                              (parseFloat(item.Grade1) +
-                                parseFloat(item.Grade2) * 2 +
-                                parseFloat(item.Grade3) * 3) /
+                              (parseFloat(item.Mark1) +
+                                parseFloat(item.Mark2) * 2 +
+                                parseFloat(item.Mark3) * 3) /
                               6
                             ).toFixed(2)}
                           </td>
