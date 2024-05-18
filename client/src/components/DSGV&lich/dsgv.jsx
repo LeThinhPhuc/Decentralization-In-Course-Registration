@@ -36,10 +36,10 @@ const TeacherList = () => {
   
 
   const handleClick = (id) =>{
-    navigate(`/teacher/${id}`)
+    navigate(`/home/teacher/${id}`)
 }
   return (
-    <div className="p-4">
+    <div className="p-4 w-[70%]">
       <h2 className="text-2xl mb-4">Teacher List</h2>
 
       {/* Trường tìm kiếm */}
