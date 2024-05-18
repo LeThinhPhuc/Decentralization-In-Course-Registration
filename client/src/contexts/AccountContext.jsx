@@ -51,17 +51,29 @@ export const AppProvider = ({children}) =>{
         setTeacherFalculty(tmp.data.teachers)
         console.log(teacherFalculty)
     }
+    const GetInfo = async (personId) => {
+        const response = await  PersonalInfoService.GetInfo(personId);
+        console.log(response);
+        return response;
+    }
+    let decode ;
+    let personInfo;
     useEffect(()=>{
         fetchAccounts()
         fetchRoles()
         fetchRegister()
         fetchTeacherFalculty()
+        localStorage.setItem("user", JSON.stringify(response.data));
+        decode = jwtDecode(response.data.token);
+        console.log(decode);
+        personInfo =  GetInfo(decode.personId);
     },[])
-  
    
-   
+
+    console.log(personInfo);
+
     return(
-        <AccountContext.Provider value={{accounts, selectAccount, setSelectAccount, check, setCheck, setAccounts, deleteAccount, roleId, khoaId, roles, fetchAccounts, fetchSchedule, scheduleTeacher, teacherFalculty, fetchTeacherFalculty}}>
+        <AccountContext.Provider value={{accounts, selectAccount, setSelectAccount, check, setCheck, setAccounts, deleteAccount, roleId, khoaId, roles, fetchAccounts, fetchSchedule, scheduleTeacher, teacherFalculty, fetchTeacherFalculty,decode,personInfo}}>
             {children}
         </AccountContext.Provider>
     )
