@@ -1,6 +1,8 @@
 import { LockClosedIcon } from '@heroicons/react/24/solid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PersonalInfoService from './PersonalInfoService';
+import { jwtDecode } from 'jwt-decode';
+
 export default function Example() {
     const [formData,setFormData]=useState(
     {
@@ -12,6 +14,31 @@ export default function Example() {
      
     });
 
+    useEffect(() => {
+      var user= localStorage.getItem("user");
+      console.log(user.token);
+      let userData = JSON.parse(user);
+      console.log(userData.token);
+      const decode = jwtDecode(userData.token);
+      console.log(decode.personId);
+      const person = decode.personId;
+      const personInfo =  GetInfo(person);
+      if (personInfo) {
+        setFormData({
+          fullName: personInfo.fullName,
+          gender: personInfo.gender,
+          phoneNumber: personInfo.phoneNumber,
+          dateOfBirth: personInfo.dateOfBirth,
+          address: personInfo.address,
+        });
+      }
+      console.log(formData);
+    }, []);
+    
+    const GetInfo = async (personId) => {
+        const response = await  PersonalInfoService.GetInfo(personId);
+        console.log(response);
+    }
 
     const handleChange = (e) => {
       setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -69,17 +96,14 @@ export default function Example() {
             <label htmlFor="gender" className="block text-sm font-medium leading-5 text-gray-900">
               Gender
             </label>
-            <select
+            <input
               id="gender"
               name="gender"
               className="form-select block w-full mt-1 pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm sm:leading-5"
               value={formData.gender}
               onChange={handleChange}          
            >
-              <option>Male</option>
-              <option>Female</option>
-              <option>Other</option>
-            </select>
+            </input>
           </div>
           <div>
             <label htmlFor="phone" className="block text-sm font-medium leading-5 text-gray-900">
@@ -107,6 +131,8 @@ export default function Example() {
                 name="birthdate"
                 type="date"
                 className="form-input block w-full sm:text-sm sm:leading-5"
+                alue={formData.dateOfBirth}
+                onChange={handleChange}
               />
             </div>
           </div>
