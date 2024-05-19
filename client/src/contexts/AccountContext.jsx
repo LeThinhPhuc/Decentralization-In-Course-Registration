@@ -87,7 +87,7 @@ export const AppProvider = ({children}) =>{
    
             
            
-    // if(ktra){
+    if(ktra){
         useEffect(()=>{
             fetchAccounts()
             fetchRoles()
@@ -102,7 +102,7 @@ export const AppProvider = ({children}) =>{
             // personInfo =  GetInfo(decode.personId);
             // console.log("ca nhan : ", personInfo)
         },[])
-    // }
+    }
     
 
 
