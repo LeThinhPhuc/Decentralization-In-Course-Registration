@@ -1,6 +1,7 @@
 ﻿using BMCSDL.DTOs;
 using BMCSDL.Models;
 using BMCSDL.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -23,6 +24,8 @@ namespace BMCSDL.Controllers
             return Ok(students);
         }
 
+
+
         [HttpGet("[action]")]
         public async Task<ActionResult> GetStudentByStudentId([FromQuery] string studentId)
         {
@@ -39,6 +42,8 @@ namespace BMCSDL.Controllers
             return Ok(student);
         }
 
+
+        [Authorize]
         [HttpPut("[action]")]
         public async Task<ActionResult> UpdateSudentInformation([FromBody] UpdateStudentInfo studentInfo)
         {
@@ -57,6 +62,8 @@ namespace BMCSDL.Controllers
             });
         }
 
+
+        [Authorize]
         [HttpGet("[action]")]
         public async Task<ActionResult> GetRegisteredSubjectsByStudentId([FromQuery] string studentId)
         {
@@ -64,6 +71,8 @@ namespace BMCSDL.Controllers
             return Ok(registeredSubjects);
         }
 
+
+        [Authorize]
         [HttpPost("[action]")]
         public async Task<ActionResult> RegisterSubject([FromBody] RegistrationSubjectFormDTO regisForm)
         {

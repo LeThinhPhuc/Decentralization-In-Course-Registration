@@ -1,5 +1,6 @@
 ﻿using BMCSDL.DTOs;
 using BMCSDL.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.WebSockets;
 
@@ -14,6 +15,8 @@ namespace BMCSDL.Controllers
             this.roleService = roleService;
         }
 
+
+
         [HttpGet("[action]")]
         public async Task<ActionResult> GetAllRoles()
         {
@@ -27,7 +30,7 @@ namespace BMCSDL.Controllers
 
         }
 
-
+        [Authorize(Roles = "truongphokhoa")]
         [HttpPost("[action]")]
         public async Task<ActionResult> AssignRole([FromBody] RoleAccountDTO2 roleDTO)
         {
@@ -40,6 +43,8 @@ namespace BMCSDL.Controllers
             return Ok(roleDTO);
         }
 
+
+
         [HttpDelete("[action]")]
         public async Task<ActionResult> DeleteRole([FromBody] RoleAccountDTO2 roleDTO)
         {
@@ -51,7 +56,9 @@ namespace BMCSDL.Controllers
 
             return Ok(roleDTO);
         }
+        
 
+        [Authorize]
         [HttpPut("[action]")]
         public async Task<ActionResult> UpdateRole([FromBody] UpdateRoleDTO updateRole)
         {
@@ -72,8 +79,9 @@ namespace BMCSDL.Controllers
             });
         }
 
-        [HttpPost("[action]")]
 
+        [Authorize(Roles = "truongphokhoa")]
+        [HttpPost("[action]")]
         public async Task<ActionResult> UpdateAccountRoles([FromBody] UpdateAccountRoles accountRoles)
         {
             var response  = await roleService.UpdateAccountRolesAsync(accountRoles);

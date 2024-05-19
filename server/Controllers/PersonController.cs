@@ -47,7 +47,7 @@ namespace BMCSDL.Controllers
 
 
 
-        [Authorize(Roles = "truongkhoa")]
+        [Authorize]
         [HttpGet("[action]")]
         public async Task<ActionResult> GetPersonById([FromQuery]string personId)
         {
