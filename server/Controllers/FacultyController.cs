@@ -43,7 +43,7 @@ namespace BMCSDL.Controllers
             return Ok(students);
         }
 
-        [Authorize(Roles = "truongkhoa,giaovu,truongbomon")]
+        [Authorize(Roles = "truongphokhoa,giaovu,truongbomon")]
         [HttpGet("[action]")]
         public async Task<ActionResult> GetAllTeachersByFacultyId(string facultyId)
         {
@@ -60,7 +60,7 @@ namespace BMCSDL.Controllers
 
         }
 
-        [Authorize(Roles = "truongkhoa")]
+        [Authorize(Roles = "truongphokhoa")]
         [HttpGet("[action]")]
         public async Task<ActionResult> GetAllAccountsByFacultyId([FromQuery]string facultyId)
         {

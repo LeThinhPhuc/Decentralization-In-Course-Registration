@@ -89,14 +89,14 @@ export const AppProvider = ({children}) =>{
            
     if(ktra){
         useEffect(()=>{
+            
+            getDecode()
+            GetInfo(decode?.personId)
+         
             fetchAccounts()
             fetchRoles()
             // fetchRegister()
             fetchTeacherFalculty()
-            getDecode()
-            GetInfo(decode?.personId)
-         
-
 
              console.log(decode)
             // personInfo =  GetInfo(decode.personId);
