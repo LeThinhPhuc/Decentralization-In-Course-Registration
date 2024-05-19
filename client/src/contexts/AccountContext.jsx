@@ -15,9 +15,11 @@ export const AppProvider = ({children}) =>{
     const [getToken, setGetToken]= useState("")
   
     const khoaId = "455a615d-f12c-403e-8b1e-a03c15ee1bc8"
+    // const [khoaId, setKhoaId]=useState("")
     const [accounts, setAccounts] = useState(
         []
     )
+    var ktra= localStorage.getItem("user");
     const [roles, setRoles] = useState([])
     const [scheduleTeacher,setScheduleTeacher] = useState([])
     const [teacherFalculty, setTeacherFalculty]= useState([])
@@ -76,6 +78,8 @@ export const AppProvider = ({children}) =>{
     }
     // let decode ;
     // let personInfo;
+ 
+   if(ktra){
     useEffect(()=>{
         fetchAccounts()
         fetchRoles()
@@ -88,9 +92,9 @@ export const AppProvider = ({children}) =>{
         // personInfo =  GetInfo(decode.personId);
         // console.log("ca nhan : ", personInfo)
     },[])
-   
+   }
 
-    console.log(personInfo);
+    console.log(decode);
 
     return(
         <AccountContext.Provider value={{accounts, selectAccount, setSelectAccount, check, setCheck, setAccounts, deleteAccount, roleId, khoaId, roles, fetchAccounts, fetchSchedule, scheduleTeacher, teacherFalculty, fetchTeacherFalculty,decode,personInfo, getToken}}>

@@ -1,8 +1,12 @@
 import axios from 'axios'
-var user= localStorage.getItem("user");
-let userData = JSON.parse(user);
-console.log(userData.token)
-const token =userData.token
+let token;
+if(localStorage.getItem("user")){
+    var user= localStorage.getItem("user");
+    let userData = JSON.parse(user);
+    console.log(userData.token)
+    token =userData.token
+}
+
 const accountService = {
     getAll: (id) => axios.create({
         baseURL: "http://localhost:5146/",
@@ -11,7 +15,7 @@ const accountService = {
             "Content-Type": "application/json",
             "Access-Control-Allow-Headers": "*",
             Accept: "application/x-www-form-urlencoded, text/plain",
-            "Authorization": `Bearer ${token}`
+            "Authorization":token?`Bearer ${token}`:""
 
         }
     }).get(`api/Faculty/GetAllAccountsByFacultyId?facultyId=${id}`),
@@ -22,7 +26,7 @@ const accountService = {
             "Content-Type": "application/json",
             "Access-Control-Allow-Headers": "*",
             Accept: "application/x-www-form-urlencoded, text/plain",
-            "Authorization": `Bearer ${token}`
+            "Authorization":token?`Bearer ${token}`:""
 
         }
     }).post("api/Auth/Register", infor),
@@ -33,7 +37,7 @@ const accountService = {
             "Content-Type": "application/json",
             "Access-Control-Allow-Headers": "*",
             Accept: "application/x-www-form-urlencoded, text/plain",
-            "Authorization": `Bearer ${token}`
+            "Authorization":token?`Bearer ${token}`:""
 
         }
     }).delete(`api/Auth/DeleteAccount?accountId=${id}`)
