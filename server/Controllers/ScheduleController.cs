@@ -1,6 +1,8 @@
 ﻿using BMCSDL.DTOs;
+using BMCSDL.Models;
 using BMCSDL.Services.Implements;
 using BMCSDL.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BMCSDL.Controllers
@@ -14,6 +16,8 @@ namespace BMCSDL.Controllers
             this.scheduleService = scheduleService;
         }
 
+
+        [Authorize]
         [HttpGet("[action]")]
         public async Task<ActionResult> GetAllSchedules()
         {
@@ -25,6 +29,8 @@ namespace BMCSDL.Controllers
             return Ok(schedules);
         }
 
+
+        [Authorize(Roles ="truongphokhoa,truongbomon")]
         [HttpPost("[action]")]
         public async Task<ActionResult> AddNewSchedule([FromBody]NewScheduleDTO teacherTimeDTO)
         {
@@ -45,6 +51,7 @@ namespace BMCSDL.Controllers
 
         }
 
+        [Authorize(Roles = "truongphokhoa,truongbomon")]
         [HttpDelete("[action]")]
         public async Task<ActionResult> DeleteSchedule([FromBody] NewScheduleDTO deleteSchedule)
         {

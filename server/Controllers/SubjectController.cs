@@ -1,5 +1,6 @@
 ﻿using BMCSDL.DTOs;
 using BMCSDL.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BMCSDL.Controllers
@@ -25,6 +26,8 @@ namespace BMCSDL.Controllers
             return Ok(subjects);    
         }
 
+
+
         [HttpGet("[action]")]
         public async Task<ActionResult> GetAllOpenedSubjects()
         {
@@ -35,6 +38,9 @@ namespace BMCSDL.Controllers
             }
             return Ok(subjects);
         }
+
+
+
 
         [HttpGet("[action]")]
         public async Task<ActionResult> GetAllSubjects()
@@ -47,6 +53,8 @@ namespace BMCSDL.Controllers
             return Ok(subjects);
         }
 
+
+        [Authorize(Roles ="truongphokhoa,truongbomon")]
         [HttpPost("[action]")]
         public async Task<ActionResult> AddNewSubject([FromBody] NewSubjectInfo subjectDTO)
         {
@@ -64,6 +72,7 @@ namespace BMCSDL.Controllers
             }); 
         }
 
+        [Authorize(Roles ="truongphokhoa,truongbomon")]
         [HttpPut("[action]")]
         public async Task<ActionResult> UpdateSubject([FromBody] UpdateSubjectInfo subjectDTO)
         {
@@ -86,6 +95,7 @@ namespace BMCSDL.Controllers
         }
 
 
+        [Authorize(Roles ="truongphokhoa,truongbomon")]
         [HttpPut("[action]")]
         public async Task<ActionResult> OpenOrCloseSubject([FromBody] OpenCloseSubject isOpen)
         {
@@ -120,6 +130,8 @@ namespace BMCSDL.Controllers
 
             return BadRequest();
         }
+
+
 
         [HttpGet("[action]")]
         public async Task<ActionResult> ListStudentsRegisterSubject([FromQuery]string SubjectId)

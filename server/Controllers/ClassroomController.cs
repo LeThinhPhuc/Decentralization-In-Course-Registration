@@ -13,6 +13,7 @@ namespace BMCSDL.Controllers
             this.classroomService = classroomService;
         }
 
+
         [HttpGet("[action]")]
         public async Task<ActionResult> GetAllClassrooms()
         {
@@ -25,6 +26,8 @@ namespace BMCSDL.Controllers
 
             return Ok(classrooms);
         }
+
+
 
         [HttpPost("[action]")]
         public async Task<ActionResult> AddNewClassroom([FromBody] NewClassroomDTO newClassroom)

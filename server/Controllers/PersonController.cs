@@ -1,5 +1,6 @@
 ﻿using BMCSDL.DTOs;
 using BMCSDL.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BMCSDL.Controllers
@@ -14,6 +15,7 @@ namespace BMCSDL.Controllers
         }
 
 
+        [Authorize]
         [HttpPut("[action]")]
         public async Task<ActionResult> UpdatePersonInformation([FromBody]UpdatePersonInfo updatePersonInfo)
         {
@@ -43,6 +45,9 @@ namespace BMCSDL.Controllers
             return Ok(people);
         }
 
+
+
+        [Authorize]
         [HttpGet("[action]")]
         public async Task<ActionResult> GetPersonById([FromQuery]string personId)
         {

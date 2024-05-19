@@ -1,5 +1,6 @@
 ﻿using BMCSDL.DTOs;
 using BMCSDL.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.NetworkInformation;
 using System.Net.WebSockets;
@@ -23,6 +24,8 @@ namespace BMCSDL.Controllers
             return Ok(teachers);
         }
 
+
+
         [HttpGet("[action]")]
         public async Task<ActionResult> GetAllTeachersWithSchedule()
         {
@@ -36,6 +39,8 @@ namespace BMCSDL.Controllers
 
         }
 
+
+        [Authorize(Roles ="truongphokhoa,truongbomon,giaovu,giaovien")]
         [HttpGet("[action]")]
         public async Task<ActionResult> TeacherTeachingSchedule([FromQuery] string teacherId)
         {
@@ -47,6 +52,8 @@ namespace BMCSDL.Controllers
             return Ok(teacherSchedule);
         }
 
+
+        [Authorize(Roles = "truongphokhoa,truongbomon,giaovu,giaovien")]
         [HttpGet("[action]")]
         public async Task<ActionResult> GetTeacherById([FromQuery]string teacherId)
         {

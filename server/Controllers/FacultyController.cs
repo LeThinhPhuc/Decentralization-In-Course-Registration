@@ -1,6 +1,7 @@
 ﻿using BMCSDL.DTOs;
 using BMCSDL.Models;
 using BMCSDL.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BMCSDL.Controllers
@@ -42,6 +43,7 @@ namespace BMCSDL.Controllers
             return Ok(students);
         }
 
+        [Authorize(Roles = "truongkhoa,giaovu,truongbomon")]
         [HttpGet("[action]")]
         public async Task<ActionResult> GetAllTeachersByFacultyId(string facultyId)
         {
@@ -58,6 +60,7 @@ namespace BMCSDL.Controllers
 
         }
 
+        [Authorize(Roles = "truongkhoa")]
         [HttpGet("[action]")]
         public async Task<ActionResult> GetAllAccountsByFacultyId([FromQuery]string facultyId)
         {
@@ -72,6 +75,8 @@ namespace BMCSDL.Controllers
             }
             return Ok(accounts);
         }
+
+
 
         [HttpGet("[action]")]
         public async Task<ActionResult> GetAllFacultiesWithSubject()
@@ -98,6 +103,8 @@ namespace BMCSDL.Controllers
             return Ok(faculty);
         }
 
+
+
         [HttpGet("[action]")]
         public async Task<ActionResult> GetFacultyWithSubjects(string facultyId)
         {
@@ -112,6 +119,8 @@ namespace BMCSDL.Controllers
             return Ok(faculty);
         }
 
+
+        [Authorize(Roles = "truongphokhoa,truongbomon")]
         [HttpPost("[action]")]
         public async Task<ActionResult> AddNewFaculty([FromBody]FacultyDTO newFaculty)
         {
@@ -124,6 +133,7 @@ namespace BMCSDL.Controllers
                 Response = dataToReturn 
             });    
         }
+
 
         [HttpDelete("[action]")]
         public async Task<ActionResult> DeleteFaculty([FromQuery] string facultyId)
@@ -145,6 +155,8 @@ namespace BMCSDL.Controllers
                 Response = dataToReturn
             });
         }
+
+
 
         [HttpPut("[action]")]
         public async Task<ActionResult> UpdateFaculty([FromBody] FacultyDTO updateFaculty)
