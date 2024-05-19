@@ -16,6 +16,9 @@ const LoginForm = () => {
         const response = await LoginFormService.doLogin(account);
         if (response.status == 200) {
             localStorage.setItem("user", JSON.stringify(response.data));
+            if(response.data.token){
+                navigate("/home/person")
+            }
             const decode = jwtDecode(response.data.token);
             console.log(decode);
         }

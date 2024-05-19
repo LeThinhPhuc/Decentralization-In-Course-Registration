@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import FormCreate from "./FormCreate";
 import FormUpdate from "./FormUpdate";
-import ListAccount from "./ListAccount";
+import FormSchedule from "./FormSchedule";
+import ListSubjectStudent from "./ListSubjectStudent";
 
 const ListClass = () => {
   const [query, setQuery] = useState("");
@@ -10,8 +11,13 @@ const ListClass = () => {
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openViewModal, setOpenViewModal] = useState(false);
+  const [openScheduleModal, setOpenScheduleModal] = useState(false);
   const [editID, setEditId] = useState(-1);
   const [editData, setEditData] = useState([]);
+  const [value, setValue] = useState({
+    subjectId: "",
+    isOpen: true,
+  });
   useEffect(() => {
     axios
       .get("http://localhost:5146/api/Subject/GetAllSubjectsWithSchedule")
@@ -35,8 +41,18 @@ const ListClass = () => {
   };
   const handleEdit = (id, datas) => {
     setEditId(id);
-    console.log(editID);
+
     setEditData(datas);
+  };
+
+  const handleOpen = () => {
+    axios
+      .put("http://localhost:5146/api/Subject/OpenOrCloseSubject", value)
+      .then((res) => {
+        console.log(res);
+        location.reload();
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -95,7 +111,7 @@ const ListClass = () => {
               <th scope="col" className="px-6 py-3">
                 Khoa
               </th>
-              <th scope="col" className="px-6 py-3">
+              {/* <th scope="col" className="px-6 py-3">
                 Phòng học
               </th>
               <th scope="col" className="px-6 py-3">
@@ -109,7 +125,7 @@ const ListClass = () => {
               </th>
               <th scope="col" className="px-6 py-3">
                 Giảng viên hướng dẫn
-              </th>
+              </th> */}
 
               <th scope="col" className="px-6 py-3"></th>
             </tr>
@@ -129,27 +145,27 @@ const ListClass = () => {
 
                   <td className="px-6 py-4">{item.credits}</td>
                   <td className="px-6 py-4">
-                    {item.startDay} - {item.endDay}
+                    {item.startDay.slice(0,10)} - {item.endDay.slice(0,10)}
                   </td>
-                  {/* <td className="px-6 py-4">{item.open ? "Mở" : "Đóng"}</td> */}
+                  <td className="px-6 py-4">{item.isOpen ? "Mở" : "Đóng"}</td>
                   <td className="px-6 py-4">{item.faculty.facultyName}</td>
 
                   {/* <td className="px-6 py-4">
-                  {item.subjectClass[0].classroom.classroomName}
-                </td>
-                <td className="px-6 py-4">
-                  {item.subjectClass[0].classroom.currentQuantity}
-                </td>
-                <td className="px-6 py-4">
-                  {item.subjectClass[0].classroom.maxQuantity}
-                </td>
-                <td className="px-6 py-4">
-                  {item.subjectClass[0].time.startTime}-
-                  {item.subjectClass[0].time.endTime}
-                </td>
-                <td className="px-6 py-4">
-                  {item.subjectClass[0].teacher.teacherName}
-                </td> */}
+                    {item.subjectClass[0].classroom.classroomName}
+                  </td>
+                  <td className="px-6 py-4">
+                    {item.subjectClass[0].classroom.currentQuantity}
+                  </td>
+                  <td className="px-6 py-4">
+                    {item.subjectClass[0].classroom.maxQuantity}
+                  </td>
+                  <td className="px-6 py-4">
+                    {item.subjectClass[0].time.startTime}-
+                    {item.subjectClass[0].time.endTime}
+                  </td>
+                  <td className="px-6 py-4">
+                    {item.subjectClass[0].teacher.teacherName}
+                  </td> */}
 
                   <td className="px-6 py-4 flex">
                     <button
@@ -158,6 +174,7 @@ const ListClass = () => {
                       className="text-white bg-green-300 hover:bg-green-400  font-medium rounded-lg text-sm px-5 py-2.5 text-center mx-1"
                       onClick={() => {
                         setOpenViewModal(true);
+                        setEditId(item.subjectId);
                       }}
                     >
                       View
@@ -168,10 +185,21 @@ const ListClass = () => {
                       className="text-white bg-blue-300 hover:bg-blue-400  font-medium rounded-lg text-sm px-5 py-2.5 text-center mx-1"
                       onClick={() => {
                         setOpenEditModal(true);
-                        handleEdit(item.subjectId);
+                        handleEdit(item.subjectId, item);
                       }}
                     >
                       Edit
+                    </button>
+                    <button
+                      data-modal-hide="static-modal"
+                      type="button"
+                      className="text-white bg-orange-300 hover:bg-orange-400  font-medium rounded-lg text-sm px-5 py-2.5 text-center mx-1"
+                      onClick={() => {
+                        setOpenScheduleModal(true);
+                        handleEdit(item.subjectId);
+                      }}
+                    >
+                      Schedule
                     </button>
                     <button
                       data-modal-hide="static-modal"
@@ -181,6 +209,39 @@ const ListClass = () => {
                     >
                       Delete
                     </button>
+                    {item.isOpen ? (
+                      <button
+                        data-modal-hide="static-modal"
+                        type="button"
+                        className="text-white bg-purple-300 hover:bg-purple-400  font-medium rounded-lg text-sm px-5 py-2.5 text-center mx-1"
+                        onClick={() => {
+                          setValue({
+                            isOpen: false,
+                            subjectId: item.subjectId,
+                          });
+                          console.log(value);
+                          handleOpen();
+                        }}
+                      >
+                        Close
+                      </button>
+                    ) : (
+                      <button
+                        data-modal-hide="static-modal"
+                        type="button"
+                        className="text-white bg-purple-300 hover:bg-purple-400  font-medium rounded-lg text-sm px-5 py-2.5 text-center mx-1"
+                        onClick={() => {
+                          setValue({
+                            isOpen: true,
+                            subjectId: item.subjectId,
+                          });
+                          console.log(value);
+                          handleOpen(); // Corrected function call
+                        }}
+                      >
+                        Open
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -198,25 +259,24 @@ const ListClass = () => {
             Create
           </button>
 
-          {openAddModal && (
-            <FormCreate
-              closeModal={setOpenAddModal}
-              className="flex items-center justify-center h-screen"
-            />
-          )}
+          {openAddModal && <FormCreate closeModal={setOpenAddModal} />}
           {openEditModal && (
             <FormUpdate
               closeModal={setOpenEditModal}
-              className="flex items-center justify-center h-screen"
               id={editID}
+              datas={editData}
             />
           )}
 
           {openViewModal && (
-            <ListAccount
+            <ListSubjectStudent
               closeModal={setOpenViewModal}
-              className="flex items-center justify-center h-screen"
+              subjectID={editID}
             />
+          )}
+
+          {openScheduleModal && (
+            <FormSchedule closeModal={setOpenScheduleModal} id={editID} />
           )}
         </div>
       </div>

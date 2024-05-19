@@ -1,50 +1,52 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const ListAccount = ({ closeModal }) => {
+const ListSubjectStudent = ({ closeModal, subjectID }) => {
   const [query, setQuery] = useState("");
-  const [data, dataSet] = useState([]);
+  const [data, setData] = useState([]);
   const [editID, setEditId] = useState(-1);
-  const [grade1, setGrade1] = useState(0);
-  const [grade2, setGrade2] = useState(0);
-  const [grade3, setGrade3] = useState(0);
+
+  const [value, setValue] = useState({
+    studentId: "",
+    subjectId: subjectID,
+    mark1: "",
+    mark2: "",
+    mark3: "",
+  });
   useEffect(() => {
     axios
-      .get("http://localhost:3000/students")
-      .then((res) => dataSet(res.data))
+      .get(
+        "http://localhost:5146/api/Subject/ListStudentsRegisterSubject?SubjectId=" +
+          subjectID
+      )
+      .then((res) => {
+        // if (Array.isArray(res.data)) {
+        setData(res.data.studentRegisteredSubject);
+        console.log(res);
+        // } else {
+        //   console.error("Expected an array but got:", typeof data, res);
+        // }
+      })
       .catch((er) => console.log(er));
   });
+
   const handleEdit = (id) => {
-    axios.get("http://localhost:3000/students/" + id).then((res) => {
-      console.log(res.data);
-      setGrade1(res.data.grade1);
-      setGrade2(res.data.grade2);
-      setGrade3(res.data.grade3);
-    });
+    setValue({ ...value, studentId: id });
     setEditId(id);
   };
 
-  const handleUpdate = () => {
-    const user = axios
-      .get("http://localhost:3000/students/" + editID)
-      .then((r) => r.data);
-
+  const handleUpdate = (event) => {
+    event.preventDefault();
     axios
-      .patch("http://localhost:3000/students/" + editID, {
-        id: editID,
-
-        Grade1: grade1,
-        Grade2: grade2,
-        Grade3: grade3,
-      })
+      .put("http://localhost:5146/api/Student/UpdateMark", value)
       .then((res) => {
-        console.log(user);
         console.log(res);
         location.reload();
-        setEditId(-1);
       })
       .catch((err) => console.log(err));
   };
+
+  console.log(data);
   return (
     <div className=" text-center ">
       <div
@@ -52,7 +54,7 @@ const ListAccount = ({ closeModal }) => {
         data-modal-backdrop="static"
         tabindex="-1"
         aria-hidden="true"
-        class=" overflow-y-auto overflow-x-auto fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+        className=" bg-black bg-opacity-50 flex overflow-y-auto overflow-x-hidden fixed top-1/2  left-1/2 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
       >
         <div class="relative p-4 w-full max-w-[70vw] ">
           <div class="relative bg-gray-100 rounded-lg shadow-xl ">
@@ -143,30 +145,28 @@ const ListAccount = ({ closeModal }) => {
                     <th scope="col" class="px-6 py-3">
                       Diểm hệ số 3
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    {/* <th scope="col" class="px-6 py-3">
                       Diểm trung bình
-                    </th>
+                    </th> */}
                     <th scope="col" class="px-6 py-3"></th>
                   </tr>
                 </thead>
                 <tbody>
                   {data
-                    .filter(
-                      (item) =>
-                        item.Name.toLowerCase().includes(query) ||
-                        item.MSSV.toLowerCase().includes(query)
-                    )
-                    .map((item, index) =>
-                      item.id === editID ? (
+                    .filter((item) => {
+                      return item.studentName.toLowerCase().includes(query);
+                    })
+                    ?.map((item, index) =>
+                      item.studentId === editID ? (
                         <tr class="bg-white border-b ">
                           <th
                             scope="row"
                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
                           >
-                            {item.MSSV}
+                            {item.username}
                           </th>
-                          <td class="px-6 py-4">{item.Name}</td>
-                          <td class="px-6 py-4">{item.SDT}</td>
+                          <td class="px-6 py-4">{item.studentName}</td>
+                          <td class="px-6 py-4">{item.phoneNumber}</td>
                           <td>
                             <input
                               type="number"
@@ -175,7 +175,9 @@ const ListAccount = ({ closeModal }) => {
                               max="10"
                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5  "
                               required
-                              onChange={(e) => setGrade1(e.target.value)}
+                              onChange={(e) =>
+                                setValue({ ...value, mark1: e.target.value })
+                              }
                             />
                           </td>
                           <td>
@@ -185,7 +187,9 @@ const ListAccount = ({ closeModal }) => {
                               min="0"
                               max="10"
                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5  "
-                              onChange={(e) => setGrade2(e.target.value)}
+                              onChange={(e) =>
+                                setValue({ ...value, mark2: e.target.value })
+                              }
                             />
                           </td>
                           <td>
@@ -196,17 +200,19 @@ const ListAccount = ({ closeModal }) => {
                               max="10"
                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5  "
                               required
-                              onChange={(e) => setGrade3(e.target.value)}
+                              onChange={(e) =>
+                                setValue({ ...value, mark3: e.target.value })
+                              }
                             />
                           </td>
-                          <td class="px-6 py-4">
+                          {/* <td class="px-6 py-4">
                             {(
-                              (parseFloat(item.Grade1) +
-                                parseFloat(item.Grade2) * 2 +
-                                parseFloat(item.Grade3) * 3) /
+                              (parseFloat(item.Mark1) +
+                                parseFloat(item.Mark2) * 2 +
+                                parseFloat(item.Mark3) * 3) /
                               6
                             ).toFixed(2)}
-                          </td>
+                          </td>  */}
                           <td class="px-6 py-4 flex">
                             <button
                               data-modal-hide="static-modal"
@@ -232,36 +238,29 @@ const ListAccount = ({ closeModal }) => {
                             scope="row"
                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
                           >
-                            {item.MSSV}
+                            {item.username}
                           </th>
-                          <td class="px-6 py-4">{item.Name}</td>
-                          <td class="px-6 py-4">{item.SDT}</td>
-                          <td class="px-6 py-4">{item.Grade1}</td>
-                          <td class="px-6 py-4">{item.Grade2}</td>
-                          <td class="px-6 py-4">{item.Grade3}</td>
-                          <td class="px-6 py-4">
+                          <td class="px-6 py-4">{item.studentName}</td>
+                          <td class="px-6 py-4">{item.phoneNumber}</td>
+                          <td class="px-6 py-4">{item.mark1}</td>
+                          <td class="px-6 py-4">{item.mark2}</td>
+                          <td class="px-6 py-4">{item.mark3}</td>
+                          {/* <td class="px-6 py-4">
                             {(
-                              (parseFloat(item.Grade1) +
-                                parseFloat(item.Grade2) * 2 +
-                                parseFloat(item.Grade3) * 3) /
+                              (parseFloat(item.Mark1) +
+                                parseFloat(item.Mark2) * 2 +
+                                parseFloat(item.Mark3) * 3) /
                               6
                             ).toFixed(2)}
-                          </td>
+                          </td> */}
                           <td class="px-6 py-4 flex">
                             <button
                               data-modal-hide="static-modal"
                               type="button"
                               class="text-white bg-blue-300 hover:bg-blue-400  font-medium rounded-lg text-sm px-5 py-2.5 text-center mx-1"
-                              onClick={() => handleEdit(item.id)}
+                              onClick={() => handleEdit(item.studentId)}
                             >
                               Edit
-                            </button>
-                            <button
-                              data-modal-hide="static-modal"
-                              type="button"
-                              class="text-white bg-red-300 hover:bg-red-400  font-medium rounded-lg text-sm px-5 py-2.5 text-center mx-1"
-                            >
-                              Delete
                             </button>
                           </td>
                         </tr>
@@ -276,4 +275,4 @@ const ListAccount = ({ closeModal }) => {
     </div>
   );
 };
-export default ListAccount;
+export default ListSubjectStudent;

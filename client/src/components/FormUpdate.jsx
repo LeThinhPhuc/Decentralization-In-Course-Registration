@@ -1,34 +1,34 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 
-const FormUpdate = ({ closeModal, datas }) => {
+const FormUpdate = ({ closeModal, id, datas }) => {
   const [data, setData] = useState([]);
-
-  const [value, setValue] = useState({
-    subjectName: "",
-    credits: "",
-    startDay: "",
-    endDay: "",
-    facultyId: "",
+  const [info, setInfo] = useState({
+    subjectId: datas.subjectId,
+    subjectName: datas.subjectName,
+    credits: datas.credits,
+    startDay: datas.startDay,
+    endDay: datas.endDay,
+    facultyId: datas.facultyId,
+    isOpen: true,
   });
-  setValue(data);
 
-  // useEffect(() => {
-  //   axios
-  //     .get("http://localhost:5146/api/Subject/GetAllSubjects?subjectId=" + id)
-  //     .then((res) => {
-  //       setValue(res.data);
-  //       console.log(res);
-  //     })
-  //     .catch((er) => console.log(er));
-  // });
+  useEffect(() => {
+    axios
+      .get("http://localhost:5146/api/Faculty/GetAllFaculties")
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((er) => console.log(er));
+  });
 
   const handleUpdate = (event) => {
     event.preventDefault();
+    console.log(info);
     axios
       .put(
         "http://localhost:5146/api/Subject/UpdateSubject?subjectId=" + id,
-        value
+        info
       )
       .then((res) => {
         console.log(res);
@@ -36,13 +36,14 @@ const FormUpdate = ({ closeModal, datas }) => {
       })
       .catch((err) => console.log(err));
   };
+
   return (
-    <div>
+    <div className="flex items-center justify-center h-screen">
       <div
         id="crud-modal"
         tabindex="-1"
         aria-hidden="true"
-        className=" overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+        className=" bg-black bg-opacity-50 flex overflow-y-auto overflow-x-hidden fixed top-1/2  left-1/2 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
       >
         <div className="relative p-4 w-full max-w-xl max-h-full">
           <div className="relative bg-white rounded-lg shadow ">
@@ -89,9 +90,9 @@ const FormUpdate = ({ closeModal, datas }) => {
                     name="name"
                     id="name"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 "
-                    value={value.subjectName}
+                    value={info.subjectName}
                     onChange={(e) =>
-                      setValue({ ...value, subjectName: e.target.value })
+                      setInfo({ ...info, subjectName: e.target.value })
                     }
                   />
                 </div>
@@ -103,14 +104,14 @@ const FormUpdate = ({ closeModal, datas }) => {
                     Tín chỉ
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="name"
                     id="name"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 "
                     required=""
-                    value={value.credits}
+                    value={info.credits}
                     onChange={(e) =>
-                      setValue({ ...value, credits: e.target.value })
+                      setInfo({ ...info, credits: e.target.value })
                     }
                   />
                 </div>
@@ -120,16 +121,17 @@ const FormUpdate = ({ closeModal, datas }) => {
                     for="price"
                     className="block mb-2 text-sm font-medium text-gray-900 "
                   >
-                    Thời gian bắt đầu
+                    Thời gian bắt đầu (YYYY/MM/DD)
                   </label>
                   <input
                     type="text"
-                    name="price"
-                    id="price"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 "
-                    required=""
+                    value={info.startDay.slice(0,10)}
                     onChange={(e) =>
-                      setValue({ ...value, startDay: e.target.value })
+                      setInfo({
+                        ...info,
+                        startDay: e.target.value,
+                      })
                     }
                   />
                 </div>
@@ -139,14 +141,18 @@ const FormUpdate = ({ closeModal, datas }) => {
                     for="category"
                     className="block mb-2 text-sm font-medium text-gray-900 "
                   >
-                    Thời gian kết thúc
+                    Thời gian kết thúc (YYYY/MM/DD)
                   </label>
                   <input
                     datepicker
                     type="text"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 "
+                    value={info.endDay.slice(0,10)}
                     onChange={(e) =>
-                      setValue({ ...value, edate: e.target.value })
+                      setInfo({
+                        ...info,
+                        endDay: e.target.value,
+                      })
                     }
                   />
                 </div>
@@ -170,11 +176,12 @@ const FormUpdate = ({ closeModal, datas }) => {
                   /> */}
                   <select
                     onChange={(e) => {
-                      console.log(e.target.value);
+                      setInfo({ ...info, facultyId: e.target.value });
                     }}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
                   >
-                    {data.map((item) => {
+                    <option className="">Chọn khoa</option>
+                    {data?.map((item) => {
                       return (
                         <option
                           key={item.facultyId}

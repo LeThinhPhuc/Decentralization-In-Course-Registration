@@ -8,10 +8,11 @@ import ListClass from "../ListClass";
 import ChangeInfo from "../ChangeInfo/ChangeInfo";
 import ListRegister from "../HocPhan/ListRegister";
 import RegisterJubject from "../HocPhan/final";
+import LoginForm from "../Login/LoginForm";
 const AnimateRoute = () => {
     return (
         <Routes>
-            <Route path="/" element={<div>Login</div>} />
+            <Route path="/" element={<LoginForm/>} />
             <Route path="/home" element={<MainPage />}>
                 <Route exact path="/home/add" element={< AccountManage />} />
                 <Route exact path="/home/person" element={<ChangeInfo></ChangeInfo>} />

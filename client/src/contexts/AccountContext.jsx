@@ -10,8 +10,9 @@ export const AccountContext = createContext({});
 export const AppProvider = ({children}) =>{
     const [selectAccount, setSelectAccount] = useState([])
     const [check, setCheck] = useState(false)
-    const roleId = "giaovu"
+    const roleId = "truongphokhoa"
     const [decode, setDecode]=useState()
+    const [getToken, setGetToken]= useState("")
   
     const khoaId = "455a615d-f12c-403e-8b1e-a03c15ee1bc8"
     const [accounts, setAccounts] = useState(
@@ -67,6 +68,7 @@ export const AppProvider = ({children}) =>{
     const getDecode = () =>{
         var user= localStorage.getItem("user");
         let userData = JSON.parse(user);
+        setGetToken(userData.token)
         console.log("userDate", userData)
 
         setDecode(jwtDecode(userData.token))
@@ -82,7 +84,7 @@ export const AppProvider = ({children}) =>{
 
         getDecode()
         GetInfo(decode?.personId)
-        //  console.log(decode)
+         console.log(decode)
         // personInfo =  GetInfo(decode.personId);
         // console.log("ca nhan : ", personInfo)
     },[])
@@ -91,7 +93,7 @@ export const AppProvider = ({children}) =>{
     console.log(personInfo);
 
     return(
-        <AccountContext.Provider value={{accounts, selectAccount, setSelectAccount, check, setCheck, setAccounts, deleteAccount, roleId, khoaId, roles, fetchAccounts, fetchSchedule, scheduleTeacher, teacherFalculty, fetchTeacherFalculty,decode,personInfo}}>
+        <AccountContext.Provider value={{accounts, selectAccount, setSelectAccount, check, setCheck, setAccounts, deleteAccount, roleId, khoaId, roles, fetchAccounts, fetchSchedule, scheduleTeacher, teacherFalculty, fetchTeacherFalculty,decode,personInfo, getToken}}>
             {children}
         </AccountContext.Provider>
     )

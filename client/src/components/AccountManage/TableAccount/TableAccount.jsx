@@ -59,7 +59,7 @@ const TableAccount = () => {
                     Role
                   </option>
                   {
-                    roles.map((item)=>{
+                    roles?.map((item)=>{
                       return <option id={`${item.roleId}`} value={`${item.roleName}`}>{item.roleName}</option>
                     })
                   }
