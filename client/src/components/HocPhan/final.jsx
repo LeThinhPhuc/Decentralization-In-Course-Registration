@@ -4,7 +4,7 @@ import ListRegister from "./ListRegister";
 
 const RegisterJubject=()=>{
   return(
-    <div>
+    <div className="w-[70%]">
         <div>
           <ListSubject/>
         </div>

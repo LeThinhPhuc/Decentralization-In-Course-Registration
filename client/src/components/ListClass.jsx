@@ -40,7 +40,7 @@ const ListClass = () => {
   };
 
   return (
-    <div>
+    <div className="w-[70%]">
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <form className="max-w-full mx-auto">
           <label

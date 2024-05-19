@@ -78,7 +78,7 @@ const ListRegister = () => {
           </tr>
         </thead>
         <tbody>
-          {courses.map((course, index) => (
+          {courses?.map((course, index) => (
             <tr key={index}>
               <td className="border border-gray-300 p-2 text-center">{index + 1}</td>
               <td className="border border-gray-300 p-2 text-center">{course.subject.subjectName}</td>

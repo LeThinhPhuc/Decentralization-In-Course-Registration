@@ -2,12 +2,16 @@ import { createContext, useEffect, useState } from "react"
 import accountService from "../services/accountService";
 import roleService from "../services/roleService";
 import teacherService from "../services/teacherService";
+import PersonalInfoService from "../components/ChangeInfo/PersonalInfoService";
+import { jwtDecode } from 'jwt-decode';
 const userId = 'e95b6ed8-b38f-4186-ba40-26eb27d62a06';
 export const AccountContext = createContext({});
+
 export const AppProvider = ({children}) =>{
     const [selectAccount, setSelectAccount] = useState([])
     const [check, setCheck] = useState(false)
-    const roleId = "truongphokhoa"
+    const roleId = "giaovu"
+    const [decode, setDecode]=useState()
   
     const khoaId = "455a615d-f12c-403e-8b1e-a03c15ee1bc8"
     const [accounts, setAccounts] = useState(
@@ -17,6 +21,8 @@ export const AppProvider = ({children}) =>{
     const [scheduleTeacher,setScheduleTeacher] = useState([])
     const [teacherFalculty, setTeacherFalculty]= useState([])
     const [register, setRegister] = useState([])
+
+    const [personInfo, setPersonInfo] = useState();
     const deleteAccount = async (id) =>{
         console.log(id)
 
@@ -54,21 +60,31 @@ export const AppProvider = ({children}) =>{
         console.log(teacherFalculty)
     }
     const GetInfo = async (personId) => {
-        const response = await  PersonalInfoService.GetInfo(personId);
+        const response =await  PersonalInfoService.GetInfo(personId);
         console.log(response);
-        return response;
+        setPersonInfo(response.data)
     }
-    let decode ;
-    let personInfo;
+    const getDecode = () =>{
+        var user= localStorage.getItem("user");
+        let userData = JSON.parse(user);
+        console.log("userDate", userData)
+
+        setDecode(jwtDecode(userData.token))
+        //  decode = jwtDecode(userData.token);
+    }
+    // let decode ;
+    // let personInfo;
     useEffect(()=>{
         fetchAccounts()
         fetchRoles()
         // fetchRegister()
         fetchTeacherFalculty()
-        localStorage.setItem("user", JSON.stringify(response.data));
-        decode = jwtDecode(response.data.token);
-        console.log(decode);
-        personInfo =  GetInfo(decode.personId);
+
+        getDecode()
+        GetInfo(decode?.personId)
+        //  console.log(decode)
+        // personInfo =  GetInfo(decode.personId);
+        // console.log("ca nhan : ", personInfo)
     },[])
    
 

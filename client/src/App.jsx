@@ -9,7 +9,7 @@ import RegisterJubject from './components/HocPhan/final';
 import TeacherList from './components/DSGV&lich/dsgv';
 
 import ListClass from "./components/ListClass";
-import ChangeInfo from "./components/ChangeInfo/PersonalInfoEditor"
+import ChangeInfo from "./components/ChangeInfo/ChangeInfo";
 import SideBar from "./components/SideBar/SideBar";
 import AnimateRoute from "./components/Animate/AnimateRoute";
 function App() {
@@ -32,7 +32,7 @@ function App() {
             {/* <Router> */}
                 <AnimateRoute />
                 {/* <AnimateRoute /> */}
-                <ChangeInfo/>
+                {/* <ChangeInfo/> */}
             {/* </Router> */}
      </AppProvider>
   );
