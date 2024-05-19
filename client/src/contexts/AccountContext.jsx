@@ -10,12 +10,13 @@ export const AccountContext = createContext({});
 export const AppProvider = ({children}) =>{
     const [selectAccount, setSelectAccount] = useState([])
     const [check, setCheck] = useState(false)
-    const roleId = "truongphokhoa"
+    // const roleId = "truongphokhoa"
+    const [roleId, setRoleId]=useState("")
     const [decode, setDecode]=useState()
     const [getToken, setGetToken]= useState("")
   
-    const khoaId = "455a615d-f12c-403e-8b1e-a03c15ee1bc8"
-    // const [khoaId, setKhoaId]=useState("")
+    // const khoaId = "455a615d-f12c-403e-8b1e-a03c15ee1bc8"
+    const [khoaId, setKhoaId]=useState("")
     const [accounts, setAccounts] = useState(
         []
     )
@@ -74,27 +75,38 @@ export const AppProvider = ({children}) =>{
         console.log("userDate", userData)
 
         setDecode(jwtDecode(userData.token))
+        setKhoaId(jwtDecode(userData.token)?.facultyId)
+        setRoleId(jwtDecode(userData.token)?.roles)
         //  decode = jwtDecode(userData.token);
     }
     // let decode ;
     // let personInfo;
  
-   if(ktra){
-    useEffect(()=>{
-        fetchAccounts()
-        fetchRoles()
-        // fetchRegister()
-        fetchTeacherFalculty()
+  
+   
+   
+            
+           
+    // if(ktra){
+        useEffect(()=>{
+            fetchAccounts()
+            fetchRoles()
+            // fetchRegister()
+            fetchTeacherFalculty()
+            getDecode()
+            GetInfo(decode?.personId)
+         
 
-        getDecode()
-        GetInfo(decode?.personId)
-         console.log(decode)
-        // personInfo =  GetInfo(decode.personId);
-        // console.log("ca nhan : ", personInfo)
-    },[])
-   }
 
-    console.log(decode);
+             console.log(decode)
+            // personInfo =  GetInfo(decode.personId);
+            // console.log("ca nhan : ", personInfo)
+        },[])
+    // }
+    
+
+
+    // console.log(roleId);
 
     return(
         <AccountContext.Provider value={{accounts, selectAccount, setSelectAccount, check, setCheck, setAccounts, deleteAccount, roleId, khoaId, roles, fetchAccounts, fetchSchedule, scheduleTeacher, teacherFalculty, fetchTeacherFalculty,decode,personInfo, getToken}}>

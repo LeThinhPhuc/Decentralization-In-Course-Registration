@@ -18,6 +18,7 @@ const LoginForm = () => {
             localStorage.setItem("user", JSON.stringify(response.data));
             if(response.data.token){
                 navigate("/home/person")
+                window.location.reload();
             }
             const decode = jwtDecode(response.data.token);
             console.log(decode);
